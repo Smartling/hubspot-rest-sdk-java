@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+group = 'com.smartling.connector'
+description = 'Hubspot SDK'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+
+

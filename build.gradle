@@ -3,12 +3,14 @@ buildscript {
         mavenCentral()
         jcenter()
         dependencies {
-            classpath("org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1")
+            classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
+            classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
         }
     }
 }
 
 apply plugin: 'java'
+apply plugin: 'org.unbroken-dome.test-sets'
 apply plugin: 'maven-publish'
 apply plugin: 'maven-publish-auth'
 
@@ -23,22 +25,37 @@ repositories {
 }
 
 dependencies {
+    compile 'com.netflix.feign:feign-core:8.1.0'
+    compile 'com.netflix.feign:feign-gson:8.1.0'
 
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'junit:junit:4.12'
 }
+
+testSets {
+    integrationTest { dirName = 'integration-test' }
+}
+
+// workaround to start tests jod with passed system properties
+tasks.withType(Test) {
+    systemProperties = System.properties
+}
+
+check.dependsOn -= integrationTest
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId "hubspot-sdk"
-            version "1.0.0-SNAPSHOT"
+            artifactId 'hubspot-sdk'
+            version '1.0.0-SNAPSHOT'
             from components.java
         }
     }
 
     repositories {
         maven {
-            name "smartling.repository.target.snapshots"
-            url "https://artifactory.smartling.net/artifactory/local-snapshots"
+            name 'smartling.repository.target.snapshots'
+            url 'https://artifactory.smartling.net/artifactory/local-snapshots'
         }
     }
 }

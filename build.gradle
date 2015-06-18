@@ -1,4 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        dependencies {
+            classpath("org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1")
+        }
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'maven-publish-auth'
 
 group = 'com.smartling.connector'
 description = 'Hubspot SDK'
@@ -12,6 +24,23 @@ repositories {
 
 dependencies {
 
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId "hubspot-sdk"
+            version "1.0.0-SNAPSHOT"
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name "smartling.repository.target.snapshots"
+            url "https://artifactory.smartling.net/artifactory/local-snapshots"
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {

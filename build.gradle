@@ -30,6 +30,8 @@ dependencies {
 
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'junit:junit:4.12'
+    testCompile 'com.jayway.jsonpath:json-path:2.0.0'
+    testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
 }
 
 testSets {

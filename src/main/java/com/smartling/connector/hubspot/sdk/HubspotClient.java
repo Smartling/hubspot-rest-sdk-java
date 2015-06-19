@@ -1,12 +1,10 @@
 package com.smartling.connector.hubspot.sdk;
 
-import com.smartling.connector.hubspot.sdk.rest.api.Page;
-
 public interface HubspotClient
 {
-    Page getPageById(long pageId);
+    String getPageById(long pageId);
 
-    Page clonePage(long originalPageId);
+    String clonePage(long originalPageId);
 
-    Page updatePage(Page page);
+    String updatePage(String page);
 }

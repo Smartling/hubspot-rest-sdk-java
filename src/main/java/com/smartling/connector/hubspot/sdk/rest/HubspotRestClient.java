@@ -1,8 +1,9 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
-import com.smartling.connector.hubspot.sdk.rest.api.Page;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesApi;
 import com.smartling.connector.hubspot.sdk.rest.api.RefreshData;
 import feign.Feign;
@@ -16,7 +17,7 @@ import static java.time.LocalDateTime.now;
 public class HubspotRestClient implements HubspotClient
 {
     protected static final String   API_HOST  = "https://api.hubapi.com";
-    protected static final PagesApi PAGES_API = Feign.builder().decoder(new GsonDecoder()).target(PagesApi.class, API_HOST);
+    protected static final PagesApi PAGES_API = Feign.builder().target(PagesApi.class, API_HOST);
 
     private final String        refreshToken;
     private final String        clientId;
@@ -31,7 +32,7 @@ public class HubspotRestClient implements HubspotClient
     }
 
     @Override
-    public Page getPageById(long pageId)
+    public String getPageById(long pageId)
     {
         checkAccessToken();
 
@@ -39,7 +40,7 @@ public class HubspotRestClient implements HubspotClient
     }
 
     @Override
-    public Page clonePage(final long originalPageId)
+    public String clonePage(final long originalPageId)
     {
         checkAccessToken();
 
@@ -47,11 +48,19 @@ public class HubspotRestClient implements HubspotClient
     }
 
     @Override
-    public Page updatePage(final Page page)
+    public String updatePage(final String page)
     {
+        long pageId = readPageId(page);
         checkAccessToken();
 
-        return PAGES_API.update(page.getId(), accessToken, page);
+        return PAGES_API.update(pageId, accessToken, page);
+    }
+
+    private long readPageId(final String page)
+    {
+        JsonParser parser = new JsonParser();
+        JsonObject obj = parser.parse(page).getAsJsonObject();
+        return obj.get("id").getAsLong();
     }
 
     private void checkAccessToken()

@@ -4,10 +4,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
+import com.smartling.connector.hubspot.sdk.rest.api.PageDetail;
+import com.smartling.connector.hubspot.sdk.rest.api.PageDetails;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -51,6 +54,27 @@ public class PagesIntegrationTest
                         //don't know where to set meta keywords
                 .assertThat(META_KEYWORDS_PATH, isEmptyOrNullString(), "Meta keywords should not be filled")
                 .assertThat("$.id", equalTo(PAGE_ID), "Page id should have particular value");
+    }
+
+    @Test
+    public void shouldListPages() throws Exception
+    {
+        PageDetails pageDetails = hubspotClient.listPages(1, 0);
+        assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+
+        List<PageDetail> detailList = pageDetails.getDetailList();
+        assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotNull().hasSize(1);
+
+        assertPageDetail(detailList.get(0));
+    }
+
+    private void assertPageDetail(final PageDetail pageDetail)
+    {
+        assertThat(pageDetail.getHtmlTitle()).isNotEmpty();
+        assertThat(pageDetail.getName()).isNotEmpty();
+        assertThat(pageDetail.getId()).isPositive();
+        assertThat(pageDetail.getUpdated()).isNotNull();
     }
 
     @Test

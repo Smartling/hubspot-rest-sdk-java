@@ -85,6 +85,14 @@ public class HubspotRestClient implements HubspotClient
         return PAGES_ENTITY_API.pages(limit, offset, accessToken);
     }
 
+    @Override
+    public PageDetails listPagesByTmsId(final String tmsId)
+    {
+        checkAccessToken();
+
+        return PAGES_ENTITY_API.findByTmsId(tmsId, accessToken);
+    }
+
     private long readPageId(final String page)
     {
         JsonParser parser = new JsonParser();

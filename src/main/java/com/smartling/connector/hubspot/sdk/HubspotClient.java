@@ -11,4 +11,6 @@ public interface HubspotClient
     String updatePage(String page);
 
     PageDetails listPages(final int limit, final int offset);
+
+    PageDetails listPagesByTmsId(final String tmsId);
 }

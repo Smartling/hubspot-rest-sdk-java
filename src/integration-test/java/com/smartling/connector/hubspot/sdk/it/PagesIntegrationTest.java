@@ -23,6 +23,7 @@ public class PagesIntegrationTest
     protected static final long   PAGE_ID               = 2976789349L;
     protected static final String META_DESCRIPTION      = "meta_description";
     protected static final String META_KEYWORDS         = "meta_keywords";
+    protected static final String TMS_ID                = "tms_id";
     protected static final String ROOT_PATH             = "$.";
     protected static final String META_DESCRIPTION_PATH = ROOT_PATH + META_DESCRIPTION;
     protected static final String META_KEYWORDS_PATH    = ROOT_PATH + META_KEYWORDS;
@@ -32,6 +33,7 @@ public class PagesIntegrationTest
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now;
+    private String tmsId = "Tms Id ";
 
     @Before
     public void checkRequiredProperties()
@@ -64,9 +66,33 @@ public class PagesIntegrationTest
         assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
 
         List<PageDetail> detailList = pageDetails.getDetailList();
-        assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotNull().hasSize(1);
+        assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").isNotNull().hasSize(1);
 
         assertPageDetail(detailList.get(0));
+    }
+
+    @Test
+    public void shouldListPagesByTmsId() throws Exception
+    {
+
+        // create clone with tmsId
+        hubspotClient.updatePage(getCloneAndChangeIt());
+
+        PageDetails pageDetails = hubspotClient.listPagesByTmsId(tmsId);
+
+        assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+
+        List<PageDetail> detailList = pageDetails.getDetailList();
+        assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotNull().isNotEmpty();
+
+        assertPageDetail(detailList.get(0));
+    }
+
+    private String getCloneAndChangeIt()
+    {
+        String cloneFromResponse = hubspotClient.clonePage(PAGE_ID);
+        return change(cloneFromResponse);
     }
 
     private void assertPageDetail(final PageDetail pageDetail)
@@ -89,8 +115,8 @@ public class PagesIntegrationTest
     public void shouldUpdatePage() throws Exception
     {
         // prepare clone for update
-        String cloneFromResponse = hubspotClient.clonePage(PAGE_ID);
-        String changeBeforeUpdate = change(cloneFromResponse);
+        String changeBeforeUpdate = getCloneAndChangeIt();
+
         String updatedPage = hubspotClient.updatePage(changeBeforeUpdate);
 
         assertUpdatedMessage(updatedPage);
@@ -102,6 +128,7 @@ public class PagesIntegrationTest
         JsonObject obj = parser.parse(pageToChange).getAsJsonObject();
         obj.addProperty(META_DESCRIPTION, updatedMetaDescription);
         obj.addProperty(META_KEYWORDS, updatedMetaKeywords);
+        obj.addProperty(TMS_ID, tmsId);
         return obj.toString();
     }
 

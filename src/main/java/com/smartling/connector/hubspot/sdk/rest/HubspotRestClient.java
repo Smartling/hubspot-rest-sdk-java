@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.function.BiFunction;
 
 import static java.time.LocalDateTime.now;
 
@@ -55,42 +56,47 @@ public class HubspotRestClient implements HubspotClient
     @Override
     public String getPageById(long pageId)
     {
-        checkAccessToken();
-
-        return PAGES_RAW_API.page(pageId, accessToken);
+        return executeWithToken(PAGES_RAW_API::page, pageId);
     }
 
     @Override
     public String clonePage(final long originalPageId)
     {
-        checkAccessToken();
-
-        return PAGES_RAW_API.clone(originalPageId, accessToken);
+        return executeWithToken(PAGES_RAW_API::clone, originalPageId);
     }
 
     @Override
     public String updatePage(final String page)
     {
         long pageId = readPageId(page);
-        checkAccessToken();
 
-        return PAGES_RAW_API.update(pageId, page, accessToken);
+        return executeWithToken(PAGES_RAW_API::update, pageId, page);
     }
 
     @Override
     public PageDetails listPages(final int limit, final int offset)
     {
-        checkAccessToken();
-
-        return PAGES_ENTITY_API.pages(limit, offset, accessToken);
+        return executeWithToken(PAGES_ENTITY_API::pages, limit, offset);
     }
 
     @Override
     public PageDetails listPagesByTmsId(final String tmsId)
     {
+        return executeWithToken(PAGES_ENTITY_API::findByTmsId, tmsId);
+    }
+
+    private <T, R> R executeWithToken(BiFunction<T, String, R> apiCall, T firstArgument)
+    {
         checkAccessToken();
 
-        return PAGES_ENTITY_API.findByTmsId(tmsId, accessToken);
+        return apiCall.apply(firstArgument, accessToken);
+    }
+
+    private <T, U, R> R executeWithToken(TripleFunction<T, U, String, R> apiCall, T firstArgument, U secondArgument)
+    {
+        checkAccessToken();
+
+        return apiCall.apply(firstArgument, secondArgument, accessToken);
     }
 
     private long readPageId(final String page)
@@ -131,12 +137,17 @@ public class HubspotRestClient implements HubspotClient
 
     private static class DateSerializer implements JsonDeserializer<Date>
     {
-
         @Override
         public Date deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException
         {
             return new Date(json.getAsLong());
         }
+    }
+
+    @FunctionalInterface
+    public interface TripleFunction<T, U, V, R>
+    {
+        R apply(T t, U u, V v);
     }
 
 }

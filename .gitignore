@@ -16,3 +16,6 @@ hs_err_pid*
 
 #Gradle cache
 .gradle
+
+#OS
+.DS_Store

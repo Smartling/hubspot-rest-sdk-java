@@ -2,7 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest.api;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RefreshData
+public class RefreshTokenData
 {
     @SerializedName("access_token")
     private String accessToken;

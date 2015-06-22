@@ -8,13 +8,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PageDetails;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
-import com.smartling.connector.hubspot.sdk.rest.api.RefreshData;
+import com.smartling.connector.hubspot.sdk.rest.api.RefreshTokenData;
 import feign.Feign;
+import feign.FeignException;
 import feign.gson.GsonDecoder;
 
 import java.lang.reflect.Type;
@@ -27,12 +30,37 @@ import static java.time.LocalDateTime.now;
 
 public class HubspotRestClient implements HubspotClient
 {
-    protected static final String         API_HOST         = "https://api.hubapi.com";
-    protected static final PagesRawApi    PAGES_RAW_API    = Feign.builder()
-                                                                  .target(PagesRawApi.class, API_HOST);
-    protected static final PagesEntityApi PAGES_ENTITY_API = Feign.builder()
-                                                                  .decoder(new GsonDecoder(configuredGson()))
-                                                                  .target(PagesEntityApi.class, API_HOST);
+    private static final String API_HOST = "https://api.hubapi.com";
+
+    private final PagesRawApi      pagesRawApi;
+    private final PagesEntityApi   pagesEntityApi;
+    private final AuthorizationApi authorizationApi;
+    private final String           refreshToken;
+    private final String           clientId;
+
+    private AccessToken accessToken;
+
+    public HubspotRestClient(final String clientId, final String refreshToken)
+    {
+        this(API_HOST, clientId, refreshToken);
+    }
+
+    public HubspotRestClient(final String apiUrl, final String clientId, final String refreshToken)
+    {
+        this.clientId = clientId;
+        this.refreshToken = refreshToken;
+
+        pagesRawApi = Feign.builder()
+                           .target(PagesRawApi.class, apiUrl);
+
+        pagesEntityApi = Feign.builder()
+                              .decoder(new GsonDecoder(configuredGson()))
+                              .target(PagesEntityApi.class, apiUrl);
+
+        authorizationApi = Feign.builder()
+                                .decoder(new GsonDecoder())
+                                .target(AuthorizationApi.class, apiUrl);
+    }
 
     private static Gson configuredGson()
     {
@@ -41,98 +69,102 @@ public class HubspotRestClient implements HubspotClient
                 .create();
     }
 
-    private final String        refreshToken;
-    private final String        clientId;
-    private       String        accessToken;
-    private       Duration      duration;
-    private       LocalDateTime refreshTokenDateTime;
-
-    public HubspotRestClient(final String refreshToken, final String clientId)
+    @Override
+    public String getPageById(long pageId) throws HubspotApiException
     {
-        this.refreshToken = refreshToken;
-        this.clientId = clientId;
+        return executeWithToken(pagesRawApi::page, pageId);
     }
 
     @Override
-    public String getPageById(long pageId)
+    public String clonePage(final long originalPageId) throws HubspotApiException
     {
-        return executeWithToken(PAGES_RAW_API::page, pageId);
+        return executeWithToken(pagesRawApi::clone, originalPageId);
     }
 
     @Override
-    public String clonePage(final long originalPageId)
-    {
-        return executeWithToken(PAGES_RAW_API::clone, originalPageId);
-    }
-
-    @Override
-    public String updatePage(final String page)
+    public String updatePage(final String page) throws HubspotApiException
     {
         long pageId = readPageId(page);
 
-        return executeWithToken(PAGES_RAW_API::update, pageId, page);
+        return executeWithToken(pagesRawApi::update, pageId, page);
     }
 
     @Override
-    public PageDetails listPages(final int limit, final int offset)
+    public PageDetails listPages(final int offset, final int limit) throws HubspotApiException
     {
-        return executeWithToken(PAGES_ENTITY_API::pages, limit, offset);
+        return executeWithToken(pagesEntityApi::pages, limit, offset);
     }
 
     @Override
-    public PageDetails listPagesByTmsId(final String tmsId)
+    public PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException
     {
-        return executeWithToken(PAGES_ENTITY_API::findByTmsId, tmsId);
+        return executeWithToken(pagesEntityApi::findByTmsId, tmsId);
     }
 
-    private <T, R> R executeWithToken(BiFunction<T, String, R> apiCall, T firstArgument)
+    private <T, R> R executeWithToken(BiFunction<T, String, R> apiCall, T firstArgument) throws HubspotApiException
     {
         checkAccessToken();
 
-        return apiCall.apply(firstArgument, accessToken);
-    }
-
-    private <T, U, R> R executeWithToken(TripleFunction<T, U, String, R> apiCall, T firstArgument, U secondArgument)
-    {
-        checkAccessToken();
-
-        return apiCall.apply(firstArgument, secondArgument, accessToken);
-    }
-
-    private long readPageId(final String page)
-    {
-        JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(page).getAsJsonObject();
-        return obj.get("id").getAsLong();
-    }
-
-    private void checkAccessToken()
-    {
-        if (accessToken == null || tokenExpired())
+        try
         {
-            authorize();
+            return apiCall.apply(firstArgument, accessToken.getToken());
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Call to Hubspot API failed!", e);
         }
     }
 
-    private boolean tokenExpired()
+    private <T, U, R> R executeWithToken(TripleFunction<T, U, String, R> apiCall, T firstArgument, U secondArgument) throws HubspotApiException
     {
-        return refreshTokenDateTime.plus(duration).isBefore(now());
+        checkAccessToken();
+
+        try
+        {
+            return apiCall.apply(firstArgument, secondArgument, accessToken.getToken());
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Call to Hubspot API failed!", e);
+        }
     }
 
-    public RefreshData authorize()
+    private long readPageId(final String page) throws HubspotApiException
     {
-        AuthorizationApi authorizationApi = Feign.builder().decoder(new GsonDecoder()).target(AuthorizationApi.class, API_HOST);
-        RefreshData target = authorizationApi.newToken(clientId, refreshToken);
-        getTokenInfo(target);
+        JsonParser parser = new JsonParser();
 
-        return target;
+        try
+        {
+            JsonObject obj = parser.parse(page).getAsJsonObject();
+            return obj.get("id").getAsLong();
+        }
+        catch (JsonSyntaxException e)
+        {
+            throw new HubspotApiException("JSON syntax of page snippet is wrong!", e);
+        }
     }
 
-    private void getTokenInfo(final RefreshData target)
+    private void checkAccessToken() throws HubspotApiException
     {
-        refreshTokenDateTime = LocalDateTime.now();
-        duration = Duration.ofSeconds(target.getExpiresIn());
-        accessToken = target.getAccessToken();
+        if (accessToken == null || accessToken.tokenExpired())
+        {
+            accessToken = new AccessToken(refreshToken());
+        }
+    }
+
+    @Override
+    public RefreshTokenData refreshToken() throws HubspotApiException
+    {
+
+        try
+        {
+            return authorizationApi.newToken(clientId, refreshToken);
+
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Authorization to Hubspot failed!", e);
+        }
     }
 
     private static class DateSerializer implements JsonDeserializer<Date>
@@ -141,6 +173,31 @@ public class HubspotRestClient implements HubspotClient
         public Date deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException
         {
             return new Date(json.getAsLong());
+        }
+    }
+
+    private static class AccessToken
+    {
+        private String        accessToken;
+        private Duration      duration;
+        private LocalDateTime refreshTokenDateTime;
+
+        public AccessToken(RefreshTokenData refreshTokenData)
+        {
+            refreshTokenDateTime = LocalDateTime.now();
+            int expiresIn = refreshTokenData.getExpiresIn();
+            duration = Duration.ofSeconds(expiresIn > 5 ? expiresIn - 5 : expiresIn);
+            accessToken = refreshTokenData.getAccessToken();
+        }
+
+        public boolean tokenExpired()
+        {
+            return refreshTokenDateTime.plus(duration).isBefore(now());
+        }
+
+        public String getToken()
+        {
+            return accessToken;
         }
     }
 

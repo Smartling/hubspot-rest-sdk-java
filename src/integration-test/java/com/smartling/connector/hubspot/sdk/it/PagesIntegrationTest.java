@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.rest.api.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.api.PageDetails;
 import org.junit.Before;
@@ -20,14 +21,14 @@ import static org.hamcrest.Matchers.not;
 
 public class PagesIntegrationTest
 {
-    protected static final long   PAGE_ID               = 2976789349L;
-    protected static final String META_DESCRIPTION      = "meta_description";
-    protected static final String META_KEYWORDS         = "meta_keywords";
-    protected static final String TMS_ID                = "tms_id";
-    protected static final String ROOT_PATH             = "$.";
-    protected static final String META_DESCRIPTION_PATH = ROOT_PATH + META_DESCRIPTION;
-    protected static final String META_KEYWORDS_PATH    = ROOT_PATH + META_KEYWORDS;
-    protected static final String ID_PATH               = "$.id";
+    private static final long   PAGE_ID               = 2976789349L;
+    private static final String META_DESCRIPTION      = "meta_description";
+    private static final String META_KEYWORDS         = "meta_keywords";
+    private static final String TMS_ID                = "tms_id";
+    private static final String ROOT_PATH             = "$.";
+    private static final String META_DESCRIPTION_PATH = ROOT_PATH + META_DESCRIPTION;
+    private static final String META_KEYWORDS_PATH    = ROOT_PATH + META_KEYWORDS;
+    private static final String ID_PATH               = "$.id";
 
     private HubspotClient hubspotClient;
     private LocalDateTime now                    = LocalDateTime.now();
@@ -44,7 +45,7 @@ public class PagesIntegrationTest
         assertThat(refreshToken).overridingErrorMessage("Access token for Hubspot API is missing!").isNotEmpty();
         assertThat(clientId).overridingErrorMessage("Client id for Hubspot application is missing!").isNotEmpty();
 
-        hubspotClient = new HubspotRestClient(refreshToken, clientId);
+        hubspotClient = new HubspotRestClient(clientId, refreshToken);
     }
 
     @Test
@@ -61,7 +62,7 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPages() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(1, 0);
+        PageDetails pageDetails = hubspotClient.listPages(0, 1);
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
 
@@ -89,7 +90,14 @@ public class PagesIntegrationTest
         assertPageDetail(detailList.get(0));
     }
 
-    private String getCloneAndChangeIt()
+    @Test(expected = HubspotApiException.class)
+    public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
+    {
+        HubspotClient hubspotClient = new HubspotRestClient("wrong-client-id", "wrong-token");
+        hubspotClient.listPages(0, 1);
+    }
+
+    private String getCloneAndChangeIt() throws HubspotApiException
     {
         String cloneFromResponse = hubspotClient.clonePage(PAGE_ID);
         return change(cloneFromResponse);

@@ -1,7 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
 import com.google.gson.annotations.SerializedName;
-import com.smartling.connector.hubspot.sdk.rest.api.PageDetail;
 
 import java.util.ArrayList;
 import java.util.List;

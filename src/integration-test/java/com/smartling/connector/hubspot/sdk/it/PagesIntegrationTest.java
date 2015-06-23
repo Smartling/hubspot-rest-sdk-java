@@ -6,7 +6,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
-import com.smartling.connector.hubspot.sdk.rest.api.PageDetail;
+import com.smartling.connector.hubspot.sdk.PageDetail;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
+import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import feign.Body;
 import feign.Param;
 import feign.RequestLine;

@@ -2,11 +2,11 @@ package com.smartling.connector.hubspot.sdk.it;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.smartling.connector.hubspot.sdk.HubspotClient;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotClient;
+import com.smartling.connector.hubspot.sdk.PageDetails;
+import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
 import com.smartling.connector.hubspot.sdk.rest.api.PageDetail;
-import com.smartling.connector.hubspot.sdk.rest.api.PageDetails;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class PagesIntegrationTest
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now;
-    private String tmsId = "Tms Id ";
+    private String        tmsId                  = "Tms Id ";
 
     @Before
     public void checkRequiredProperties()
@@ -69,7 +69,7 @@ public class PagesIntegrationTest
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").isNotNull().hasSize(1);
 
-        assertPageDetail(detailList.get(0));
+        assertPageDetailIsNotEmpty(detailList.get(0));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class PagesIntegrationTest
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotNull().isNotEmpty();
 
-        assertPageDetail(detailList.get(0));
+        assertPageDetailIsNotEmpty(detailList.get(0));
     }
 
     @Test(expected = HubspotApiException.class)
@@ -103,7 +103,7 @@ public class PagesIntegrationTest
         return change(cloneFromResponse);
     }
 
-    private void assertPageDetail(final PageDetail pageDetail)
+    private void assertPageDetailIsNotEmpty(final PageDetail pageDetail)
     {
         assertThat(pageDetail.getHtmlTitle()).isNotEmpty();
         assertThat(pageDetail.getName()).isNotEmpty();

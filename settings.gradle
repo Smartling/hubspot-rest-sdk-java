@@ -1,0 +1,4 @@
+/*
+ * Project build settings.
+*/
+rootProject.name = 'hubspot-rest-sdk'

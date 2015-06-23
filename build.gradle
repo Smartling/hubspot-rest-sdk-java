@@ -13,6 +13,7 @@ apply plugin: 'java'
 apply plugin: 'org.unbroken-dome.test-sets'
 apply plugin: 'maven-publish'
 apply plugin: 'maven-publish-auth'
+apply plugin: 'jacoco'
 
 group = 'com.smartling.connector'
 description = 'Hubspot SDK'

@@ -137,20 +137,7 @@ public class HubspotRestClientTest
     }
 
     @Test
-    public void shouldRefreshTokenIfItIsExpired() throws HubspotApiException
-    {
-        givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
-
-        stubFor(post(urlStartingWith("/auth")).willReturn(aJsonResponse(getExpiredTokenData())));
-
-        hubspotClient.listPages(0, 1);
-        hubspotClient.listPages(0, 1);
-
-        verify(2, postRequestedFor(urlStartingWith("/auth")));
-    }
-
-    @Test
-    public void shouldUseSameTokenForMultipleCalls() throws HubspotApiException
+    public void shouldNotUseSameTokenForMultipleCalls() throws HubspotApiException
     {
         givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
 
@@ -158,7 +145,7 @@ public class HubspotRestClientTest
         hubspotClient.listPagesByTmsId("someId");
         hubspotClient.listPagesByTmsId("someId");
 
-        verify(1, postRequestedFor(urlStartingWith("/auth")));
+        verify(2, postRequestedFor(urlStartingWith("/auth")));
     }
 
     @Test

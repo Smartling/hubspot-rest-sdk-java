@@ -103,7 +103,7 @@ public class HubspotRestClient implements HubspotClient
 
     private <T, R> R executeWithToken(BiFunction<T, String, R> apiCall, T firstArgument) throws HubspotApiException
     {
-        checkAccessToken();
+        refreshAccessToken();
 
         try
         {
@@ -117,7 +117,7 @@ public class HubspotRestClient implements HubspotClient
 
     private <T, U, R> R executeWithToken(TripleFunction<T, U, String, R> apiCall, T firstArgument, U secondArgument) throws HubspotApiException
     {
-        checkAccessToken();
+        refreshAccessToken();
 
         try
         {
@@ -144,12 +144,9 @@ public class HubspotRestClient implements HubspotClient
         }
     }
 
-    private void checkAccessToken() throws HubspotApiException
+    private void refreshAccessToken() throws HubspotApiException
     {
-        if (accessToken == null || accessToken.tokenExpired())
-        {
-            accessToken = new AccessToken(refreshToken());
-        }
+        accessToken = new AccessToken(refreshToken());
     }
 
     @Override

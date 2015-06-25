@@ -59,7 +59,9 @@ publishing {
     repositories {
         maven {
             name 'smartling.repository.target.snapshots'
-            url 'https://artifactory.smartling.net/artifactory/local-snapshots'
+            url (project.version.contans('SNAPSHOT')
+                    ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
+                    : 'https://artifactory.smartling.net/artifactory/local-releases')
         }
     }
 }

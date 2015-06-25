@@ -20,6 +20,7 @@ description = 'Hubspot SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+version '0.5'
 
 repositories {
     mavenCentral()
@@ -51,7 +52,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId 'hubspot-sdk'
-            version '1.0.0-SNAPSHOT'
             from components.java
         }
     }

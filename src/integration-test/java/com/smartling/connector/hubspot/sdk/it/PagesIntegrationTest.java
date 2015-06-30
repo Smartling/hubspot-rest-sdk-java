@@ -1,12 +1,15 @@
 package com.smartling.connector.hubspot.sdk.it;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.smartling.connector.hubspot.sdk.DeletePageInfo;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,6 +38,7 @@ public class PagesIntegrationTest
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now;
     private String        tmsId                  = "Tms Id ";
+    private List<Long>    pagesToDelete          = Lists.newArrayList();
 
     @Before
     public void checkRequiredProperties()
@@ -46,6 +50,14 @@ public class PagesIntegrationTest
         assertThat(clientId).overridingErrorMessage("Client id for Hubspot application is missing!").isNotEmpty();
 
         hubspotClient = new HubspotRestClient(clientId, refreshToken);
+    }
+
+    @After
+    public void deleteTestPages() throws HubspotApiException
+    {
+        for (Long pageId : pagesToDelete) {
+            hubspotClient.delete(pageId);
+        }
     }
 
     @Test
@@ -75,7 +87,6 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPagesByTmsId() throws Exception
     {
-
         // create clone with tmsId
         hubspotClient.updatePage(getCloneAndChangeIt());
 
@@ -100,6 +111,7 @@ public class PagesIntegrationTest
     private String getCloneAndChangeIt() throws HubspotApiException
     {
         String cloneFromResponse = hubspotClient.clonePage(PAGE_ID);
+        pagesToDelete.add(getId(cloneFromResponse));
         return change(cloneFromResponse);
     }
 
@@ -115,6 +127,7 @@ public class PagesIntegrationTest
     public void shouldClonePage() throws Exception
     {
         String cloneFromResponse = hubspotClient.clonePage(PAGE_ID);
+        pagesToDelete.add(getId(cloneFromResponse));
 
         assertClonedPage(cloneFromResponse);
     }
@@ -128,6 +141,26 @@ public class PagesIntegrationTest
         String updatedPage = hubspotClient.updatePage(changeBeforeUpdate);
 
         assertUpdatedMessage(updatedPage);
+    }
+
+    @Test
+    public void shouldDeletePage() throws Exception
+    {
+        // prepare clone for update
+        String changeBeforeUpdate = getCloneAndChangeIt();
+        long id = getId(changeBeforeUpdate);
+
+        DeletePageInfo deletePageInfo = hubspotClient.delete(id);
+
+        assertThat(deletePageInfo.isSucceeded()).isTrue();
+    }
+
+    private long getId(final String pageAsJson)
+    {
+        JsonParser parser = new JsonParser();
+        JsonObject obj = parser.parse(pageAsJson).getAsJsonObject();
+
+        return obj.get("id").getAsLong();
     }
 
     private String change(final String pageToChange)

@@ -13,4 +13,6 @@ public interface HubspotClient
     PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
 
     RefreshTokenData refreshToken() throws HubspotApiException;
+
+    DeletePageInfo delete(long pageId) throws HubspotApiException;
 }

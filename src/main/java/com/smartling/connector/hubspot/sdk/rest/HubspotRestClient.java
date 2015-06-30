@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.smartling.connector.hubspot.sdk.DeletePageInfo;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetails;
@@ -162,6 +163,12 @@ public class HubspotRestClient implements HubspotClient
         {
             throw new HubspotApiException("Authorization to Hubspot failed!", e);
         }
+    }
+
+    @Override
+    public DeletePageInfo delete(final long pageId) throws HubspotApiException
+    {
+        return executeWithToken(pagesEntityApi::delete, pageId);
     }
 
     private static class DateSerializer implements JsonDeserializer<Date>

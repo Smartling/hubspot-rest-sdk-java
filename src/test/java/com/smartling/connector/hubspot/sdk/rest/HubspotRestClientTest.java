@@ -111,6 +111,18 @@ public class HubspotRestClientTest
     }
 
     @Test
+    public void shouldCallClonePageUrlForEntityApi() throws HubspotApiException
+    {
+        givenThat(post(path("/content/api/v2/pages/" + PAGE_ID + "/clone")).willReturn(aJsonResponse(pageDetail())));
+
+        hubspotClient.clonePageAsDetail(PAGE_ID);
+
+        verify(postRequestedFor(urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/clone"))
+                        .withQueryParam("access_token", equalTo("access-token"))
+        );
+    }
+
+    @Test
     public void shouldCallUpdatePageUrl() throws HubspotApiException
     {
         givenThat(put(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse("anyResponse")));
@@ -241,6 +253,16 @@ public class HubspotRestClientTest
         return "{\n"
                 + "  \"succeeded\": true,\n"
                 + "  \"message\": \"Action succeeded\"\n"
+                + "}";
+    }
+
+    private String pageDetail()
+    {
+        return "{\n"
+                + "  \"id\": 127,\n"
+                + "  \"html_title\": \"Page 1 title\",\n"
+                + "  \"name\": \"page1\",\n"
+                + "  \"updated\": 1434452129000\n"
                 + "}";
     }
 

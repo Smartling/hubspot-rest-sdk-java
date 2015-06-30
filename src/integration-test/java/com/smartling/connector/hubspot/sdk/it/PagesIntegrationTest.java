@@ -78,8 +78,14 @@ public class PagesIntegrationTest
         PageDetail pageDetailById = hubspotClient.getPageDetailById(PAGE_ID);
 
         assertThat(pageDetailById.getId()).isEqualTo(PAGE_ID);
-        assertThat(pageDetailById.getHtmlTitle()).isEqualTo("Page title for translation");
-        assertThat(pageDetailById.getName()).isEqualTo("Base Page for intergation tests");
+        assertPageDetail(pageDetailById);
+    }
+
+    private void assertPageDetail(final PageDetail pageDetail)
+    {
+
+        assertThat(pageDetail.getHtmlTitle()).isEqualTo("Page title for translation");
+        assertThat(pageDetail.getName()).isEqualTo("Base Page for intergation tests");
     }
 
     @Test
@@ -141,6 +147,15 @@ public class PagesIntegrationTest
         pagesToDelete.add(getId(cloneFromResponse));
 
         assertClonedPage(cloneFromResponse);
+    }
+
+    @Test
+    public void shouldClonePageWithEntityApi() throws Exception
+    {
+        PageDetail detail = hubspotClient.clonePageAsDetail(PAGE_ID);
+        pagesToDelete.add(detail.getId());
+
+        assertPageDetail(detail);
     }
 
     @Test

@@ -19,4 +19,7 @@ public interface PagesEntityApi
 
     @RequestLine("GET /content/api/v2/pages/{page_id}?access_token={access_token}")
     PageDetail pageDetail(@Param("page_id") long pageId, @Param("access_token") String accessToken);
+
+    @RequestLine("POST /content/api/v2/pages/{page_id}/clone?access_token={access_token}")
+    PageDetail clone(@Param("page_id") long pageId, @Param("access_token") String accessToken);
 }

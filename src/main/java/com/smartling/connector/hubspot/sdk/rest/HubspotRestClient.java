@@ -90,6 +90,12 @@ public class HubspotRestClient implements HubspotClient
     }
 
     @Override
+    public PageDetail clonePageAsDetail(final long originalPageId) throws HubspotApiException
+    {
+        return executeWithToken(pagesEntityApi::clone, originalPageId);
+    }
+
+    @Override
     public String updatePage(final String page) throws HubspotApiException
     {
         long pageId = readPageId(page);

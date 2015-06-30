@@ -55,7 +55,8 @@ public class PagesIntegrationTest
     @After
     public void deleteTestPages() throws HubspotApiException
     {
-        for (Long pageId : pagesToDelete) {
+        for (Long pageId : pagesToDelete)
+        {
             hubspotClient.delete(pageId);
         }
     }
@@ -69,6 +70,16 @@ public class PagesIntegrationTest
                         //don't know where to set meta keywords
                 .assertThat(META_KEYWORDS_PATH, isEmptyOrNullString(), "Meta keywords should not be filled")
                 .assertThat("$.id", equalTo(PAGE_ID), "Page id should have particular value");
+    }
+
+    @Test
+    public void shouldReturnPageDetail() throws Exception
+    {
+        PageDetail pageDetailById = hubspotClient.getPageDetailById(PAGE_ID);
+
+        assertThat(pageDetailById.getId()).isEqualTo(PAGE_ID);
+        assertThat(pageDetailById.getHtmlTitle()).isEqualTo("Page title for translation");
+        assertThat(pageDetailById.getName()).isEqualTo("Base Page for intergation tests");
     }
 
     @Test

@@ -12,6 +12,7 @@ import com.google.gson.JsonSyntaxException;
 import com.smartling.connector.hubspot.sdk.DeletePageInfo;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
+import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
@@ -74,6 +75,12 @@ public class HubspotRestClient implements HubspotClient
     public String getPageById(long pageId) throws HubspotApiException
     {
         return executeWithToken(pagesRawApi::page, pageId);
+    }
+
+    @Override
+    public PageDetail getPageDetailById(final long pageId) throws HubspotApiException
+    {
+        return executeWithToken(pagesEntityApi::pageDetail, pageId);
     }
 
     @Override

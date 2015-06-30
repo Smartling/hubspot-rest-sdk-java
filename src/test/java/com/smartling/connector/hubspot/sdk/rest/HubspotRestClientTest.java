@@ -18,6 +18,8 @@ import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
@@ -63,6 +65,34 @@ public class HubspotRestClientTest
         hubspotClient.getPageById(PAGE_ID);
 
         verify(getRequestedFor(urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
+                        .withQueryParam("access_token", equalTo("access-token"))
+        );
+
+    }
+
+    @Test
+    public void shouldCallGetPageUrlForPageDetail() throws HubspotApiException
+    {
+
+        givenThat(get(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse("anyResponse")));
+
+        hubspotClient.getPageDetailById(PAGE_ID);
+
+        verify(getRequestedFor(urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
+                        .withQueryParam("access_token", equalTo("access-token"))
+        );
+
+    }
+
+    @Test
+    public void shouldCallDeletePageUrl() throws HubspotApiException
+    {
+
+        givenThat(delete(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse(deleteInfo())));
+
+        hubspotClient.delete(PAGE_ID);
+
+        verify(deleteRequestedFor(urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
                         .withQueryParam("access_token", equalTo("access-token"))
         );
 
@@ -203,6 +233,14 @@ public class HubspotRestClientTest
                 + "  \"performable_guid\": \"\",\n"
                 + "  \"include_default_custom_css\": false,\n"
                 + "  \"id\": 127"
+                + "}";
+    }
+
+    private String deleteInfo()
+    {
+        return "{\n"
+                + "  \"succeeded\": true,\n"
+                + "  \"message\": \"Action succeeded\"\n"
                 + "}";
     }
 

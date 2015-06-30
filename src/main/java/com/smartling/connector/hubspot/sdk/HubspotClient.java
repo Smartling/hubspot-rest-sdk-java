@@ -4,6 +4,9 @@ public interface HubspotClient
 {
     String getPageById(long pageId) throws HubspotApiException;
 
+
+    PageDetail getPageDetailById(long pageId) throws HubspotApiException;
+
     String clonePage(long originalPageId) throws HubspotApiException;
 
     String updatePage(String page) throws HubspotApiException;

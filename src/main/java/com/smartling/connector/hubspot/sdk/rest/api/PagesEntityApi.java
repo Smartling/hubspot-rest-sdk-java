@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
 import com.smartling.connector.hubspot.sdk.DeletePageInfo;
+import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import feign.Param;
 import feign.RequestLine;
@@ -15,4 +16,7 @@ public interface PagesEntityApi
 
     @RequestLine("DELETE /content/api/v2/pages/{page_id}?access_token={access_token}")
     DeletePageInfo delete(@Param("page_id") long pageId, @Param("access_token") String accessToken);
+
+    @RequestLine("GET /content/api/v2/pages/{page_id}?access_token={access_token}")
+    PageDetail pageDetail(@Param("page_id") long pageId, @Param("access_token") String accessToken);
 }

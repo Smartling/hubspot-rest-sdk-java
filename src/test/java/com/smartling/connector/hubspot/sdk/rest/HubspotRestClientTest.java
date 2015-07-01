@@ -74,7 +74,7 @@ public class HubspotRestClientTest
     public void shouldCallGetPageUrlForPageDetail() throws HubspotApiException
     {
 
-        givenThat(get(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse("anyResponse")));
+        givenThat(get(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse(pageDetail())));
 
         hubspotClient.getPageDetailById(PAGE_ID);
 

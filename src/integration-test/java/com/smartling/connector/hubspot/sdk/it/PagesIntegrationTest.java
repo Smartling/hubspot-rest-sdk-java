@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.it;
 
 import com.google.common.collect.Lists;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.DeletePageInfo;
@@ -53,11 +54,18 @@ public class PagesIntegrationTest
     }
 
     @After
-    public void deleteTestPages() throws HubspotApiException
+    public void deleteTestPages()
     {
         for (Long pageId : pagesToDelete)
         {
-            hubspotClient.delete(pageId);
+            try
+            {
+                hubspotClient.delete(pageId);
+            }
+            catch (HubspotApiException e)
+            {
+                // do nothing here
+            }
         }
     }
 
@@ -183,10 +191,21 @@ public class PagesIntegrationTest
 
     private long getId(final String pageAsJson)
     {
-        JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(pageAsJson).getAsJsonObject();
+        assertThat(pageAsJson).isNotNull().isNotEmpty();
 
-        return obj.get("id").getAsLong();
+        JsonParser parser = new JsonParser();
+        JsonElement pageAsJsonElement = parser.parse(pageAsJson);
+        assertThat(pageAsJsonElement.isJsonObject()).isTrue();
+
+        JsonObject pageAsJsonObject = pageAsJsonElement.getAsJsonObject();
+        assertThat(pageAsJsonObject.has("id")).isTrue();
+
+        JsonElement idJsonElement = pageAsJsonObject.get("id");
+        assertThat(idJsonElement.isJsonPrimitive()).isTrue();
+        assertThat(idJsonElement.getAsJsonPrimitive().isNumber()).isTrue();
+
+
+        return idJsonElement.getAsLong();
     }
 
     private String change(final String pageToChange)

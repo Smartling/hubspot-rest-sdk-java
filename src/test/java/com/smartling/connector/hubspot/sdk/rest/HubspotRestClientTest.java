@@ -111,6 +111,24 @@ public class HubspotRestClientTest
     }
 
     @Test
+    public void shouldThrowNativeExceptionForBadResponse() throws HubspotApiException
+    {
+        givenThat(post(path("/content/api/v2/pages/" + PAGE_ID + "/clone")).willReturn(aJsonResponse("any").withStatus(400)));
+        expectedException.expect(HubspotApiException.class);
+
+        hubspotClient.clonePageAsDetail(PAGE_ID);
+    }
+
+    @Test
+    public void shouldThrowNativeExceptionForBrokenJson() throws HubspotApiException
+    {
+        givenThat(post(path("/content/api/v2/pages/" + PAGE_ID + "/clone")).willReturn(aJsonResponse("not JSON")));
+        expectedException.expect(HubspotApiException.class);
+
+        hubspotClient.clonePageAsDetail(PAGE_ID);
+    }
+
+    @Test
     public void shouldCallClonePageUrlForEntityApi() throws HubspotApiException
     {
         givenThat(post(path("/content/api/v2/pages/" + PAGE_ID + "/clone")).willReturn(aJsonResponse(pageDetail())));

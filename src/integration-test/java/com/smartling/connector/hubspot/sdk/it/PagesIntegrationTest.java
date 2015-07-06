@@ -113,7 +113,9 @@ public class PagesIntegrationTest
     public void shouldListPagesByTmsId() throws Exception
     {
         // create clone with tmsId
-        hubspotClient.updatePage(getCloneAndChangeIt());
+        String clonedPage = getCloneAndChangeIt();
+        long clonedPageId = getId(clonedPage);
+        hubspotClient.updatePage(clonedPage, clonedPageId);
 
         PageDetails pageDetails = hubspotClient.listPagesByTmsId(tmsId);
 
@@ -171,8 +173,9 @@ public class PagesIntegrationTest
     {
         // prepare clone for update
         String changeBeforeUpdate = getCloneAndChangeIt();
+        long clonedPageId = getId(changeBeforeUpdate);
 
-        String updatedPage = hubspotClient.updatePage(changeBeforeUpdate);
+        String updatedPage = hubspotClient.updatePage(changeBeforeUpdate, clonedPageId);
 
         assertUpdatedMessage(updatedPage);
     }
@@ -203,7 +206,6 @@ public class PagesIntegrationTest
         JsonElement idJsonElement = pageAsJsonObject.get("id");
         assertThat(idJsonElement.isJsonPrimitive()).isTrue();
         assertThat(idJsonElement.getAsJsonPrimitive().isNumber()).isTrue();
-
 
         return idJsonElement.getAsLong();
     }

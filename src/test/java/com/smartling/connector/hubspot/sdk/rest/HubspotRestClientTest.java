@@ -145,7 +145,7 @@ public class HubspotRestClientTest
     {
         givenThat(put(path("/content/api/v2/pages/" + PAGE_ID)).willReturn(aJsonResponse("anyResponse")));
 
-        hubspotClient.updatePage(pageSnippet());
+        hubspotClient.updatePage(pageSnippet(), PAGE_ID);
 
         verify(putRequestedFor(urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
                         .withQueryParam("access_token", equalTo("access-token"))
@@ -222,16 +222,6 @@ public class HubspotRestClientTest
         assertThat(detailList).isNotEmpty();
 
         assertPageDetail(detailList.get(0));
-    }
-
-    @Test
-    public void shouldThrowExceptionIfUpdatedPageIsMalformed() throws Exception
-    {
-
-        expectedException.expect(HubspotApiException.class);
-        expectedException.expectMessage("JSON syntax of page snippet is wrong!");
-
-        hubspotClient.updatePage("{{}");
     }
 
     private String getExpiredTokenData()

@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import com.smartling.connector.hubspot.sdk.DeletePageInfo;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
@@ -96,11 +93,9 @@ public class HubspotRestClient implements HubspotClient
     }
 
     @Override
-    public String updatePage(final String page) throws HubspotApiException
+    public String updatePage(final String page, final long updatePageId) throws HubspotApiException
     {
-        long pageId = readPageId(page);
-
-        return executeWithToken(pagesRawApi::update, pageId, page);
+        return executeWithToken(pagesRawApi::update, updatePageId, page);
     }
 
     @Override
@@ -140,21 +135,6 @@ public class HubspotRestClient implements HubspotClient
         catch (FeignException e)
         {
             throw new HubspotApiException("Call to Hubspot API failed!", e);
-        }
-    }
-
-    private long readPageId(final String page) throws HubspotApiException
-    {
-        JsonParser parser = new JsonParser();
-
-        try
-        {
-            JsonObject obj = parser.parse(page).getAsJsonObject();
-            return obj.get("id").getAsLong();
-        }
-        catch (JsonSyntaxException e)
-        {
-            throw new HubspotApiException("JSON syntax of page snippet is wrong!", e);
         }
     }
 

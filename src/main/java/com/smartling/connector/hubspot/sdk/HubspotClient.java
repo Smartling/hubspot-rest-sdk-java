@@ -10,7 +10,7 @@ public interface HubspotClient
 
     PageDetail clonePageAsDetail(long originalPageId) throws HubspotApiException;
 
-    String updatePage(String page) throws HubspotApiException;
+    String updatePage(final String page, final long updatePageId) throws HubspotApiException;
 
     PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
 

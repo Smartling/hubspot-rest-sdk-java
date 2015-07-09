@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+
+import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
@@ -48,7 +50,7 @@ public class HubspotRestClientTest
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private HubspotClient hubspotClient = new HubspotRestClient(BASE_URL, CLIENT_ID, REFRESH_TOKEN);
+    private HubspotClient hubspotClient = new HubspotRestClient(Configuration.build(BASE_URL, CLIENT_ID, REFRESH_TOKEN));
 
     @Before
     public void setUpMocks()
@@ -186,7 +188,7 @@ public class HubspotRestClientTest
     {
         givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
 
-        hubspotClient = new HubspotRestClient(BASE_URL, CLIENT_ID, REFRESH_TOKEN);
+        hubspotClient = new HubspotRestClient(Configuration.build(BASE_URL, CLIENT_ID, REFRESH_TOKEN));
         hubspotClient.listPagesByTmsId("someId");
 
         verify(postRequestedFor(urlStartingWith("/auth"))
@@ -201,7 +203,7 @@ public class HubspotRestClientTest
     {
         givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
 
-        hubspotClient = new HubspotRestClient(BASE_URL, CLIENT_ID, REFRESH_TOKEN);
+        hubspotClient = new HubspotRestClient(Configuration.build(BASE_URL, CLIENT_ID, REFRESH_TOKEN));
         hubspotClient.listPagesByTmsId("someId");
         hubspotClient.listPagesByTmsId("someId");
 

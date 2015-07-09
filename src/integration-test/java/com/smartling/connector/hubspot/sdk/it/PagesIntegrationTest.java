@@ -64,7 +64,7 @@ public class PagesIntegrationTest
             }
             catch (HubspotApiException e)
             {
-                System.err.println(String.format("Fail to clean up page '%1$d', cause '%2$s'", pageId, e));
+                System.err.printf("Fail to clean up page '%1$d', cause '%2$s'", pageId, e);
             }
         }
     }

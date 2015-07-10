@@ -10,6 +10,8 @@ import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
+import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
@@ -50,7 +53,7 @@ public class PagesIntegrationTest
         assertThat(refreshToken).overridingErrorMessage("Access token for Hubspot API is missing!").isNotEmpty();
         assertThat(clientId).overridingErrorMessage("Client id for Hubspot application is missing!").isNotEmpty();
 
-        hubspotClient = new HubspotRestClient(clientId, refreshToken);
+        hubspotClient = new HubspotRestClient(Configuration.build(clientId, refreshToken));
     }
 
     @After
@@ -131,7 +134,7 @@ public class PagesIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        HubspotClient hubspotClient = new HubspotRestClient("wrong-client-id", "wrong-token");
+        HubspotClient hubspotClient = new HubspotRestClient(Configuration.build("wrong-client-id", "wrong-token"));
         hubspotClient.listPages(0, 1);
     }
 

@@ -13,6 +13,8 @@ public interface HubspotClient
     String updatePage(final String page, final long updatePageId) throws HubspotApiException;
 
     PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
+    
+    PageDetails listPages(PageSearchFilter filter) throws HubspotApiException;
 
     PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
 

@@ -17,6 +17,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
+import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
@@ -105,6 +106,21 @@ public class HubspotRestClient implements HubspotClient
     public PageDetails listPages(final int offset, final int limit) throws HubspotApiException
     {
         return executeWithToken(pagesEntityApi::pages, limit, offset);
+    }
+    
+    @Override
+    public PageDetails listPages(PageSearchFilter filter) throws HubspotApiException
+    {
+        refreshAccessToken();
+        try
+        {
+            return pagesEntityApi.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
+                    filter.getCampaign(), filter.getLimit(), filter.getOffset(), accessToken.getToken());
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Call to Hubspot API failed!", e);
+        }
     }
 
     @Override

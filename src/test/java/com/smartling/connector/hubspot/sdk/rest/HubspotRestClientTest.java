@@ -8,6 +8,8 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
+import com.smartling.connector.hubspot.sdk.PageSearchFilter;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +19,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -33,6 +34,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HubspotRestClientTest
@@ -169,6 +171,31 @@ public class HubspotRestClientTest
                         .withQueryParam("offset", equalTo("5"))
         );
     }
+    
+    @Test
+    public void shouldCallListPagesUrlWithRightParams() throws HubspotApiException
+    {
+        final Integer offset = 5;
+        final Integer limit = 15;
+        final String campaign = "some-hash-id";
+        final String name = "Page_name";
+        final Boolean archived = Boolean.FALSE;
+        final Boolean draft = Boolean.TRUE;    
+        PageSearchFilter filter = createSearchFilter(offset, limit, campaign, name, archived, draft);
+        givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
+      
+        hubspotClient.listPages(filter);
+
+        verify(getRequestedFor(urlStartingWith("/content/api/v2/pages"))
+                        .withQueryParam("access_token", equalTo("access-token"))
+                        .withQueryParam("limit", equalTo(limit.toString()))
+                        .withQueryParam("offset", equalTo(offset.toString()))
+                        .withQueryParam("campaign", equalTo(campaign))
+                        .withQueryParam("name", equalTo(name))
+                        .withQueryParam("archived", equalTo(archived.toString()))
+                        .withQueryParam("is_draft", equalTo(draft.toString()))
+        );
+    }
 
     @Test
     public void shouldCallListPagesByTmsIdUrl() throws HubspotApiException
@@ -224,6 +251,17 @@ public class HubspotRestClientTest
         assertThat(detailList).isNotEmpty();
 
         assertPageDetail(detailList.get(0));
+    }
+    
+    private PageSearchFilter createSearchFilter(int offset, int limit, String campaign, String name, Boolean archived, Boolean draft) {
+        PageSearchFilter filter = new PageSearchFilter();
+        filter.setOffset(offset);
+        filter.setLimit(limit);
+        filter.setCampaign(campaign);
+        filter.setName(name);
+        filter.setArchived(archived);
+        filter.setDraft(draft);   
+        return filter;
     }
 
     private String getExpiredTokenData()

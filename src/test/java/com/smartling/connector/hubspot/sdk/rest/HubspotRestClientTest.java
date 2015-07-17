@@ -181,10 +181,10 @@ public class HubspotRestClientTest
         final String name = "Page_name";
         final Boolean archived = Boolean.FALSE;
         final Boolean draft = Boolean.TRUE;    
-        PageSearchFilter filter = createSearchFilter(offset, limit, campaign, name, archived, draft);
+        PageSearchFilter filter = createSearchFilter(campaign, name, archived, draft);
         givenThat(get(path("/content/api/v2/pages")).willReturn(aJsonResponse(pageDetails())));
       
-        hubspotClient.listPages(filter);
+        hubspotClient.listPages(offset, limit, filter);
 
         verify(getRequestedFor(urlStartingWith("/content/api/v2/pages"))
                         .withQueryParam("access_token", equalTo("access-token"))
@@ -253,10 +253,8 @@ public class HubspotRestClientTest
         assertPageDetail(detailList.get(0));
     }
     
-    private PageSearchFilter createSearchFilter(int offset, int limit, String campaign, String name, Boolean archived, Boolean draft) {
+    private PageSearchFilter createSearchFilter(String campaign, String name, Boolean archived, Boolean draft) {
         PageSearchFilter filter = new PageSearchFilter();
-        filter.setOffset(offset);
-        filter.setLimit(limit);
         filter.setCampaign(campaign);
         filter.setName(name);
         filter.setArchived(archived);

@@ -14,7 +14,7 @@ public interface HubspotClient
 
     PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
     
-    PageDetails listPages(PageSearchFilter filter) throws HubspotApiException;
+    PageDetails listPages(int offset, int limit, PageSearchFilter filter) throws HubspotApiException;
 
     PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
 

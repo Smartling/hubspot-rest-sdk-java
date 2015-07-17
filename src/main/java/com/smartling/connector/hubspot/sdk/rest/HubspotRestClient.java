@@ -109,13 +109,13 @@ public class HubspotRestClient implements HubspotClient
     }
     
     @Override
-    public PageDetails listPages(PageSearchFilter filter) throws HubspotApiException
+    public PageDetails listPages(final int offset, final int limit, PageSearchFilter filter) throws HubspotApiException
     {
         refreshAccessToken();
         try
         {
             return pagesEntityApi.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
-                    filter.getCampaign(), filter.getLimit(), filter.getOffset(), accessToken.getToken());
+                    filter.getCampaign(), limit, offset, accessToken.getToken());
         }
         catch (FeignException e)
         {

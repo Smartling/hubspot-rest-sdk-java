@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,8 +40,6 @@ public class HubspotRestClient implements HubspotClient
     private final String           refreshToken;
     private final String           clientId;
 
-    private AccessToken accessToken;
-
     public HubspotRestClient(final Configuration configuration)
     {       
         this.clientId = configuration.getClientId();
@@ -75,67 +73,59 @@ public class HubspotRestClient implements HubspotClient
     @Override
     public String getPageById(long pageId) throws HubspotApiException
     {
-        return executeWithToken(pagesRawApi::page, pageId);
+        return executeWithToken(token -> pagesRawApi.page(pageId, token));
     }
 
     @Override
     public PageDetail getPageDetailById(final long pageId) throws HubspotApiException
     {
-        return executeWithToken(pagesEntityApi::pageDetail, pageId);
+        return executeWithToken(token -> pagesEntityApi.pageDetail(pageId, token));
     }
 
     @Override
     public String clonePage(final long originalPageId) throws HubspotApiException
     {
-        return executeWithToken(pagesRawApi::clone, originalPageId);
+        return executeWithToken(token -> pagesRawApi.clone(originalPageId, token));
     }
 
     @Override
     public PageDetail clonePageAsDetail(final long originalPageId) throws HubspotApiException
     {
-        return executeWithToken(pagesEntityApi::clone, originalPageId);
+        return executeWithToken(token -> pagesEntityApi.clone(originalPageId, token));
     }
 
     @Override
     public String updatePage(final String page, final long updatePageId) throws HubspotApiException
     {
-        return executeWithToken(pagesRawApi::update, updatePageId, page);
+        return executeWithToken(token -> pagesRawApi.update(updatePageId, page, token));
     }
 
     @Override
     public PageDetails listPages(final int offset, final int limit) throws HubspotApiException
     {
-        return executeWithToken(pagesEntityApi::pages, limit, offset);
+        return executeWithToken(token -> pagesEntityApi.pages(limit, offset, token));
     }
     
     @Override
     public PageDetails listPages(final int offset, final int limit, PageSearchFilter filter) throws HubspotApiException
     {
-        refreshAccessToken();
-        try
-        {
-            return pagesEntityApi.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
-                    filter.getCampaign(), limit, offset, accessToken.getToken());
-        }
-        catch (FeignException e)
-        {
-            throw new HubspotApiException("Call to Hubspot API failed!", e);
-        }
+        return executeWithToken(token -> pagesEntityApi.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
+                                                              filter.getCampaign(), limit, offset, token));
     }
 
     @Override
     public PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException
     {
-        return executeWithToken(pagesEntityApi::findByTmsId, tmsId);
+        return executeWithToken(token -> pagesEntityApi.findByTmsId(tmsId, token));
     }
-
-    private <T, R> R executeWithToken(BiFunction<T, String, R> apiCall, T firstArgument) throws HubspotApiException
+    
+    private <T> T executeWithToken(Function<String, T> apiCall) throws HubspotApiException
     {
-        refreshAccessToken();
+        AccessToken accessToken = refreshAccessToken();
 
         try
         {
-            return apiCall.apply(firstArgument, accessToken.getToken());
+            return apiCall.apply(accessToken.getToken());
         }
         catch (FeignException e)
         {
@@ -143,29 +133,14 @@ public class HubspotRestClient implements HubspotClient
         }
     }
 
-    private <T, U, R> R executeWithToken(TripleFunction<T, U, String, R> apiCall, T firstArgument, U secondArgument) throws HubspotApiException
+    private AccessToken refreshAccessToken() throws HubspotApiException
     {
-        refreshAccessToken();
-
-        try
-        {
-            return apiCall.apply(firstArgument, secondArgument, accessToken.getToken());
-        }
-        catch (FeignException e)
-        {
-            throw new HubspotApiException("Call to Hubspot API failed!", e);
-        }
-    }
-
-    private void refreshAccessToken() throws HubspotApiException
-    {
-        accessToken = new AccessToken(refreshToken());
+        return new AccessToken(refreshToken());
     }
 
     @Override
     public RefreshTokenData refreshToken() throws HubspotApiException
     {
-
         try
         {
             return authorizationApi.newToken(clientId, refreshToken);
@@ -180,7 +155,7 @@ public class HubspotRestClient implements HubspotClient
     @Override
     public DeletePageInfo delete(final long pageId) throws HubspotApiException
     {
-        return executeWithToken(pagesEntityApi::delete, pageId);
+        return executeWithToken(token -> pagesEntityApi.delete(pageId, token));
     }
 
     private static class DateSerializer implements JsonDeserializer<Date>
@@ -284,12 +259,6 @@ public class HubspotRestClient implements HubspotClient
             return this;
         }
 
-    }
-
-    @FunctionalInterface
-    public interface TripleFunction<T, U, V, R>
-    {
-        R apply(T t, U u, V v);
     }
 
 }

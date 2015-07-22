@@ -136,7 +136,7 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPagesFilterByArchived() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 100, createSearchFilter(null, null, true, null));
+        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, true, null));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(ARCHIVED_PAGE_ID, pageDetails);
@@ -145,7 +145,7 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPagesFilterByNotLive() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 100, createSearchFilter(null, null, null, true));
+        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, null, true));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(NOT_LIVE_PAGE_ID, pageDetails);
@@ -154,7 +154,7 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPagesFilterByLive() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 100, createSearchFilter(null, null, null, false));
+        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, null, false));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(BASIC_PAGE_ID, pageDetails);
@@ -163,7 +163,7 @@ public class PagesIntegrationTest
     @Test
     public void shouldListPagesFilterByCampaign() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 100, createSearchFilter(NOT_LIVE_PAGE_CAMPAIGN, null, false, true));
+        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(NOT_LIVE_PAGE_CAMPAIGN, null, false, true));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(NOT_LIVE_PAGE_ID, pageDetails);

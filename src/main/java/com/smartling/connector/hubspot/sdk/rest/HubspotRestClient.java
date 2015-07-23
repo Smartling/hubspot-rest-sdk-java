@@ -27,6 +27,7 @@ import feign.Feign;
 import feign.FeignException;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import feign.httpclient.ApacheHttpClient;
 
 import static java.time.LocalDateTime.now;
 
@@ -36,6 +37,7 @@ public class HubspotRestClient implements HubspotClient
 
     private final PagesRawApi      pagesRawApi;
     private final PagesEntityApi   pagesEntityApi;
+    private final PagesEntityApi   pagesEntityApiApache;
     private final AuthorizationApi authorizationApi;
     private final String           refreshToken;
     private final String           clientId;
@@ -57,6 +59,13 @@ public class HubspotRestClient implements HubspotClient
                               .decoder(new GsonDecoder(configuredGson()))
                               .target(PagesEntityApi.class, configuration.getApiUrl());
 
+        // ApacheHttpClient has advanced options for request/response processing
+        pagesEntityApiApache = Feign.builder()
+                                    .options(connectionConfig)
+                                    .client(new ApacheHttpClient())
+                                    .decoder(new GsonDecoder(configuredGson()))
+                                    .target(PagesEntityApi.class, configuration.getApiUrl());
+        
         authorizationApi = Feign.builder()
                                 .options(connectionConfig)
                                 .decoder(new GsonDecoder())
@@ -103,13 +112,13 @@ public class HubspotRestClient implements HubspotClient
     @Override
     public PageDetails listPages(final int offset, final int limit) throws HubspotApiException
     {
-        return executeWithToken(token -> pagesEntityApi.pages(limit, offset, token));
+        return executeWithToken(token -> pagesEntityApiApache.pages(limit, offset, token));
     }
     
     @Override
     public PageDetails listPages(final int offset, final int limit, PageSearchFilter filter) throws HubspotApiException
     {
-        return executeWithToken(token -> pagesEntityApi.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
+        return executeWithToken(token -> pagesEntityApiApache.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
                                                               filter.getCampaign(), limit, offset, token));
     }
 

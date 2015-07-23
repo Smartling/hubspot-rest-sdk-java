@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -140,6 +141,10 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(ARCHIVED_PAGE_ID, pageDetails);
+        for (PageDetail item : pageDetails.getDetailList())
+        {
+            assertThat(item.isArchived()).isTrue();
+        }
     }
     
     @Test
@@ -149,6 +154,10 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(NOT_LIVE_PAGE_ID, pageDetails);
+        for (PageDetail item : pageDetails.getDetailList())
+        {
+            assertThat(item.isDraft()).isTrue();
+        }
     }
     
     @Test
@@ -158,6 +167,10 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(BASIC_PAGE_ID, pageDetails);
+        for (PageDetail item : pageDetails.getDetailList())
+        {
+            assertThat(item.isDraft()).isFalse();
+        }
     }
     
     @Test

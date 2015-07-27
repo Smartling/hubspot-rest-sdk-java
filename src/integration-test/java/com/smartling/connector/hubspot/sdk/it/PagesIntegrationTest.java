@@ -21,8 +21,11 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+
+import org.fest.assertions.core.Condition;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -141,10 +144,7 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(ARCHIVED_PAGE_ID, pageDetails);
-        for (PageDetail item : pageDetails.getDetailList())
-        {
-            assertThat(item.isArchived()).isTrue();
-        }
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not an archived", item -> item.isArchived()));
     }
     
     @Test
@@ -154,10 +154,7 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(NOT_LIVE_PAGE_ID, pageDetails);
-        for (PageDetail item : pageDetails.getDetailList())
-        {
-            assertThat(item.isDraft()).isTrue();
-        }
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a draft", item -> item.isDraft()));
     }
     
     @Test
@@ -167,10 +164,7 @@ public class PagesIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(BASIC_PAGE_ID, pageDetails);
-        for (PageDetail item : pageDetails.getDetailList())
-        {
-            assertThat(item.isDraft()).isFalse();
-        }
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a live", item -> !item.isDraft()));
     }
     
     @Test
@@ -330,5 +324,15 @@ public class PagesIntegrationTest
         filter.setArchived(archived);
         filter.setDraft(draft);   
         return filter;
+    }
+    
+    private static <T> Condition<T> suchThat(String message, Predicate<T> criteria) {
+        return new Condition<T>(message) {
+            @Override
+            public boolean matches(final T value)
+            {
+                return criteria.test(value);
+            }
+        };
     }
 }

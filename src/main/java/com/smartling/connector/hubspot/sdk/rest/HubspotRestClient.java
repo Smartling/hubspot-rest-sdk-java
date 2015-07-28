@@ -1,5 +1,7 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import static java.time.LocalDateTime.now;
+
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -22,7 +24,6 @@ import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.TokenProvider.ConfigurationException;
-import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
 
@@ -31,7 +32,6 @@ import feign.FeignException;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.httpclient.ApacheHttpClient;
-import static java.time.LocalDateTime.now;
 
 public class HubspotRestClient implements HubspotClient
 {
@@ -197,7 +197,7 @@ public class HubspotRestClient implements HubspotClient
         private String refreshToken;
         private int    connectTimeoutMillis = 10_000;
         private int    readTimeoutMillis    = 60_000;
-        private Map<String, Object> properties = Collections.emptyMap();
+        private Map<String, String> properties = Collections.emptyMap();
 
         private Configuration(String apiUrl, String clientId, String refreshToken)
         {
@@ -241,9 +241,9 @@ public class HubspotRestClient implements HubspotClient
             return readTimeoutMillis;
         }
 
-        public <T> T getPropertyValue(String name)
+        public String getPropertyValue(String name)
         {
-            return (T)this.properties.get(name);
+            return this.properties.get(name);
         }
 
         public Configuration setConnectTimeoutMillis(int connectTimeoutMillis)
@@ -258,7 +258,7 @@ public class HubspotRestClient implements HubspotClient
             return this;
         }
 
-        public Configuration setProperties(Map<String, Object> properties)
+        public Configuration setProperties(Map<String, String> properties)
         {
             this.properties = properties;
             return this;

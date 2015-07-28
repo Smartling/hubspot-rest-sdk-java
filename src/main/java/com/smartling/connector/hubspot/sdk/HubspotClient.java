@@ -13,12 +13,10 @@ public interface HubspotClient
     String updatePage(final String page, final long updatePageId) throws HubspotApiException;
 
     PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
-    
+
     PageDetails listPages(int offset, int limit, PageSearchFilter filter) throws HubspotApiException;
 
     PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
-
-    RefreshTokenData refreshToken() throws HubspotApiException;
 
     DeletePageInfo delete(long pageId) throws HubspotApiException;
 }

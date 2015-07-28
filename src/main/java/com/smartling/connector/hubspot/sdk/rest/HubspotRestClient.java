@@ -138,10 +138,9 @@ public class HubspotRestClient implements HubspotClient
 
     private <T> T executeWithToken(Function<String, T> apiCall) throws HubspotApiException
     {
-        AccessToken accessToken = new AccessToken(tokenProvider.getTokenData());
-
         try
         {
+            AccessToken accessToken = new AccessToken(tokenProvider.getTokenData());
             return apiCall.apply(accessToken.getToken());
         }
         catch (FeignException e)

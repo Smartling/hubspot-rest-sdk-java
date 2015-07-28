@@ -3,7 +3,6 @@ package com.smartling.connector.hubspot.sdk.rest;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.redisson.Redisson;
 import org.redisson.core.RBucket;
 import org.redisson.core.RLock;
@@ -31,16 +32,18 @@ public class CachedTokenProviderTest extends TokenProviderTest
     private static final String TOKEN_LOCK_NAME = "com.smartling.connector.hubspot." + CLIENT_ID + ".accesskey.lock";
 
     private Random random = new Random();
+
+    @Mock
     private Redisson redisson;
+    @Mock
     private RBucket<String> bucket;
+    @Mock
     private RLock lock;
 
     @Override
     public void setUp() throws Exception
     {
-        this.redisson = mock(Redisson.class);
-        this.bucket = mock(RBucket.class);
-        this.lock = mock(RLock.class);
+        MockitoAnnotations.initMocks(this);
         doReturn(this.bucket).when(this.redisson).getBucket(TOKEN_BUCKET_NAME);
         doReturn(this.lock).when(this.redisson).getLock(TOKEN_LOCK_NAME);
         super.setUp();

@@ -3,7 +3,9 @@ package com.smartling.connector.hubspot.sdk.rest;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 import com.google.gson.Gson;
@@ -19,6 +21,7 @@ import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.rest.TokenProvider.ConfigurationException;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
@@ -28,7 +31,6 @@ import feign.FeignException;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.httpclient.ApacheHttpClient;
-
 import static java.time.LocalDateTime.now;
 
 public class HubspotRestClient implements HubspotClient
@@ -38,18 +40,13 @@ public class HubspotRestClient implements HubspotClient
     private final PagesRawApi      pagesRawApi;
     private final PagesEntityApi   pagesEntityApi;
     private final PagesEntityApi   pagesEntityApiApache;
-    private final AuthorizationApi authorizationApi;
-    private final String           refreshToken;
-    private final String           clientId;
+    private final TokenProvider    tokenProvider;
 
     public HubspotRestClient(final Configuration configuration)
-    {       
-        this.clientId = configuration.getClientId();
-        this.refreshToken = configuration.getRefreshToken();
-
+    {
         Options connectionConfig = new Options(
                 configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
-        
+
         pagesRawApi = Feign.builder()
                            .options(connectionConfig)
                            .target(PagesRawApi.class, configuration.getApiUrl());
@@ -65,11 +62,8 @@ public class HubspotRestClient implements HubspotClient
                                     .client(new ApacheHttpClient())
                                     .decoder(new GsonDecoder(configuredGson()))
                                     .target(PagesEntityApi.class, configuration.getApiUrl());
-        
-        authorizationApi = Feign.builder()
-                                .options(connectionConfig)
-                                .decoder(new GsonDecoder())
-                                .target(AuthorizationApi.class, configuration.getApiUrl());
+
+        tokenProvider = createTokenProvider(configuration);
     }
 
     private static Gson configuredGson()
@@ -114,7 +108,7 @@ public class HubspotRestClient implements HubspotClient
     {
         return executeWithToken(token -> pagesEntityApiApache.pages(limit, offset, token));
     }
-    
+
     @Override
     public PageDetails listPages(final int offset, final int limit, PageSearchFilter filter) throws HubspotApiException
     {
@@ -127,10 +121,24 @@ public class HubspotRestClient implements HubspotClient
     {
         return executeWithToken(token -> pagesEntityApi.findByTmsId(tmsId, token));
     }
-    
+
+    protected TokenProvider createTokenProvider(final Configuration configuration)
+    {
+        TokenProvider provider = null;
+        try
+        {
+            provider = new CachedTokenProvider(configuration);
+        }
+        catch (ConfigurationException e)
+        {
+            provider = new TokenProvider(configuration);
+        }
+        return provider;
+    }
+
     private <T> T executeWithToken(Function<String, T> apiCall) throws HubspotApiException
     {
-        AccessToken accessToken = refreshAccessToken();
+        AccessToken accessToken = new AccessToken(tokenProvider.getTokenData());
 
         try
         {
@@ -139,25 +147,6 @@ public class HubspotRestClient implements HubspotClient
         catch (FeignException e)
         {
             throw new HubspotApiException("Call to Hubspot API failed!", e);
-        }
-    }
-
-    private AccessToken refreshAccessToken() throws HubspotApiException
-    {
-        return new AccessToken(refreshToken());
-    }
-
-    @Override
-    public RefreshTokenData refreshToken() throws HubspotApiException
-    {
-        try
-        {
-            return authorizationApi.newToken(clientId, refreshToken);
-
-        }
-        catch (FeignException e)
-        {
-            throw new HubspotApiException("Authorization to Hubspot failed!", e);
         }
     }
 
@@ -200,7 +189,7 @@ public class HubspotRestClient implements HubspotClient
             return accessToken;
         }
     }
-    
+
     public static class Configuration
     {
         private String apiUrl;
@@ -208,11 +197,7 @@ public class HubspotRestClient implements HubspotClient
         private String refreshToken;
         private int    connectTimeoutMillis = 10_000;
         private int    readTimeoutMillis    = 60_000;
-
-        private Configuration(String clientId, String refreshToken)
-        {
-            this(API_HOST, clientId, refreshToken);
-        }
+        private Map<String, Object> properties = Collections.emptyMap();
 
         private Configuration(String apiUrl, String clientId, String refreshToken)
         {
@@ -223,7 +208,7 @@ public class HubspotRestClient implements HubspotClient
 
         public static Configuration build(String clientId, String refreshToken)
         {
-            return new Configuration(clientId, refreshToken);
+            return new Configuration(API_HOST, clientId, refreshToken);
         }
 
         public static Configuration build(String apiUrl, String clientId, String refreshToken)
@@ -256,6 +241,11 @@ public class HubspotRestClient implements HubspotClient
             return readTimeoutMillis;
         }
 
+        public <T> T getPropertyValue(String name)
+        {
+            return (T)this.properties.get(name);
+        }
+
         public Configuration setConnectTimeoutMillis(int connectTimeoutMillis)
         {
             this.connectTimeoutMillis = connectTimeoutMillis;
@@ -268,6 +258,10 @@ public class HubspotRestClient implements HubspotClient
             return this;
         }
 
+        public Configuration setProperties(Map<String, Object> properties)
+        {
+            this.properties = properties;
+            return this;
+        }
     }
-
 }

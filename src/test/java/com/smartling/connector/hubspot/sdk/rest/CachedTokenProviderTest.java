@@ -74,7 +74,7 @@ public class CachedTokenProviderTest extends TokenProviderTest
         inOrder.verify(this.lock).tryLock();
         inOrder.verify(this.bucket).set(ACCESS_TOKEN, EXPIRES_IN_TOKEN, TimeUnit.SECONDS);
         inOrder.verify(this.lock).unlock();
-        inOrder.verify(this.redisson).shutdown();
+        verifyShutdown(inOrder);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class CachedTokenProviderTest extends TokenProviderTest
         verify(this.bucket).get();
         verify(this.bucket).remainTimeToLive();
         verifyNoMoreInteractions(this.lock, this.bucket);
-        verify(this.redisson).shutdown();
+        verifyShutdown(null);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class CachedTokenProviderTest extends TokenProviderTest
         verify(this.bucket).remainTimeToLive();
         verify(this.lock).tryLock();
         verifyNoMoreInteractions(this.lock, this.bucket);
-        verify(this.redisson).shutdown();
+        verifyShutdown(null);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class CachedTokenProviderTest extends TokenProviderTest
         inOrder.verify(this.lock).tryLock();
         inOrder.verify(this.bucket).delete();
         inOrder.verify(this.lock).unlock();
-        inOrder.verify(this.redisson).shutdown();
+        verifyShutdown(inOrder);
     }
 
     @Test
@@ -149,10 +149,10 @@ public class CachedTokenProviderTest extends TokenProviderTest
 
         verify(this.lock).tryLock();
         verifyNoMoreInteractions(this.lock, this.bucket);
-        verifyShutdown();
+        verifyShutdown(null);
     }
 
-    private void verifyShutdown()
+    private void verifyShutdown(InOrder inOrder)
     {
         try
         {
@@ -161,6 +161,9 @@ public class CachedTokenProviderTest extends TokenProviderTest
         catch (InterruptedException e)
         {
         }
-        verify(this.redisson).shutdown();
+        if (null == inOrder)
+            verify(this.redisson).shutdown();
+        else
+            inOrder.verify(this.redisson).shutdown();
     }
 }

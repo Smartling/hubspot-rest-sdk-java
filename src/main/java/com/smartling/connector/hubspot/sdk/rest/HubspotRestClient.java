@@ -1,5 +1,17 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -12,28 +24,20 @@ import com.smartling.connector.hubspot.sdk.HubspotClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.PageSearchFilter;
-import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.TokenProvider.ConfigurationException;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
+import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+
 import feign.Feign;
 import feign.FeignException;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.httpclient.ApacheHttpClient;
 
-import java.lang.reflect.Type;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
-import java.util.function.Function;
-
-import static java.time.LocalDateTime.now;
-
 public class HubspotRestClient implements HubspotClient
 {
+    private static final Logger logger = LoggerFactory.getLogger(HubspotRestClient.class);
     private static final String API_HOST = "https://api.hubapi.com";
 
     private final PagesRawApi      pagesRawApi;
@@ -121,16 +125,22 @@ public class HubspotRestClient implements HubspotClient
         return executeWithToken(token -> pagesEntityApi.findByTmsId(tmsId, token));
     }
 
+    @SuppressWarnings("unchecked")
     protected TokenProvider createTokenProvider(final Configuration configuration)
     {
-        TokenProvider provider = null;
-        try
+        TokenProvider provider = new HubspotTokenProvider(configuration);
+        String decoratorClassName = configuration.getPropertyValue(TokenProvider.TOKEN_PROVIDER_DECORATOR_CLASS);
+        if (StringUtils.isNotBlank(decoratorClassName))
         {
-            provider = new CachedTokenProvider(configuration);
-        }
-        catch (ConfigurationException e)
-        {
-            provider = new TokenProvider(configuration);
+            try
+            {
+                provider = ConstructorUtils.invokeConstructor((Class<TokenProvider>)ClassUtils.getClass(decoratorClassName), configuration, provider);
+                logger.info("tokenProvider is decorated by {} class", decoratorClassName);
+            }
+            catch (Exception e)
+            {
+                logger.warn("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
+            }
         }
         return provider;
     }
@@ -139,8 +149,7 @@ public class HubspotRestClient implements HubspotClient
     {
         try
         {
-            AccessToken accessToken = new AccessToken(tokenProvider.getTokenData());
-            return apiCall.apply(accessToken.getToken());
+            return apiCall.apply(tokenProvider.getTokenData().getAccessToken());
         }
         catch (FeignException e)
         {
@@ -160,31 +169,6 @@ public class HubspotRestClient implements HubspotClient
         public Date deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException
         {
             return new Date(json.getAsLong());
-        }
-    }
-
-    private static class AccessToken
-    {
-        private String        accessToken;
-        private Duration      duration;
-        private LocalDateTime refreshTokenDateTime;
-
-        public AccessToken(RefreshTokenData refreshTokenData)
-        {
-            refreshTokenDateTime = LocalDateTime.now();
-            int expiresIn = refreshTokenData.getExpiresIn();
-            duration = Duration.ofSeconds(expiresIn > 5 ? expiresIn - 5 : expiresIn);
-            accessToken = refreshTokenData.getAccessToken();
-        }
-
-        public boolean tokenExpired()
-        {
-            return refreshTokenDateTime.plus(duration).isBefore(now());
-        }
-
-        public String getToken()
-        {
-            return accessToken;
         }
     }
 

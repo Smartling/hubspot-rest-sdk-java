@@ -37,7 +37,7 @@ import feign.httpclient.ApacheHttpClient;
 
 public class HubspotRestClient implements HubspotClient
 {
-    private static final Logger logger = LoggerFactory.getLogger(HubspotRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HubspotRestClient.class);
     private static final String API_HOST = "https://api.hubapi.com";
 
     private final PagesRawApi      pagesRawApi;
@@ -135,11 +135,11 @@ public class HubspotRestClient implements HubspotClient
             try
             {
                 provider = ConstructorUtils.invokeConstructor((Class<TokenProvider>)ClassUtils.getClass(decoratorClassName), configuration, provider);
-                logger.info("tokenProvider is decorated by {} class", decoratorClassName);
+                LOGGER.info("tokenProvider is decorated by {} class", decoratorClassName);
             }
             catch (Exception e)
             {
-                logger.warn("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
+                LOGGER.warn("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
             }
         }
         return provider;

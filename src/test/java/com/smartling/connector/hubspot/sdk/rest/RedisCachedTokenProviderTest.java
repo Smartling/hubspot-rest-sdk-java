@@ -54,11 +54,10 @@ public class RedisCachedTokenProviderTest
     @Mock
     private TokenProvider tokenProvider;
     @Mock
-    private RefreshTokenData originalToken;
-    @Mock
     private ExecutorService shutdownExecutor;
 
     private String clientId;
+    private RefreshTokenData originalToken;
     private RedisCachedTokenProvider cachedDecorator;
 
     @Before
@@ -82,9 +81,10 @@ public class RedisCachedTokenProviderTest
             }
         };
 
+        this.originalToken = new RefreshTokenData();
+        this.originalToken.setAccessToken(RandomStringUtils.random(TOKEN_LENGHT));
+        this.originalToken.setExpiresIn(RandomUtils.nextInt(TOKEN_EXPIRES_FROM, TOKEN_EXPIRES_TO));
         doReturn(this.originalToken).when(this.tokenProvider).getTokenData();
-        doReturn(RandomStringUtils.random(TOKEN_LENGHT)).when(this.originalToken).getAccessToken();
-        doReturn(RandomUtils.nextInt(TOKEN_EXPIRES_FROM, TOKEN_EXPIRES_TO)).when(this.originalToken).getExpiresIn();
 
         doReturn(this.bucket).when(this.redisson).getBucket(String.format(TOKEN_BUCKET_NAME_FORMAT, this.clientId));
         doReturn(this.lock).when(this.redisson).getLock(String.format(TOKEN_LOCK_NAME_FORMAT, this.clientId));

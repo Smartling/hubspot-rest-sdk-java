@@ -60,8 +60,6 @@ public class HubspotRestClientTest
     public void setUpMocks() throws Exception
     {
         this.tokenProvider = mock(TokenProvider.class);
-        this.originalToken = mock(RefreshTokenData.class);
-
         final Configuration configuration = Configuration.build(BASE_URL, null, null);
         this.hubspotClient = new HubspotRestClient(configuration)
         {
@@ -72,9 +70,10 @@ public class HubspotRestClientTest
             }
         };
 
+        this.originalToken = new RefreshTokenData();
+        this.originalToken.setAccessToken(RandomStringUtils.randomAlphanumeric(36));
+        this.originalToken.setExpiresIn(28799);
         doReturn(this.originalToken).when(this.tokenProvider).getTokenData();
-        doReturn(RandomStringUtils.randomAlphanumeric(36)).when(this.originalToken).getAccessToken();
-        doReturn(28799).when(this.originalToken).getExpiresIn();
     }
 
     @Test

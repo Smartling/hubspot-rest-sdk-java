@@ -18,6 +18,7 @@ public class RedisCachedTokenProvider implements TokenProvider
     public static final String REDIS_SINGLE_SERVER_ADDRESS = "redis.singleServer.address";
 
     private static final int TRY_DELAY = 10000;
+    private static final int LEASE_DELAY = 10000;
     private static final String ACCESSKEY_NAME = "com.smartling.connector.hubspot.%s.accesskey";
     private static final String ACCESSKEY_LOCK_NAME = "com.smartling.connector.hubspot.%s.accesskey.lock";
 
@@ -46,7 +47,7 @@ public class RedisCachedTokenProvider implements TokenProvider
             if (null == token)
             {
                 RLock lock = redisson.getLock(String.format(ACCESSKEY_LOCK_NAME, this.clientId));
-                if (lock.tryLock(TRY_DELAY, TRY_DELAY, TimeUnit.MILLISECONDS))
+                if (lock.tryLock(TRY_DELAY, LEASE_DELAY, TimeUnit.MILLISECONDS))
                 {
                     try
                     {

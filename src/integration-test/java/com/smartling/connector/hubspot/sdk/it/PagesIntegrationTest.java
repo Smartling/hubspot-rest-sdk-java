@@ -12,21 +12,17 @@ import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
-
+import org.fest.assertions.core.Condition;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-
-import org.fest.assertions.core.Condition;
-
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
@@ -50,7 +46,7 @@ public class PagesIntegrationTest
     private HubspotClient hubspotClient;
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
-    private String        updatedMetaKeywords    = "Meta keywords, created at " + now;
+    private String        updatedMetaKeywords    = "Meta keywords, created at " + now + ". Added some metacharacters: % (it is percent).";
     private String        tmsId                  = "Tms Id ";
     private List<Long>    pagesToDelete          = Lists.newArrayList();
 

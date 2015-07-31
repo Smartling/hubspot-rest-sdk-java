@@ -1,6 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
-import feign.Body;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -15,6 +14,5 @@ public interface PagesRawApi
 
     @RequestLine("PUT /content/api/v2/pages/{page_id}?access_token={access_token}")
     @Headers("Content-Type: application/json")
-    @Body("{page}")
-    String update(@Param("page_id") long pageId, @Param("page") String pageAsJson, @Param("access_token") String accessToken);
+    String update(@Param("page_id") long pageId, String pageAsJson, @Param("access_token") String accessToken);
 }

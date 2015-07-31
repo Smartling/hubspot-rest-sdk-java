@@ -286,7 +286,7 @@ public class HubspotRestClientTest
     {
         return "{"
                 + "  \"flex_areas\": {},\n"
-                + "  \"page_expiry_redirect_url\": \"\",\n"
+                + "  \"page_expiry_redirect_url\": \"Some symbols % (\",\n"
                 + "  \"author_user_id\": 1027715,\n"
                 + "  \"performable_guid\": \"\",\n"
                 + "  \"include_default_custom_css\": false,\n"

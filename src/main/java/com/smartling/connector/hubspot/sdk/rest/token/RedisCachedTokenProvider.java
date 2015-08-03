@@ -23,12 +23,12 @@ public class RedisCachedTokenProvider implements TokenProvider
     private static final String ACCESSKEY_LOCK_NAME = "com.smartling.connector.hubspot.%s.accesskey.lock";
 
     private final TokenProvider tokenProvider;
-    private final String clientId;
+    private final String refreshToken;
     private final String redisSingleServerAddress;
 
     public RedisCachedTokenProvider(Configuration configuration, TokenProvider tokenProvider) throws HubspotApiException
     {
-        this.clientId = configuration.getClientId();
+        this.refreshToken = configuration.getRefreshToken();
         this.tokenProvider = tokenProvider;
         this.redisSingleServerAddress = configuration.getPropertyValue(REDIS_SINGLE_SERVER_ADDRESS);
         if (null == this.redisSingleServerAddress || this.redisSingleServerAddress.isEmpty())
@@ -42,11 +42,11 @@ public class RedisCachedTokenProvider implements TokenProvider
         Redisson redisson = createRedissonClient();
         try
         {
-            RBucket<String> bucket = redisson.getBucket(String.format(ACCESSKEY_NAME, this.clientId));
+            RBucket<String> bucket = redisson.getBucket(String.format(ACCESSKEY_NAME, this.refreshToken));
             token = createRefreshToken(bucket);
             if (null == token)
             {
-                RLock lock = redisson.getLock(String.format(ACCESSKEY_LOCK_NAME, this.clientId));
+                RLock lock = redisson.getLock(String.format(ACCESSKEY_LOCK_NAME, this.refreshToken));
                 if (lock.tryLock(TRY_DELAY, LEASE_DELAY, TimeUnit.MILLISECONDS))
                 {
                     try

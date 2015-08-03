@@ -56,7 +56,6 @@ public class RedisCachedTokenProviderTest
     @Mock
     private ExecutorService shutdownExecutor;
 
-    private String clientId;
     private RefreshTokenData originalToken;
     private RedisCachedTokenProvider cachedDecorator;
 
@@ -64,9 +63,9 @@ public class RedisCachedTokenProviderTest
     public void setUp() throws Exception
     {
         MockitoAnnotations.initMocks(this);
-        this.clientId = RandomStringUtils.randomAlphanumeric(32);
+        String refreshToken = RandomStringUtils.randomAlphanumeric(64);
 
-        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), this.clientId, RandomStringUtils.randomAlphanumeric(64));
+        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
         configuration.setProperties(Collections.singletonMap(RedisCachedTokenProvider.REDIS_SINGLE_SERVER_ADDRESS, REDIS_URL));
         this.cachedDecorator = new RedisCachedTokenProvider(configuration, this.tokenProvider)
         {
@@ -86,8 +85,8 @@ public class RedisCachedTokenProviderTest
         this.originalToken.setExpiresIn(RandomUtils.nextInt(TOKEN_EXPIRES_FROM, TOKEN_EXPIRES_TO));
         doReturn(this.originalToken).when(this.tokenProvider).getTokenData();
 
-        doReturn(this.bucket).when(this.redisson).getBucket(String.format(TOKEN_BUCKET_NAME_FORMAT, this.clientId));
-        doReturn(this.lock).when(this.redisson).getLock(String.format(TOKEN_LOCK_NAME_FORMAT, this.clientId));
+        doReturn(this.bucket).when(this.redisson).getBucket(String.format(TOKEN_BUCKET_NAME_FORMAT, refreshToken));
+        doReturn(this.lock).when(this.redisson).getLock(String.format(TOKEN_LOCK_NAME_FORMAT, refreshToken));
 
         doAnswer(new Answer<Void>()
         {

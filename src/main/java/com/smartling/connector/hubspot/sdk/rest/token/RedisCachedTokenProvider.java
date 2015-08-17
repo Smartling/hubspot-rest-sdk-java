@@ -11,7 +11,7 @@ import org.redisson.core.RLock;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
+import com.smartling.connector.hubspot.sdk.rest.Configuration;
 
 public class RedisCachedTokenProvider implements TokenProvider
 {

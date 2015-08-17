@@ -2,7 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest.token;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
+import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 
 import feign.Feign;

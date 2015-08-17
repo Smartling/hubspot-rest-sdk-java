@@ -1,6 +1,6 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
-import com.smartling.connector.hubspot.sdk.DeletePageInfo;
+import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import feign.Param;
@@ -10,7 +10,7 @@ public interface PagesEntityApi
 {
     @RequestLine("GET /content/api/v2/pages?access_token={access_token}&limit={limit}&offset={offset}")
     PageDetails pages(@Param("limit") int limit, @Param("offset") int offset, @Param("access_token") String accessToken);
-    
+
     @RequestLine("GET /content/api/v2/pages?access_token={access_token}&limit={limit}&offset={offset}&name={name}"
             + "&campaign={campaign}&archived={archived}&is_draft={is_draft}")
     PageDetails pages(@Param("archived") Boolean archived, @Param("is_draft") Boolean draft,
@@ -21,7 +21,7 @@ public interface PagesEntityApi
     PageDetails findByTmsId(@Param("tms_id") String tmsId, @Param("access_token") String accessToken);
 
     @RequestLine("DELETE /content/api/v2/pages/{page_id}?access_token={access_token}")
-    DeletePageInfo delete(@Param("page_id") long pageId, @Param("access_token") String accessToken);
+    ResultInfo delete(@Param("page_id") long pageId, @Param("access_token") String accessToken);
 
     @RequestLine("GET /content/api/v2/pages/{page_id}?access_token={access_token}")
     PageDetail pageDetail(@Param("page_id") long pageId, @Param("access_token") String accessToken);

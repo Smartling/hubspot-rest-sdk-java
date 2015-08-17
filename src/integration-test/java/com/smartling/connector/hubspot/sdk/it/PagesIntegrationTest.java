@@ -1,32 +1,33 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.smartling.connector.hubspot.sdk.DeletePageInfo;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotClient;
-import com.smartling.connector.hubspot.sdk.PageDetail;
-import com.smartling.connector.hubspot.sdk.PageDetails;
-import com.smartling.connector.hubspot.sdk.PageSearchFilter;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
-import org.fest.assertions.core.Condition;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static com.jayway.jsonassert.JsonAssert.with;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static com.jayway.jsonassert.JsonAssert.with;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
+import org.fest.assertions.core.Condition;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.PageDetail;
+import com.smartling.connector.hubspot.sdk.PageDetails;
+import com.smartling.connector.hubspot.sdk.PageSearchFilter;
+import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.rest.Configuration;
+import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 
 public class PagesIntegrationTest
 {
@@ -43,7 +44,7 @@ public class PagesIntegrationTest
     private static final String META_KEYWORDS_PATH     = ROOT_PATH + META_KEYWORDS;
     private static final String ID_PATH                = "$.id";
 
-    private HubspotClient hubspotClient;
+    private HubspotPageClient hubspotClient;
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now + ". Added some metacharacters: % (it is percent).";
@@ -59,7 +60,7 @@ public class PagesIntegrationTest
         assertThat(refreshToken).overridingErrorMessage("Access token for Hubspot API is missing!").isNotEmpty();
         assertThat(clientId).overridingErrorMessage("Client id for Hubspot application is missing!").isNotEmpty();
 
-        hubspotClient = new HubspotRestClient(Configuration.build(clientId, refreshToken));
+        hubspotClient = new HubspotRestClientManager(Configuration.build(clientId, refreshToken)).getPageClient();
     }
 
     @After
@@ -202,7 +203,7 @@ public class PagesIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        HubspotClient hubspotClient = new HubspotRestClient(Configuration.build("wrong-client-id", "wrong-token"));
+        HubspotPageClient hubspotClient = new HubspotRestClientManager(Configuration.build("wrong-client-id", "wrong-token")).getPageClient();
         hubspotClient.listPages(0, 1);
     }
 
@@ -258,7 +259,7 @@ public class PagesIntegrationTest
         String changeBeforeUpdate = getCloneAndChangeIt();
         long id = getId(changeBeforeUpdate);
 
-        DeletePageInfo deletePageInfo = hubspotClient.delete(id);
+        ResultInfo deletePageInfo = hubspotClient.delete(id);
 
         assertThat(deletePageInfo.isSucceeded()).isTrue();
     }

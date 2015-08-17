@@ -12,33 +12,28 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotClient;
+import com.smartling.connector.hubspot.sdk.HubspotPageClient;
 import com.smartling.connector.hubspot.sdk.PageDetail;
 import com.smartling.connector.hubspot.sdk.PageDetails;
 import com.smartling.connector.hubspot.sdk.PageSearchFilter;
-import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
-import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
 
-public class HubspotRestClientTest
+import feign.FeignException;
+
+public class HubspotRestPageClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -51,29 +46,31 @@ public class HubspotRestClientTest
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private TokenProvider tokenProvider;
-    private RefreshTokenData originalToken;
-
-    private HubspotClient hubspotClient;
+    private String originalToken;
+    private HubspotPageClient hubspotClient;
 
     @Before
     public void setUpMocks() throws Exception
     {
-        this.tokenProvider = mock(TokenProvider.class);
-        final Configuration configuration = Configuration.build(BASE_URL, null, null);
-        this.hubspotClient = new HubspotRestClient(configuration)
+        this.originalToken = RandomStringUtils.randomAlphanumeric(36);
+        RestExecutor executor = new RestExecutor()
         {
-            protected TokenProvider createTokenProvider(final Configuration conf)
+            @Override
+            public <T> T execute(Function<String, T> apiCall) throws HubspotApiException
             {
-                assertEquals(configuration, conf);
-                return HubspotRestClientTest.this.tokenProvider;
+                try
+                {
+                    return apiCall.apply(originalToken);
+                }
+                catch (FeignException e)
+                {
+                    throw new HubspotApiException("Call to Hubspot API failed!", e);
+                }
             }
         };
 
-        this.originalToken = new RefreshTokenData();
-        this.originalToken.setAccessToken(RandomStringUtils.randomAlphanumeric(36));
-        this.originalToken.setExpiresIn(28799);
-        doReturn(this.originalToken).when(this.tokenProvider).getTokenData();
+        final Configuration configuration = Configuration.build(BASE_URL, null, null);
+        this.hubspotClient = new HubspotRestPageClient(configuration, executor);
     }
 
     @Test
@@ -85,7 +82,7 @@ public class HubspotRestClientTest
         hubspotClient.getPageById(PAGE_ID);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
         );
 
     }
@@ -99,7 +96,7 @@ public class HubspotRestClientTest
         hubspotClient.getPageDetailById(PAGE_ID);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
         );
 
     }
@@ -113,7 +110,7 @@ public class HubspotRestClientTest
         hubspotClient.delete(PAGE_ID);
 
         verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
         );
 
     }
@@ -126,7 +123,7 @@ public class HubspotRestClientTest
         hubspotClient.clonePage(PAGE_ID);
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/clone"))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
         );
     }
 
@@ -156,7 +153,7 @@ public class HubspotRestClientTest
         hubspotClient.clonePageAsDetail(PAGE_ID);
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/clone"))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
         );
     }
 
@@ -168,7 +165,7 @@ public class HubspotRestClientTest
         hubspotClient.updatePage(pageSnippet(), PAGE_ID);
 
         verify(putRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
                         .withHeader("Content-Type", equalTo("application/json"))
                         .withRequestBody(equalTo(pageSnippet()))
         );
@@ -182,7 +179,7 @@ public class HubspotRestClientTest
         hubspotClient.listPages(5, 15);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
                         .withQueryParam("limit", equalTo("15"))
                         .withQueryParam("offset", equalTo("5"))
         );
@@ -203,7 +200,7 @@ public class HubspotRestClientTest
         hubspotClient.listPages(offset, limit, filter);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
                         .withQueryParam("limit", equalTo(limit.toString()))
                         .withQueryParam("offset", equalTo(offset.toString()))
                         .withQueryParam("campaign", equalTo(campaign))
@@ -221,7 +218,7 @@ public class HubspotRestClientTest
         hubspotClient.listPagesByTmsId("someId");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("access_token", equalTo(this.originalToken.getAccessToken()))
+                        .withQueryParam("access_token", equalTo(this.originalToken))
                         .withQueryParam("tms_id", equalTo("someId"))
         );
     }
@@ -232,8 +229,6 @@ public class HubspotRestClientTest
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
         hubspotClient.listPagesByTmsId("someId");
-
-        verify(this.tokenProvider).getTokenData();
     }
 
     @Test
@@ -243,8 +238,6 @@ public class HubspotRestClientTest
 
         hubspotClient.listPagesByTmsId("someId");
         hubspotClient.listPagesByTmsId("someId");
-
-        Mockito.verify(this.tokenProvider, times(2)).getTokenData();
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
-public interface HubspotClient
+public interface HubspotPageClient
 {
     String getPageById(long pageId) throws HubspotApiException;
 
@@ -18,5 +18,5 @@ public interface HubspotClient
 
     PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
 
-    DeletePageInfo delete(long pageId) throws HubspotApiException;
+    ResultInfo delete(long pageId) throws HubspotApiException;
 }

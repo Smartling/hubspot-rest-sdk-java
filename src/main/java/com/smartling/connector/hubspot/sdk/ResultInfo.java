@@ -1,6 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
-public class DeletePageInfo
+public class ResultInfo
 {
     private boolean succeeded;
     private String  message;

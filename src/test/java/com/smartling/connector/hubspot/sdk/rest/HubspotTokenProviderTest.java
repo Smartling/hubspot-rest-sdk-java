@@ -15,7 +15,6 @@ import org.junit.rules.ExpectedException;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.HubspotRestClient.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 

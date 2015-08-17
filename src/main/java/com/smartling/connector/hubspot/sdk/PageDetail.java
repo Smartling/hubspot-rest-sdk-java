@@ -19,7 +19,7 @@ public class PageDetail
     private boolean draft;
 
     private boolean archived;
-    
+
     private Date    updated;
 
     public long getId()

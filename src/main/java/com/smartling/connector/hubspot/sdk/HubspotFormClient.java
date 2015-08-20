@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 
-public interface HubspotFormClient
+public interface HubspotFormClient extends HubspotClient
 {
     List<FormDetail> listForms() throws HubspotApiException;
     String getFormContentById(String guid) throws HubspotApiException;

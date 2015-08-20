@@ -1,6 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
-public interface HubspotPageClient
+public interface HubspotPageClient extends HubspotClient
 {
     String getPageById(long pageId) throws HubspotApiException;
 

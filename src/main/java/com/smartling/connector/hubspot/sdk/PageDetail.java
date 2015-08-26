@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class PageDetail
+public class PageDetail implements NameAware
 {
     private long    id;
     private String  name;
@@ -32,6 +32,7 @@ public class PageDetail
         this.id = id;
     }
 
+    @Override
     public String getName()
     {
         return name;

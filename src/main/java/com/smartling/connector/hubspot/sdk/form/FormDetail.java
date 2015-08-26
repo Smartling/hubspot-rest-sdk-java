@@ -1,6 +1,8 @@
 package com.smartling.connector.hubspot.sdk.form;
 
-public class FormDetail
+import com.smartling.connector.hubspot.sdk.NameAware;
+
+public class FormDetail implements NameAware
 {
     private String guid;
     private String name;
@@ -14,6 +16,7 @@ public class FormDetail
     {
         this.guid = guid;
     }
+    @Override
     public String getName()
     {
         return name;

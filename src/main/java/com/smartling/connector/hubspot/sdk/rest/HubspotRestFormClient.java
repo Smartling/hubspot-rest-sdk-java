@@ -46,8 +46,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public String getFormContentById(String guid) throws HubspotApiException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return execute(token -> formsRawApi.form(guid, token));
     }
 
 

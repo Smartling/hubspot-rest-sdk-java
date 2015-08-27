@@ -1,6 +1,7 @@
-package com.smartling.connector.hubspot.sdk;
+package com.smartling.connector.hubspot.sdk.page;
 
 import com.google.gson.annotations.SerializedName;
+import com.smartling.connector.hubspot.sdk.NameAware;
 
 import java.util.Date;
 

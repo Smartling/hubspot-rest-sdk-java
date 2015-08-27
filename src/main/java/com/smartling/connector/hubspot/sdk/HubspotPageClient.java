@@ -1,5 +1,9 @@
 package com.smartling.connector.hubspot.sdk;
 
+import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PageDetails;
+import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+
 public interface HubspotPageClient extends HubspotClient
 {
     String getPageById(long pageId) throws HubspotApiException;

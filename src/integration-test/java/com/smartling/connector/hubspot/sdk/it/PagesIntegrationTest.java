@@ -22,10 +22,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
-import com.smartling.connector.hubspot.sdk.PageDetail;
-import com.smartling.connector.hubspot.sdk.PageDetails;
-import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PageDetails;
+import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 

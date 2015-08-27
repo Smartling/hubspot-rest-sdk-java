@@ -2,10 +2,10 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
-import com.smartling.connector.hubspot.sdk.PageDetail;
-import com.smartling.connector.hubspot.sdk.PageDetails;
-import com.smartling.connector.hubspot.sdk.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PageDetails;
+import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
 

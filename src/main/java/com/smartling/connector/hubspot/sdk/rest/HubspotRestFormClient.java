@@ -76,7 +76,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.forms(token));
+        return execute(token -> formsEntityApi.findByTmsId(tmsId, token));
     }
 
 

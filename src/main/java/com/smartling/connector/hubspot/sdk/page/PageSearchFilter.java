@@ -1,4 +1,4 @@
-package com.smartling.connector.hubspot.sdk;
+package com.smartling.connector.hubspot.sdk.page;
 
 
 public class PageSearchFilter

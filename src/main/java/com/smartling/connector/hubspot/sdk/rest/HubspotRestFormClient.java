@@ -1,9 +1,9 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Objects;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
@@ -89,7 +89,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.forms(token)).stream().filter(e -> Objects.equal(tmsId, e.getTmsId())).collect(Collectors.toList());
+        return execute(token -> formsEntityApi.forms(token)).stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
 
     @Override

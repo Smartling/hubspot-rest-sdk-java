@@ -1,7 +1,11 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.common.base.Objects;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
@@ -15,6 +19,10 @@ import feign.gson.GsonDecoder;
 
 public class HubspotRestFormClient extends AbstractHubspotRestClient implements HubspotFormClient
 {
+    private static final String GUID_PROPERTY_NAME = "guid";
+    private static final String NAME_PROPERTY_NAME = "name";
+    private static final String CLONED_NAME_TEMPLATE = "%s - Cloned - %d";
+
     private final FormsRawApi formsRawApi;
     private final FormsEntityApi formsEntityApi;
 
@@ -61,8 +69,13 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     public FormDetail cloneFormAsDetail(String guid) throws HubspotApiException
     {
         String body = execute(token -> formsRawApi.form(guid, token));
-        String newGuid = execute(token -> formsRawApi.create(body, token));
-        return execute(token -> formsEntityApi.formDetail(newGuid, token));
+        JsonParser parser = new JsonParser();
+        JsonObject obj = parser.parse(body).getAsJsonObject();
+        String name = obj.get(NAME_PROPERTY_NAME).getAsString();
+        obj.addProperty(NAME_PROPERTY_NAME, String.format(CLONED_NAME_TEMPLATE, name, System.currentTimeMillis()));
+        String newBody = execute(token -> formsRawApi.create(obj.toString(), token));
+        JsonObject newObj = parser.parse(newBody).getAsJsonObject();
+        return execute(token -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString(), token));
     }
 
 
@@ -76,13 +89,15 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.findByTmsId(tmsId, token));
+        return execute(token -> formsEntityApi.forms(token)).stream().filter(e -> Objects.equal(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
-
 
     @Override
     public ResultInfo delete(String guid) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.delete(guid, token));
+        execute(token -> formsEntityApi.delete(guid, token));
+        ResultInfo result = new ResultInfo();
+        result.setSucceeded(true);
+        return result;
     }
 }

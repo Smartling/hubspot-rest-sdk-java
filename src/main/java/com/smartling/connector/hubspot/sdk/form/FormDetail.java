@@ -10,6 +10,7 @@ public class FormDetail implements NameAware
     private String guid;
     private String name;
     private String submitText;
+    private String tmsId;
     @SerializedName("updatedAt")
     private Date   updated;
 
@@ -45,5 +46,13 @@ public class FormDetail implements NameAware
     public void setUpdated(Date updated)
     {
         this.updated = updated;
+    }
+    public String getTmsId()
+    {
+        return tmsId;
+    }
+    public void setTmsId(String tmsId)
+    {
+        this.tmsId = tmsId;
     }
 }

@@ -13,9 +13,6 @@ public interface FormsEntityApi
     @RequestLine("GET /forms/v2/forms?access_token={access_token}")
     List<FormDetail> forms(@Param("access_token") String accessToken);
 
-    @RequestLine("GET /forms/v2/forms?access_token={access_token}&tms_id={tms_id}")
-    List<FormDetail> findByTmsId(@Param("tms_id") String tmsId, @Param("access_token") String accessToken);
-
     @RequestLine("GET /forms/v2/forms/{form_guid}?access_token={access_token}")
     FormDetail formDetail(@Param("form_guid") String form_guid, @Param("access_token") String accessToken);
 

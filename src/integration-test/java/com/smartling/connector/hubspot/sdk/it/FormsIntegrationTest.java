@@ -26,7 +26,7 @@ import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 
 public class FormsIntegrationTest
 {
-    private static final String BASIC_FORM_ID          = "79c9090c-1587-4171-a6d1-54b54b7eec7c";
+    private static final String BASIC_FORM_ID          = "770fcd8a-ef62-428f-883b-5cd0eb07a438";
     private static final String BASIC_FORM_NAME        = "Default Form (Sample)";
     private static final String UPDATE_FORM_NAME       = "TEST UPDATE SUPER FORM";
     private static final String UPDATE_FORM_METHOD     = "PUT";

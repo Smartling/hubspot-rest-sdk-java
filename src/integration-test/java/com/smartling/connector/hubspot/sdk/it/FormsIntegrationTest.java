@@ -59,7 +59,7 @@ public class FormsIntegrationTest
     }
 
     @After
-    public void deleteTestPages()
+    public void deleteTestForms()
     {
         for (String formId : formsToDelete)
         {
@@ -69,7 +69,7 @@ public class FormsIntegrationTest
             }
             catch (HubspotApiException e)
             {
-                System.err.printf("Fail to clean up page '%1$d', cause '%2$s'", formId, e);
+                System.err.printf("Fail to clean up form '%1$s', cause '%2$s'", formId, e);
             }
         }
     }
@@ -174,12 +174,12 @@ public class FormsIntegrationTest
     }
 
     @Test
-    public void shouldDeletePage() throws Exception
+    public void shouldDeleteForm() throws Exception
     {
         Pair<String, String> clonedForm = getClone();
 
-        ResultInfo deletePageInfo = hubspotClient.delete(clonedForm.getKey());
-        assertThat(deletePageInfo.isSucceeded()).isTrue();
+        ResultInfo deleteFormInfo = hubspotClient.delete(clonedForm.getKey());
+        assertThat(deleteFormInfo.isSucceeded()).isTrue();
 
         formsToDelete.remove(clonedForm.getKey());
     }

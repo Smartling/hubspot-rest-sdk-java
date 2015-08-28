@@ -4,6 +4,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -15,6 +16,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -25,6 +27,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
@@ -111,7 +115,32 @@ public class HubspotRestFormClientTest
         );
     }
 
-// TODO: Check if approach with clone adopting is OK and write tests for form cloning
+    @Test
+    public void shouldCallCloneFormUrlForEntityApi() throws HubspotApiException
+    {
+        String body = formDetail();
+        String original = new JsonParser().parse(body).toString();
+        String newGuid = UUID.randomUUID().toString();
+        body = body.replaceFirst("My New Form", "My New Form - Clone -");
+        body = body.replaceFirst("6364429e-9c68-4c38-a71c-e1edb98825fc", newGuid);
+
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(HttpMockUtils.aJsonResponse(original)));
+        givenThat(post(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(body)));
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + newGuid)).willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        hubspotClient.cloneFormAsDetail(FORM_ID);
+
+        int i = original.indexOf("\",\"action\"");
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("access_token", equalTo(this.originalToken))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(containing(original.substring(0, i)))
+                .withRequestBody(containing(original.substring(i)))
+        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + newGuid))
+                .withQueryParam("access_token", equalTo(this.originalToken))
+        );
+    }
 
     @Test
     public void shouldCallUpdateFormUrl() throws HubspotApiException
@@ -188,7 +217,7 @@ public class HubspotRestFormClientTest
         assertThat(formDetail.getSubmitText()).isEqualTo("Submit");
         assertThat(formDetail.getUpdated()).isEqualTo(new Date(1433967918640L));
     }
-    
+
     private String formDetail()
     {
         return   "{"

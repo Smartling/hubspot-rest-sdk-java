@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.Config;
 import org.redisson.Redisson;
+import org.redisson.core.Node;
+import org.redisson.core.NodesGroup;
 import org.redisson.core.RBucket;
 import org.redisson.core.RLock;
 
@@ -33,6 +35,7 @@ public class RedisCachedTokenProvider implements TokenProvider
         this.redisSingleServerAddress = configuration.getPropertyValue(REDIS_SINGLE_SERVER_ADDRESS);
         if (null == this.redisSingleServerAddress || this.redisSingleServerAddress.isEmpty())
             throw new HubspotApiException("TokenProvider decorator " + this.getClass().getName() + " cannot be initialized from the configuration "+ configuration);
+        ping();
     }
 
     @Override
@@ -122,5 +125,20 @@ public class RedisCachedTokenProvider implements TokenProvider
             }
         });
         shutdownExecutor.shutdown();
+    }
+
+    protected void ping() throws HubspotApiException
+    {
+        Redisson redisson = createRedissonClient();
+        try
+        {
+            NodesGroup<Node> group = redisson.getNodesGroup();
+            if (!group.pingAll())
+                throw new HubspotApiException("TokenProvider decorator " + this.getClass().getName() + " cannot connect to redis server: " + this.redisSingleServerAddress);
+        }
+        finally
+        {
+            shutdown(redisson);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.smartling.connector.hubspot.sdk.rest;
+package com.smartling.connector.hubspot.sdk.rest.token;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -27,13 +27,14 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redisson.Redisson;
+import org.redisson.core.Node;
+import org.redisson.core.NodesGroup;
 import org.redisson.core.RBucket;
 import org.redisson.core.RLock;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.token.RedisCachedTokenProvider;
-import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import com.smartling.connector.hubspot.sdk.rest.Configuration;
 
 public class RedisCachedTokenProviderTest
 {
@@ -54,6 +55,8 @@ public class RedisCachedTokenProviderTest
     private TokenProvider tokenProvider;
     @Mock
     private ExecutorService shutdownExecutor;
+    @Mock
+    private NodesGroup<Node> nodesGroup;
 
     private RefreshTokenData originalToken;
     private RedisCachedTokenProvider cachedDecorator;
@@ -64,6 +67,8 @@ public class RedisCachedTokenProviderTest
         MockitoAnnotations.initMocks(this);
         String refreshToken = RandomStringUtils.randomAlphanumeric(64);
 
+        doReturn(this.nodesGroup).when(this.redisson).getNodesGroup();
+        doReturn(true).when(this.nodesGroup).pingAll();
         Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
         configuration.setProperties(Collections.singletonMap(RedisCachedTokenProvider.REDIS_SINGLE_SERVER_ADDRESS, REDIS_URL));
         this.cachedDecorator = new RedisCachedTokenProvider(configuration, this.tokenProvider)
@@ -177,6 +182,27 @@ public class RedisCachedTokenProviderTest
         verify(this.lock).tryLock(anyLong(), anyLong(), any(TimeUnit.class));
         verifyNoMoreInteractions(this.lock, this.bucket, this.tokenProvider);
         verifyShutdown(null);
+    }
+
+    @Test(expected = HubspotApiException.class)
+    public void testRedisUnavailable() throws Exception
+    {
+        doReturn(false).when(this.nodesGroup).pingAll();
+        String refreshToken = RandomStringUtils.randomAlphanumeric(64);
+        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
+        configuration.setProperties(Collections.singletonMap(RedisCachedTokenProvider.REDIS_SINGLE_SERVER_ADDRESS, REDIS_URL));
+        this.cachedDecorator = new RedisCachedTokenProvider(configuration, this.tokenProvider)
+        {
+            protected Redisson createRedissonClient()
+            {
+                return RedisCachedTokenProviderTest.this.redisson;
+            }
+
+            protected ExecutorService createExecutorService()
+            {
+                return RedisCachedTokenProviderTest.this.shutdownExecutor;
+            }
+        };
     }
 
     private void verifyShutdown(InOrder inOrder)

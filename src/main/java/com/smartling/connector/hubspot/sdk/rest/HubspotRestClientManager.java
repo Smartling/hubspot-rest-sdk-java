@@ -57,7 +57,7 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
     }
 
     @SuppressWarnings("unchecked")
-    protected TokenProvider createTokenProvider(final Configuration configuration)
+    private TokenProvider createTokenProvider(final Configuration configuration)
     {
         TokenProvider provider = new HubspotTokenProvider(configuration);
         String decoratorClassName = configuration.getPropertyValue(TokenProvider.TOKEN_PROVIDER_DECORATOR_CLASS);

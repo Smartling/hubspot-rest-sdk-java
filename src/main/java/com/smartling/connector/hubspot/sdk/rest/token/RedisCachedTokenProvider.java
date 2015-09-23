@@ -17,6 +17,8 @@ import com.smartling.connector.hubspot.sdk.rest.Configuration;
 
 public class RedisCachedTokenProvider implements TokenProvider
 {
+    private static final String REDIS_ADDRESS_ERROR = "TokenProvider decorator %s cannot be initialized from the redis configuration: %s";
+    private static final String REDIS_CONNECTION_ERROR = "TokenProvider decorator %s cannot connect to redis server: %s";
     public static final String REDIS_SINGLE_SERVER_ADDRESS = "redis.singleServer.address";
 
     private static final int TRY_DELAY = 10000;
@@ -34,7 +36,7 @@ public class RedisCachedTokenProvider implements TokenProvider
         this.tokenProvider = tokenProvider;
         this.redisSingleServerAddress = configuration.getPropertyValue(REDIS_SINGLE_SERVER_ADDRESS);
         if (null == this.redisSingleServerAddress || this.redisSingleServerAddress.isEmpty())
-            throw new HubspotApiException("TokenProvider decorator " + this.getClass().getName() + " cannot be initialized from the configuration "+ configuration);
+            throw new HubspotApiException(String.format(REDIS_ADDRESS_ERROR, this.getClass().getName(), this.redisSingleServerAddress));
         ping();
     }
 
@@ -134,7 +136,7 @@ public class RedisCachedTokenProvider implements TokenProvider
         {
             NodesGroup<Node> group = redisson.getNodesGroup();
             if (!group.pingAll())
-                throw new HubspotApiException("TokenProvider decorator " + this.getClass().getName() + " cannot connect to redis server: " + this.redisSingleServerAddress);
+                throw new HubspotApiException(String.format(REDIS_CONNECTION_ERROR, this.getClass().getName(), this.redisSingleServerAddress));
         }
         finally
         {

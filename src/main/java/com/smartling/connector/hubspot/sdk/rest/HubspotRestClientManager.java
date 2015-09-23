@@ -70,7 +70,7 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
             }
             catch (Exception e)
             {
-                LOGGER.warn("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
+                LOGGER.error("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
             }
         }
         return provider;

@@ -186,21 +186,6 @@ public class HubspotRestPageClientTest
     }
 
     @Test
-    public void shouldCallListPagesUrlWithNameIcontatinsParameter() throws HubspotApiException
-    {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
-
-        PageSearchFilter filter = new PageSearchFilter();
-        filter.setName("Abou");
-
-        hubspotClient.listPages(5, 15, filter);
-
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("name__icontains", equalTo("Abou"))
-        );
-    }
-
-    @Test
     public void shouldCallListPagesUrlWithRightParams() throws HubspotApiException
     {
         final Integer offset = 5;
@@ -219,7 +204,7 @@ public class HubspotRestPageClientTest
                         .withQueryParam("limit", equalTo(limit.toString()))
                         .withQueryParam("offset", equalTo(offset.toString()))
                         .withQueryParam("campaign", equalTo(campaign))
-                        .withQueryParam("name", equalTo(name))
+                        .withQueryParam("name__icontains", equalTo(name))
                         .withQueryParam("archived", equalTo(archived.toString()))
                         .withQueryParam("is_draft", equalTo(draft.toString()))
         );

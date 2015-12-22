@@ -20,7 +20,7 @@ Another methods load and pass page as JSON transparently (SDK user is responcibl
 
 ## Run of integration tests
 
-` ./gradlew.sh clean integrationTest -Dhubspot.refreshToken=<refreshToken> -Dhubspot.clientId=<clientIdOfHubspotApplication>`
+` ./gradlew.sh clean integrationTest -Dhubspot.refreshToken=<refreshToken> -Dhubspot.clientId=<clientIdOfHubspotApplication> -Dhubspot.basicFormId=<DefaultFormId> -Dhubspot.notLivePageCampaignId=<notLivePageCampaignId> -Dhubspot.basicPageId=<basicPageId> -Dhubspot.archivedPageId=<archivedPageId> -Dhubspot.notLivePageId=<notLivePageId>`
 
 
 ## Using the client library

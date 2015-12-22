@@ -24,11 +24,10 @@ import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 
-public class FormsIntegrationTest
+public class FormsIntegrationTest extends BaseIntegrationTest
 {
-    private static final String BASIC_FORM_ID          = "770fcd8a-ef62-428f-883b-5cd0eb07a438";
     private static final String BASIC_FORM_NAME        = "Default Form (Sample)";
-    private static final String UPDATE_FORM_NAME       = "TEST UPDATE SUPER FORM";
+    private static final String UPDATE_FORM_NAME       = "TEST UPDATE SUPER FORM UPDATED";
     private static final String UPDATE_FORM_METHOD     = "PUT";
     private static final String UPDATE_FORM_SUBMITTEXT = "Apply";
 
@@ -46,16 +45,13 @@ public class FormsIntegrationTest
     private String        tmsId                  = "Tms Id ";
     private List<String>  formsToDelete          = Lists.newArrayList();
 
+    private String basicFormId;
+
     @Before
-    public void checkRequiredProperties()
+    public void init()
     {
-        final String refreshToken = System.getProperty("hubspot.refreshToken");
-        final String clientId = System.getProperty("hubspot.clientId");
-
-        assertThat(refreshToken).overridingErrorMessage("Access token for Hubspot API is missing!").isNotEmpty();
-        assertThat(clientId).overridingErrorMessage("Client id for Hubspot application is missing!").isNotEmpty();
-
         hubspotClient = new HubspotRestClientManager(Configuration.build(clientId, refreshToken)).getFormClient();
+        basicFormId = System.getProperty("hubspot.basicFormId");
     }
 
     @After
@@ -77,20 +73,20 @@ public class FormsIntegrationTest
     @Test
     public void shouldReturnForm() throws Exception
     {
-        String formAsJson = hubspotClient.getFormContentById(BASIC_FORM_ID);
+        String formAsJson = hubspotClient.getFormContentById(basicFormId);
         with(formAsJson)
                 .assertThat(NAME_PATH, equalTo(BASIC_FORM_NAME), "Name should have particular text")
                 .assertThat(METHOD_PATH, not(isEmptyOrNullString()), "Method should have particular text")
                 .assertThat(SUBMITTEXT_PATH, equalTo("Submit"), "Submit should have particular text")
-                .assertThat(ID_PATH, equalTo(BASIC_FORM_ID), "Form id should have particular value");
+                .assertThat(ID_PATH, equalTo(basicFormId), "Form id should have particular value");
     }
 
     @Test
     public void shouldReturnFormDetail() throws Exception
     {
-        FormDetail formDetail = hubspotClient.getFormDetailById(BASIC_FORM_ID);
+        FormDetail formDetail = hubspotClient.getFormDetailById(basicFormId);
 
-        assertThat(formDetail.getGuid()).isEqualTo(BASIC_FORM_ID);
+        assertThat(formDetail.getGuid()).isEqualTo(basicFormId);
         assertThat(formDetail.getName()).isEqualTo(BASIC_FORM_NAME);
         assertFormDetailIsNotEmpty(formDetail);
     }
@@ -129,7 +125,7 @@ public class FormsIntegrationTest
 
     private Pair<String, String> getClone() throws HubspotApiException
     {
-        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(BASIC_FORM_ID);
+        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(basicFormId);
         String guid = clonedForm.getGuid();
         formsToDelete.add(guid);
         String content = hubspotClient.getFormContentById(guid);
@@ -146,10 +142,10 @@ public class FormsIntegrationTest
     @Test
     public void shouldCloneForm() throws Exception
     {
-        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(BASIC_FORM_ID);
+        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(basicFormId);
         formsToDelete.add(clonedForm.getGuid());
 
-        assertThat(clonedForm.getGuid()).isNotEqualTo(BASIC_FORM_ID);
+        assertThat(clonedForm.getGuid()).isNotEqualTo(basicFormId);
         assertThat(clonedForm.getName()).isNotEqualTo(BASIC_FORM_NAME);
         assertFormDetailIsNotEmpty(clonedForm);
     }

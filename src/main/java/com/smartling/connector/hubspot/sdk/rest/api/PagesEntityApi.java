@@ -12,7 +12,7 @@ public interface PagesEntityApi
     @RequestLine("GET /content/api/v2/pages?access_token={access_token}&limit={limit}&offset={offset}")
     PageDetails pages(@Param("limit") int limit, @Param("offset") int offset, @Param("access_token") String accessToken);
 
-    @RequestLine("GET /content/api/v2/pages?access_token={access_token}&limit={limit}&offset={offset}&name={name}"
+    @RequestLine("GET /content/api/v2/pages?access_token={access_token}&limit={limit}&offset={offset}&name__icontains={name}"
             + "&campaign={campaign}&archived={archived}&is_draft={is_draft}")
     PageDetails pages(@Param("archived") Boolean archived, @Param("is_draft") Boolean draft,
             @Param("name") String name, @Param("campaign") String campaign, @Param("limit") int limit,

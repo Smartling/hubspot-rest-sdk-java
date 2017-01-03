@@ -1,22 +1,18 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import java.util.function.Function;
-
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.ConstructorUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClientManager;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
 import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
+import com.smartling.connector.hubspot.sdk.rest.token.RedisCachedTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
-
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.function.Function;
 
 public class HubspotRestClientManager implements HubspotClientManager, RestExecutor
 {
@@ -60,18 +56,14 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
     protected TokenProvider createTokenProvider(final Configuration configuration)
     {
         TokenProvider provider = new HubspotTokenProvider(configuration);
-        String decoratorClassName = configuration.getPropertyValue(TokenProvider.TOKEN_PROVIDER_DECORATOR_CLASS);
-        if (StringUtils.isNotBlank(decoratorClassName))
+        try
         {
-            try
-            {
-                provider = ConstructorUtils.invokeConstructor((Class<TokenProvider>)ClassUtils.getClass(decoratorClassName), configuration, provider);
-                LOGGER.info("tokenProvider is decorated by {} class", decoratorClassName);
-            }
-            catch (Exception e)
-            {
-                LOGGER.error("Cannot decorate tokenProvider by {} decorator", decoratorClassName, e);
-            }
+            provider = new RedisCachedTokenProvider(configuration, provider);
+            LOGGER.info("tokenProvider is decorated by {} class", "RedisCachedTokenProvider");
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Cannot decorate tokenProvider by {} decorator", "RedisCachedTokenProvider", e);
         }
         return provider;
     }

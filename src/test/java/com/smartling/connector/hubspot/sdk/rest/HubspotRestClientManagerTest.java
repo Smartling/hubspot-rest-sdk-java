@@ -1,21 +1,20 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import com.google.common.collect.Maps;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
-import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class HubspotRestClientManagerTest
 {
@@ -71,7 +70,6 @@ public class HubspotRestClientManagerTest
             if (init)
                 extProperties.put(INIT_OK, "");
             extProperties.put(RETURN_TOKEN, token);
-            extProperties.put(TokenProvider.TOKEN_PROVIDER_DECORATOR_CLASS, FakeTokenProvider.class.getName());
             configuration.setProperties(extProperties);
         }
         return configuration;

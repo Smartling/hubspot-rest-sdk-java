@@ -21,9 +21,9 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
     private final Configuration configuration;
     private final TokenProvider tokenProvider;
 
-    public HubspotRestClientManager(final Configuration configuration)
+    public HubspotRestClientManager(final Configuration configuration, TokenProvider tokenProvider)
     {
-        this.tokenProvider = createTokenProvider(configuration);
+        this.tokenProvider = tokenProvider;
         this.configuration = configuration;
     }
 
@@ -53,7 +53,7 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
     }
 
     @SuppressWarnings("unchecked")
-    protected TokenProvider createTokenProvider(final Configuration configuration)
+    public static TokenProvider createTokenProvider(final Configuration configuration)
     {
         TokenProvider provider = new HubspotTokenProvider(configuration);
         try

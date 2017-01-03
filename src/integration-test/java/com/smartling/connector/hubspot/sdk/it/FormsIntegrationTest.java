@@ -1,19 +1,5 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import static com.jayway.jsonassert.JsonAssert.with;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,6 +9,20 @@ import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import static com.jayway.jsonassert.JsonAssert.with;
+import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 
 public class FormsIntegrationTest extends BaseIntegrationTest
 {
@@ -50,7 +50,8 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        hubspotClient = new HubspotRestClientManager(Configuration.build(clientId, refreshToken)).getFormClient();
+        final Configuration configuration = Configuration.build(clientId, refreshToken);
+        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         basicFormId = System.getProperty("hubspot.basicFormId");
     }
 
@@ -135,7 +136,8 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        HubspotFormClient client = new HubspotRestClientManager(Configuration.build("wrong-client-id", "wrong-token")).getFormClient();
+        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
+        HubspotFormClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         client.listForms();
     }
 

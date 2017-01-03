@@ -1,21 +1,5 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import static com.jayway.jsonassert.JsonAssert.with;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-import org.fest.assertions.core.Condition;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,6 +12,22 @@ import com.smartling.connector.hubspot.sdk.page.PageDetails;
 import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
+import org.fest.assertions.core.Condition;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import static com.jayway.jsonassert.JsonAssert.with;
+import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 
 public class PagesIntegrationTest extends BaseIntegrationTest
 {
@@ -55,7 +55,8 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        hubspotClient = new HubspotRestClientManager(Configuration.build(clientId, refreshToken)).getPageClient();
+        final Configuration configuration = Configuration.build(clientId, refreshToken);
+        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         notLivePageCampaignId = System.getProperty("hubspot.notLivePageCampaignId");
         basicPageId = Long.parseLong(System.getProperty("hubspot.basicPageId"));
         archivedPageId = Long.parseLong(System.getProperty("hubspot.archivedPageId"));
@@ -202,7 +203,8 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        HubspotPageClient hubspotClient = new HubspotRestClientManager(Configuration.build("wrong-client-id", "wrong-token")).getPageClient();
+        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
+        HubspotPageClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         hubspotClient.listPages(0, 1);
     }
 

@@ -13,8 +13,11 @@ import org.mockito.internal.util.reflection.Whitebox;
 
 import java.util.Map;
 
+import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class HubspotRestClientManagerTest
 {
@@ -33,16 +36,21 @@ public class HubspotRestClientManagerTest
     public void testGetToken() throws Exception
     {
         String expectedToken = RandomStringUtils.random(STR_LENGHT);
-        HubspotRestClientManager clientManager = new HubspotRestClientManager(createConfiguration(true, true, expectedToken));
+        HubspotTokenProvider tokenProvider = mock(HubspotTokenProvider.class);
+        final RefreshTokenData refreshTokenData = new RefreshTokenData();
+        refreshTokenData.setAccessToken(expectedToken);
+        when(tokenProvider.getTokenData()).thenReturn(refreshTokenData);
+        HubspotRestClientManager clientManager = new HubspotRestClientManager(createConfiguration(true, true, expectedToken), tokenProvider);
         TokenProvider provider = (TokenProvider)Whitebox.getInternalState(clientManager, "tokenProvider");
-        assertTrue(provider instanceof FakeTokenProvider);
+        assertTrue(provider instanceof HubspotTokenProvider);
         clientManager.execute(token -> function(token, expectedToken));
     }
 
     @Test
     public void testCreateTokenProviderNoDecorator() throws Exception
     {
-        HubspotRestClientManager clientManager = new HubspotRestClientManager(createConfiguration(false, false, null));
+        final Configuration configuration = createConfiguration(false, false, null);
+        HubspotRestClientManager clientManager = new HubspotRestClientManager(configuration, createTokenProvider(configuration));
         TokenProvider provider = (TokenProvider)Whitebox.getInternalState(clientManager, "tokenProvider");
         assertTrue(provider instanceof HubspotTokenProvider);
     }
@@ -50,7 +58,8 @@ public class HubspotRestClientManagerTest
     @Test
     public void testCreateTokenProviderDecoratorFails() throws Exception
     {
-        HubspotRestClientManager clientManager = new HubspotRestClientManager(createConfiguration(true, false, null));
+        final Configuration configuration = createConfiguration(true, false, null);
+        HubspotRestClientManager clientManager = new HubspotRestClientManager(configuration, createTokenProvider(configuration));
         TokenProvider provider = (TokenProvider)Whitebox.getInternalState(clientManager, "tokenProvider");
         assertTrue(provider instanceof HubspotTokenProvider);
     }

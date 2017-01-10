@@ -11,8 +11,8 @@ public interface AuthorizationApi
     @RequestLine("POST /oauth/v1/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @Body("grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}")
-    RefreshTokenData initOauthFlow(@Param("client_id") final String clientId, @Param("client_secret") final String clientSecret, @Param("redirect_uri") final String redirectUri,
-            @Param("code") final String code);
+    RefreshTokenData getTokenFromCode(@Param ("client_id") final String clientId, @Param ("client_secret") final String clientSecret,
+            @Param ("redirect_uri") final String redirectUri, @Param ("code") final String code);
 
     @RequestLine("POST /oauth/v1/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")

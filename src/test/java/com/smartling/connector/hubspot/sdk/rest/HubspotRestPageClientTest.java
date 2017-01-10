@@ -1,5 +1,23 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PageDetails;
+import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
+import feign.FeignException;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.util.List;
+import java.util.Random;
+import java.util.function.Function;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -12,26 +30,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
-import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageDetails;
-import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
-import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
-
-import feign.FeignException;
 
 public class HubspotRestPageClientTest
 {
@@ -69,7 +67,7 @@ public class HubspotRestPageClientTest
             }
         };
 
-        final Configuration configuration = Configuration.build(BASE_URL, null, null);
+        final Configuration configuration = Configuration.build(BASE_URL, null, null, null, null);
         this.hubspotClient = new HubspotRestPageClient(configuration, executor);
     }
 

@@ -50,7 +50,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        final Configuration configuration = Configuration.build(clientId, refreshToken);
+        final Configuration configuration = Configuration.build(clientId, clientSecret, refreshToken, redirectUri);
         hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         basicFormId = System.getProperty("hubspot.basicFormId");
     }
@@ -136,7 +136,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
+        final Configuration configuration = Configuration.build("wrong-client-id", "", "wrong-token", "");
         HubspotFormClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         client.listForms();
     }

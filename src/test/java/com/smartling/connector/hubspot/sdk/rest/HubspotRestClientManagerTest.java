@@ -72,7 +72,7 @@ public class HubspotRestClientManagerTest
 
     private Configuration createConfiguration(boolean decorate, boolean init, String token)
     {
-        Configuration configuration = Configuration.build(RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(36));
+        Configuration configuration = Configuration.build(RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(36), RandomStringUtils.random(STR_LENGHT));
         Map<String, String> extProperties = Maps.newHashMap();
         if (decorate)
         {

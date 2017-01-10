@@ -1,24 +1,12 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.function.Function;
-
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.google.gson.JsonParser;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
+import feign.FeignException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -26,15 +14,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
-import com.smartling.connector.hubspot.sdk.form.FormDetail;
-import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.function.Function;
 
-import feign.FeignException;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HubspotRestFormClientTest
 {
@@ -72,7 +69,7 @@ public class HubspotRestFormClientTest
             }
         };
 
-        final Configuration configuration = Configuration.build(BASE_URL, null, null);
+        final Configuration configuration = Configuration.build(BASE_URL, null, null, null, null);
         this.hubspotClient = new HubspotRestFormClient(configuration, executor);
     }
 

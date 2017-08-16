@@ -97,7 +97,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     {
         List<FormDetail> formDetails = hubspotClient.listForms();
         assertThat(formDetails).overridingErrorMessage("Form details list should not be null").isNotNull();
-        assertThat(formDetails.size()).overridingErrorMessage("Form details count should not be positive").isPositive();
+        assertThat(formDetails.size()).overridingErrorMessage("Form details count should be positive").isPositive();
 
         formDetails.stream().forEach(d -> assertFormDetailIsNotEmpty(d));
     }
@@ -149,6 +149,16 @@ public class FormsIntegrationTest extends BaseIntegrationTest
 
         assertThat(clonedForm.getGuid()).isNotEqualTo(basicFormId);
         assertThat(clonedForm.getName()).isNotEqualTo(BASIC_FORM_NAME);
+        assertFormDetailIsNotEmpty(clonedForm);
+    }
+
+    // @Test
+    // This is to check API
+    public void shouldCloneSpecifiedForm() throws Exception
+    {
+        // this is a system form
+        final String formId = "f615aad4-7cd7-48a0-9dec-4e8c980d5248";
+        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(formId);
         assertFormDetailIsNotEmpty(clonedForm);
     }
 

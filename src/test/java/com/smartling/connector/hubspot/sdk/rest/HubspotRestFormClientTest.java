@@ -140,6 +140,32 @@ public class HubspotRestFormClientTest
     }
 
     @Test
+    public void cloneShouldResetDeletableToTrue() throws HubspotApiException
+    {
+        final String guid = "6364429e-9c68-4c38-a71c-e1edb98825fc";
+        String body = formDetail();
+        body = body.replaceFirst("\"deletable\": true", "\"deletable\": false");
+
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        givenThat(post(HttpMockUtils.path("/forms/v2/forms"))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + guid))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        hubspotClient.cloneFormAsDetail(FORM_ID);
+
+        verify(
+                postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                        .withQueryParam("access_token", equalTo(originalToken))
+                        .withHeader("Content-Type", equalTo("application/json"))
+                        .withRequestBody(containing("\"deletable\":true"))
+        );
+    }
+
+    @Test
     public void shouldCallUpdateFormUrl() throws HubspotApiException
     {
         givenThat(post(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(aResponse().withStatus(HttpStatus.SC_OK)));
@@ -215,7 +241,7 @@ public class HubspotRestFormClientTest
         assertThat(formDetail.getUpdated()).isEqualTo(new Date(1433967918640L));
     }
 
-    private String formDetail()
+    private static String formDetail()
     {
         return   "{"
                 +" \"portalId\": 123,"
@@ -350,7 +376,7 @@ public class HubspotRestFormClientTest
                 +"}";
     }
 
-    private String formSnippet()
+    private static String formSnippet()
     {
         return   "{"
                 +" \"name\": \"updated form name\","
@@ -383,7 +409,7 @@ public class HubspotRestFormClientTest
                 +"}";
     }
 
-    private String formDetails()
+    private static String formDetails()
     {
         return   "[ {"
                 +"     \"guid\":\"0033cf74de6a48c4ac5d805d72d69822\","

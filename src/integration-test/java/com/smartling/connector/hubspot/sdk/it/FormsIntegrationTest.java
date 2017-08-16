@@ -152,16 +152,6 @@ public class FormsIntegrationTest extends BaseIntegrationTest
         assertFormDetailIsNotEmpty(clonedForm);
     }
 
-    // @Test
-    // This is to check API
-    public void shouldCloneSpecifiedForm() throws Exception
-    {
-        // this is a system form
-        final String formId = "f615aad4-7cd7-48a0-9dec-4e8c980d5248";
-        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(formId);
-        assertFormDetailIsNotEmpty(clonedForm);
-    }
-
     @Test
     public void shouldUpdateForm() throws Exception
     {

@@ -4,6 +4,7 @@ import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageDetails;
 
+import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 
@@ -28,5 +29,6 @@ public interface PagesEntityApi
     PageDetail pageDetail(@Param("page_id") long pageId, @Param("access_token") String accessToken);
 
     @RequestLine("POST /content/api/v2/pages/{page_id}/clone?access_token={access_token}")
-    PageDetail clone(@Param("page_id") long pageId, @Param("access_token") String accessToken);
+    @Headers("Content-Type: application/json")
+    PageDetail clone(@Param("page_id") long pageId, @Param("access_token") String accessToken, String pageAsJson);
 }

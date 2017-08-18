@@ -16,6 +16,8 @@ import feign.httpclient.ApacheHttpClient;
 
 public class HubspotRestPageClient extends AbstractHubspotRestClient implements HubspotPageClient
 {
+    private static final String EMPTY_JSON = "{}";
+
     private final PagesRawApi pagesRawApi;
     private final PagesEntityApi pagesEntityApi;
     private final PagesEntityApi pagesEntityApiApache;
@@ -60,18 +62,13 @@ public class HubspotRestPageClient extends AbstractHubspotRestClient implements 
     @Override
     public String clonePage(final long originalPageId) throws HubspotApiException
     {
-        return execute(token -> pagesRawApi.clone(originalPageId, token, jsonForClone()));
+        return execute(token -> pagesRawApi.clone(originalPageId, token, EMPTY_JSON));
     }
 
     @Override
     public PageDetail clonePageAsDetail(final long originalPageId) throws HubspotApiException
     {
-        return execute(token -> pagesEntityApi.clone(originalPageId, token, jsonForClone()));
-    }
-
-    private static String jsonForClone() {
-        final String emptyJson = "{}";
-        return emptyJson;
+        return execute(token -> pagesEntityApi.clone(originalPageId, token, EMPTY_JSON));
     }
 
     @Override

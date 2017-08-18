@@ -10,7 +10,8 @@ public interface PagesRawApi
     String page(@Param("page_id") long pageId, @Param("access_token") String accessToken);
 
     @RequestLine("POST /content/api/v2/pages/{page_id}/clone?access_token={access_token}")
-    String clone(@Param("page_id") long pageId, @Param("access_token") String accessToken);
+    @Headers("Content-Type: application/json")
+    String clone(@Param("page_id") long pageId, @Param("access_token") String accessToken, String pageAsJson);
 
     @RequestLine("PUT /content/api/v2/pages/{page_id}?access_token={access_token}")
     @Headers("Content-Type: application/json")

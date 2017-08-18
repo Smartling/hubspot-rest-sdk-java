@@ -21,6 +21,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
 {
     private static final String GUID_PROPERTY_NAME = "guid";
     private static final String NAME_PROPERTY_NAME = "name";
+    private static final String DELETABLE_PROPERTY_NAME = "deletable";
     private static final String CLONED_NAME_TEMPLATE = "%s - Cloned - %d";
 
     private final FormsRawApi formsRawApi;
@@ -70,21 +71,27 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     {
         String body = execute(token -> formsRawApi.form(guid, token));
         JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(body).getAsJsonObject();
-        String name = obj.get(NAME_PROPERTY_NAME).getAsString();
-        obj.addProperty(NAME_PROPERTY_NAME, String.format(CLONED_NAME_TEMPLATE, name, System.currentTimeMillis()));
-        String newBody = execute(token -> formsRawApi.create(obj.toString(), token));
+        JsonObject srcForm = parser.parse(body).getAsJsonObject();
+
+        setupCloneFields(srcForm);
+
+        String newBody = execute(token -> formsRawApi.create(srcForm.toString(), token));
         JsonObject newObj = parser.parse(newBody).getAsJsonObject();
         return execute(token -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString(), token));
     }
 
+    private void setupCloneFields(JsonObject form) {
+        String name = form.get(NAME_PROPERTY_NAME).getAsString();
+        form.addProperty(NAME_PROPERTY_NAME, String.format(CLONED_NAME_TEMPLATE, name, System.currentTimeMillis()));
+        // we can use REST API to create forms with deletable = true only
+        form.addProperty(DELETABLE_PROPERTY_NAME, true);
+    }
 
     @Override
     public String updateFormContent(String guid, String content) throws HubspotApiException
     {
         return execute(token -> formsRawApi.update(guid, content, token));
     }
-
 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException

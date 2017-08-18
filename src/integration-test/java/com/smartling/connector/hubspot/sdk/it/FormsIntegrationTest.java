@@ -97,7 +97,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     {
         List<FormDetail> formDetails = hubspotClient.listForms();
         assertThat(formDetails).overridingErrorMessage("Form details list should not be null").isNotNull();
-        assertThat(formDetails.size()).overridingErrorMessage("Form details count should not be positive").isPositive();
+        assertThat(formDetails.size()).overridingErrorMessage("Form details count should be positive").isPositive();
 
         formDetails.stream().forEach(d -> assertFormDetailIsNotEmpty(d));
     }

@@ -111,7 +111,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     {
         PageDetails pageDetails = hubspotClient.listPages(0, 1);
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
 
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);

@@ -55,7 +55,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        final Configuration configuration = Configuration.build(clientId, clientSecret, refreshToken, redirectUri);
+        final Configuration configuration = Configuration.build(clientId, refreshToken);
         hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         notLivePageCampaignId = System.getProperty("hubspot.notLivePageCampaignId");
         basicPageId = Long.parseLong(System.getProperty("hubspot.basicPageId"));
@@ -111,7 +111,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     {
         PageDetails pageDetails = hubspotClient.listPages(0, 1);
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
 
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
@@ -203,7 +203,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        final Configuration configuration = Configuration.build("wrong-client-id", "", "wrong-token", "");
+        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
         HubspotPageClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         hubspotClient.listPages(0, 1);
     }

@@ -38,7 +38,7 @@ public class HubspotTokenProvider implements TokenProvider
     {
         try
         {
-            return this.authorizationApi.newToken(clientId, clientSecret, redirectUri, refreshToken);
+            return this.authorizationApi.newToken(clientId, clientId, redirectUri, refreshToken);
         }
         catch (FeignException e)
         {

@@ -1,30 +1,10 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.gson.JsonParser;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
-import com.smartling.connector.hubspot.sdk.form.FormDetail;
-import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
-import feign.FeignException;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.function.Function;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -32,6 +12,29 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.function.Function;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
+
+import feign.FeignException;
 
 public class HubspotRestFormClientTest
 {
@@ -69,7 +72,7 @@ public class HubspotRestFormClientTest
             }
         };
 
-        final Configuration configuration = Configuration.build(BASE_URL, null, null, null, null);
+        final Configuration configuration = Configuration.build(BASE_URL, null, null);
         this.hubspotClient = new HubspotRestFormClient(configuration, executor);
     }
 
@@ -136,32 +139,6 @@ public class HubspotRestFormClientTest
         );
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + newGuid))
                 .withQueryParam("access_token", equalTo(this.originalToken))
-        );
-    }
-
-    @Test
-    public void cloneShouldResetDeletableToTrue() throws HubspotApiException
-    {
-        final String guid = "6364429e-9c68-4c38-a71c-e1edb98825fc";
-        String body = formDetail();
-        body = body.replaceFirst("\"deletable\": true", "\"deletable\": false");
-
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        givenThat(post(HttpMockUtils.path("/forms/v2/forms"))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + guid))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        hubspotClient.cloneFormAsDetail(FORM_ID);
-
-        verify(
-                postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                        .withQueryParam("access_token", equalTo(originalToken))
-                        .withHeader("Content-Type", equalTo("application/json"))
-                        .withRequestBody(containing("\"deletable\":true"))
         );
     }
 
@@ -241,7 +218,7 @@ public class HubspotRestFormClientTest
         assertThat(formDetail.getUpdated()).isEqualTo(new Date(1433967918640L));
     }
 
-    private static String formDetail()
+    private String formDetail()
     {
         return   "{"
                 +" \"portalId\": 123,"
@@ -376,7 +353,7 @@ public class HubspotRestFormClientTest
                 +"}";
     }
 
-    private static String formSnippet()
+    private String formSnippet()
     {
         return   "{"
                 +" \"name\": \"updated form name\","
@@ -409,7 +386,7 @@ public class HubspotRestFormClientTest
                 +"}";
     }
 
-    private static String formDetails()
+    private String formDetails()
     {
         return   "[ {"
                 +"     \"guid\":\"0033cf74de6a48c4ac5d805d72d69822\","

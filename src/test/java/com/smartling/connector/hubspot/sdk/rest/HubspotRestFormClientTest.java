@@ -143,16 +143,45 @@ public class HubspotRestFormClientTest
     }
 
     @Test
+    public void cloneShouldResetDeletableToTrue() throws HubspotApiException
+    {
+        final String guid = "6364429e-9c68-4c38-a71c-e1edb98825fc";
+        String body = formDetail();
+        body = body.replaceFirst("\"deletable\": true", "\"deletable\": false");
+
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        givenThat(post(HttpMockUtils.path("/forms/v2/forms"))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + guid))
+                .willReturn(HttpMockUtils.aJsonResponse(body)));
+
+        hubspotClient.cloneFormAsDetail(FORM_ID);
+
+        verify(
+                postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                        .withQueryParam("access_token", equalTo(originalToken))
+                        .withHeader("Content-Type", equalTo("application/json"))
+                        .withRequestBody(containing("\"deletable\":true"))
+        );
+    }
+
+    @Test
     public void shouldCallUpdateFormUrl() throws HubspotApiException
     {
         givenThat(post(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(aResponse().withStatus(HttpStatus.SC_OK)));
 
-        hubspotClient.updateFormContent(FORM_ID, formSnippet());
+        String form = formSnippet();
+        form = form.replaceFirst("\"deletable\": true", "\"deletable\": false");
+
+        hubspotClient.updateFormContent(FORM_ID, form);
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
                         .withQueryParam("access_token", equalTo(this.originalToken))
                         .withHeader("Content-Type", equalTo("application/json"))
-                        .withRequestBody(equalTo(formSnippet()))
+                        .withRequestBody(containing("\"deletable\":true"))
         );
     }
 
@@ -382,7 +411,8 @@ public class HubspotRestFormClientTest
                 +"       \"selectedOptions\": [],"
                 +"       \"options\": []"
                 +"    } ]"
-                +" } ]"
+                +" } ],"
+                +" \"deletable\": true"
                 +"}";
     }
 

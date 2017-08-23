@@ -70,27 +70,39 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     public FormDetail cloneFormAsDetail(String guid) throws HubspotApiException
     {
         String body = execute(token -> formsRawApi.form(guid, token));
-        JsonParser parser = new JsonParser();
-        JsonObject srcForm = parser.parse(body).getAsJsonObject();
+        JsonObject srcForm = parseForm(body);
 
         setupCloneFields(srcForm);
 
         String newBody = execute(token -> formsRawApi.create(srcForm.toString(), token));
-        JsonObject newObj = parser.parse(newBody).getAsJsonObject();
+        JsonObject newObj = parseForm(newBody);
         return execute(token -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString(), token));
     }
 
-    private void setupCloneFields(JsonObject form) {
+    private static void setupCloneFields(JsonObject form) {
         String name = form.get(NAME_PROPERTY_NAME).getAsString();
         form.addProperty(NAME_PROPERTY_NAME, String.format(CLONED_NAME_TEMPLATE, name, System.currentTimeMillis()));
-        // we can use REST API to create forms with deletable = true only
-        form.addProperty(DELETABLE_PROPERTY_NAME, true);
+        resetDeletableField(form);
     }
 
     @Override
     public String updateFormContent(String guid, String content) throws HubspotApiException
     {
-        return execute(token -> formsRawApi.update(guid, content, token));
+        JsonObject form = parseForm(content);
+
+        resetDeletableField(form);
+
+        return execute(token -> formsRawApi.update(guid, form.toString(), token));
+    }
+
+    private static void resetDeletableField(JsonObject form) {
+        // we can use REST API to create forms with deletable = true only
+        form.addProperty(DELETABLE_PROPERTY_NAME, true);
+    }
+
+    private static JsonObject parseForm(String content) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(content).getAsJsonObject();
     }
 
     @Override

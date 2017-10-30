@@ -7,28 +7,32 @@ public class Configuration
 {
     private static final String API_HOST = "https://api.hubapi.com";
 
-    private String apiUrl;
-    private String clientId;
-    private String refreshToken;
+    private final String apiUrl;
+    private final String clientId;
+    private final String refreshToken;
+    private final String clientSecret;
+    private final String redirectUri;
     private int    connectTimeoutMillis = 10_000;
     private int    readTimeoutMillis    = 60_000;
     private Map<String, String> properties = Collections.emptyMap();
 
-    private Configuration(String apiUrl, String clientId, String refreshToken)
+    private Configuration(String apiUrl, String clientId, String clientSecret, String redirectUri, String refreshToken)
     {
         this.apiUrl = apiUrl;
         this.clientId = clientId;
         this.refreshToken = refreshToken;
+        this.clientSecret = clientSecret;
+        this.redirectUri = redirectUri;
     }
 
-    public static Configuration build(String clientId, String refreshToken)
+    public static Configuration build(String clientId, String clientSecret, String redirectUri, String refreshToken)
     {
-        return new Configuration(API_HOST, clientId, refreshToken);
+        return new Configuration(API_HOST, clientId, clientSecret, redirectUri, refreshToken);
     }
 
-    public static Configuration build(String apiUrl, String clientId, String refreshToken)
+    public static Configuration build(String apiUrl, String clientId, String clientSecret, String redirectUri, String refreshToken)
     {
-        return new Configuration(apiUrl, clientId, refreshToken);
+        return new Configuration(apiUrl, clientId, clientSecret, redirectUri, refreshToken);
     }
 
     public String getApiUrl()
@@ -44,6 +48,16 @@ public class Configuration
     public String getRefreshToken()
     {
         return refreshToken;
+    }
+
+    public String getClientSecret()
+    {
+        return clientSecret;
+    }
+
+    public String getRedirectUri()
+    {
+        return redirectUri;
     }
 
     public int getConnectTimeoutMillis()

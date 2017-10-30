@@ -55,7 +55,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        final Configuration configuration = Configuration.build(clientId, refreshToken);
+        final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
         hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         notLivePageCampaignId = System.getProperty("hubspot.notLivePageCampaignId");
         basicPageId = Long.parseLong(System.getProperty("hubspot.basicPageId"));
@@ -203,7 +203,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
+        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
         HubspotPageClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
         hubspotClient.listPages(0, 1);
     }

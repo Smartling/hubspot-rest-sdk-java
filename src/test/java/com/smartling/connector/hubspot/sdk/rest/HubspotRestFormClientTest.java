@@ -1,24 +1,12 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.function.Function;
-
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.google.gson.JsonParser;
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -26,15 +14,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
-import com.smartling.connector.hubspot.sdk.form.FormDetail;
-import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
-import feign.FeignException;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HubspotRestFormClientTest
 {
@@ -49,31 +46,20 @@ public class HubspotRestFormClientTest
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private String originalToken;
+    private TokenProvider tokenProvider;
     private HubspotFormClient hubspotClient;
+    private String originalToken;
 
     @Before
     public void setUpMocks() throws Exception
     {
         this.originalToken = RandomStringUtils.randomAlphanumeric(36);
-        RestExecutor executor = new RestExecutor()
-        {
-            @Override
-            public <T> T execute(Function<String, T> apiCall) throws HubspotApiException
-            {
-                try
-                {
-                    return apiCall.apply(originalToken);
-                }
-                catch (FeignException e)
-                {
-                    throw new HubspotApiException("Call to Hubspot API failed!", e);
-                }
-            }
-        };
 
-        final Configuration configuration = Configuration.build(BASE_URL, null, null);
-        this.hubspotClient = new HubspotRestFormClient(configuration, executor);
+        final Configuration configuration = Configuration.build(BASE_URL, null, null, null, null);
+        final RefreshTokenData refreshTokenData = new RefreshTokenData();
+        refreshTokenData.setAccessToken(originalToken);
+        tokenProvider = () -> refreshTokenData;
+        this.hubspotClient = new HubspotRestFormClient(configuration, tokenProvider);
     }
 
     @Test
@@ -84,9 +70,7 @@ public class HubspotRestFormClientTest
 
         hubspotClient.getFormContentById(FORM_ID);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID)));
     }
 
     @Test
@@ -97,9 +81,7 @@ public class HubspotRestFormClientTest
 
         hubspotClient.getFormDetailById(FORM_ID);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID)));
     }
 
     @Test
@@ -110,9 +92,7 @@ public class HubspotRestFormClientTest
 
         hubspotClient.delete(FORM_ID);
 
-        verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID)));
     }
 
     @Test
@@ -132,14 +112,11 @@ public class HubspotRestFormClientTest
 
         int i = original.indexOf("\",\"action\"");
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("access_token", equalTo(this.originalToken))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .withRequestBody(containing(original.substring(0, i)))
                 .withRequestBody(containing(original.substring(i)))
         );
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + newGuid))
-                .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + newGuid)));
     }
 
     @Test
@@ -150,9 +127,8 @@ public class HubspotRestFormClientTest
         hubspotClient.updateFormContent(FORM_ID, formSnippet());
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
                         .withHeader("Content-Type", equalTo("application/json"))
-                        .withRequestBody(equalTo(formSnippet()))
+                        .withRequestBody(equalToJson(formSnippet()))
         );
     }
 
@@ -163,9 +139,7 @@ public class HubspotRestFormClientTest
 
         hubspotClient.listForms();
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
     }
 
     @Test
@@ -175,9 +149,7 @@ public class HubspotRestFormClientTest
 
         hubspotClient.listFormsByTmsId("someId");
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                        .withQueryParam("access_token", equalTo(this.originalToken))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
     }
 
     @Test
@@ -382,7 +354,8 @@ public class HubspotRestFormClientTest
                 +"       \"selectedOptions\": [],"
                 +"       \"options\": []"
                 +"    } ]"
-                +" } ]"
+                +" } ],"
+                +" \"deletable\":true"
                 +"}";
     }
 

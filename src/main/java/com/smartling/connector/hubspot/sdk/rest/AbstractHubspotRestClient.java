@@ -1,9 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.function.Function;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -11,19 +7,42 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import feign.FeignException;
+import feign.RequestInterceptor;
+
+import java.lang.reflect.Type;
+import java.util.Date;
+import java.util.function.Supplier;
 
 public abstract class AbstractHubspotRestClient
 {
-    private final RestExecutor executor;
+    private final TokenProvider tokenProvider;
+    private RefreshTokenData refreshTokenData;
 
-    public AbstractHubspotRestClient(RestExecutor executor)
+    public AbstractHubspotRestClient(TokenProvider tokenProvider)
     {
-        this.executor = executor;
+        this.tokenProvider = tokenProvider;
     }
 
-    protected <T> T execute(Function<String, T> apiCall) throws HubspotApiException
+    public RequestInterceptor getAuthenticationInterceptor()
     {
-        return executor.execute(apiCall);
+        return template -> template.header("Authorization", "Bearer " + refreshTokenData.getAccessToken());
+    }
+
+    protected <T> T execute(Supplier<T> apiCall) throws HubspotApiException
+    {
+        refreshTokenData = tokenProvider.getTokenData();
+
+        try
+        {
+            return apiCall.get();
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Call to Hubspot API failed!", e);
+        }
     }
 
     protected static Gson configuredGson()
@@ -40,10 +59,5 @@ public abstract class AbstractHubspotRestClient
         {
             return new Date(json.getAsLong());
         }
-    }
-
-    public interface RestExecutor
-    {
-        public <T> T execute(Function<String, T> apiCall) throws HubspotApiException;
     }
 }

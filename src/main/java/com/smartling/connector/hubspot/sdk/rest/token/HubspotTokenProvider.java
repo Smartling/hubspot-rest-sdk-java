@@ -15,10 +15,14 @@ public class HubspotTokenProvider implements TokenProvider
     private final AuthorizationApi authorizationApi;
     private final String           refreshToken;
     private final String           clientId;
+    private final String           clientSecret;
+    private final String           redirectUri;
 
     public HubspotTokenProvider(final Configuration configuration)
     {
         this.clientId = configuration.getClientId();
+        this.clientSecret = configuration.getClientSecret();
+        this.redirectUri = configuration.getRedirectUri();
         this.refreshToken = configuration.getRefreshToken();
 
         Options connectionConfig = new Options(
@@ -34,7 +38,7 @@ public class HubspotTokenProvider implements TokenProvider
     {
         try
         {
-            return this.authorizationApi.newToken(this.clientId, this.refreshToken);
+            return this.authorizationApi.newToken(this.clientId, this.clientSecret, this.redirectUri, this.refreshToken);
         }
         catch (FeignException e)
         {

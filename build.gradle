@@ -53,11 +53,19 @@ tasks.withType(Test) {
 
 check.dependsOn -= integrationTest
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId 'hubspot-sdk'
             from components.java
+
+            artifact tasks.sourceJar {
+                classifier 'sources'
+            }
         }
     }
 

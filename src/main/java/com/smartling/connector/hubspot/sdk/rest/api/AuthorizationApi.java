@@ -13,4 +13,9 @@ public interface AuthorizationApi
     @Body("grant_type=refresh_token&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&refresh_token={refresh_token}")
 
     RefreshTokenData newToken(@Param("client_id") final String clientId, @Param("client_secret") final String clientSecret, @Param("redirect_uri") final String redirectUri, @Param("refresh_token") final String refreshToken);
+
+    @RequestLine("POST /oauth/v1/token")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @Body("grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={grant_code}")
+    RefreshTokenData getTokenUsingGrantCode(@Param("client_id") final String clientId, @Param("client_secret") final String clientSecret, @Param("redirect_uri") final String redirectUri, @Param("grant_code") final String grantCode);
 }

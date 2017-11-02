@@ -9,8 +9,8 @@ public class Configuration
 
     private final String apiUrl;
     private final String clientId;
-    private final String refreshToken;
     private final String clientSecret;
+    private final String refreshToken;
     private final String redirectUri;
     private int    connectTimeoutMillis = 10_000;
     private int    readTimeoutMillis    = 60_000;
@@ -20,8 +20,8 @@ public class Configuration
     {
         this.apiUrl = apiUrl;
         this.clientId = clientId;
-        this.refreshToken = refreshToken;
         this.clientSecret = clientSecret;
+        this.refreshToken = refreshToken;
         this.redirectUri = redirectUri;
     }
 
@@ -45,14 +45,14 @@ public class Configuration
         return clientId;
     }
 
-    public String getRefreshToken()
-    {
-        return refreshToken;
-    }
-
     public String getClientSecret()
     {
         return clientSecret;
+    }
+
+    public String getRefreshToken()
+    {
+        return refreshToken;
     }
 
     public String getRedirectUri()

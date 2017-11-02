@@ -34,6 +34,7 @@ public class HubspotTokenProvider implements TokenProvider
                                 .target(AuthorizationApi.class, configuration.getApiUrl());
     }
 
+    @Override
     public RefreshTokenData getTokenData() throws HubspotApiException
     {
         try
@@ -43,6 +44,18 @@ public class HubspotTokenProvider implements TokenProvider
         catch (FeignException e)
         {
             throw new HubspotApiException("Auth call to Hubspot API failed!", e);
+        }
+    }
+
+    public RefreshTokenData getTokenUsingGrantCode(String redirectUri, String grantCode) throws HubspotApiException
+    {
+        try
+        {
+            return authorizationApi.getTokenUsingGrantCode(this.clientId, this.clientSecret, redirectUri, grantCode);
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Requesting refresh token by grant code failed!", e);
         }
     }
 }

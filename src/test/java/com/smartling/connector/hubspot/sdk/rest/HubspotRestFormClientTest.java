@@ -139,7 +139,6 @@ public class HubspotRestFormClientTest
 
         verify(
                 postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                        .withQueryParam("access_token", equalTo(originalToken))
                         .withHeader("Content-Type", equalTo("application/json"))
                         .withRequestBody(containing("\"deletable\":true"))
         );

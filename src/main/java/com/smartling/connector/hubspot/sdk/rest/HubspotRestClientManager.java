@@ -1,20 +1,15 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotClientManager;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
-import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient.RestExecutor;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.RedisCachedTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
-import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Function;
-
-public class HubspotRestClientManager implements HubspotClientManager, RestExecutor
+public class HubspotRestClientManager implements HubspotClientManager
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(HubspotRestClientManager.class);
 
@@ -30,26 +25,13 @@ public class HubspotRestClientManager implements HubspotClientManager, RestExecu
     @Override
     public HubspotPageClient getPageClient()
     {
-        return new HubspotRestPageClient(configuration, this);
+        return new HubspotRestPageClient(configuration, tokenProvider);
     }
 
     @Override
     public HubspotFormClient getFormClient()
     {
-        return new HubspotRestFormClient(configuration, this);
-    }
-
-    @Override
-    public <T> T execute(Function<String, T> apiCall) throws HubspotApiException
-    {
-        try
-        {
-            return apiCall.apply(tokenProvider.getTokenData().getAccessToken());
-        }
-        catch (FeignException e)
-        {
-            throw new HubspotApiException("Call to Hubspot API failed!", e);
-        }
+        return new HubspotRestFormClient(configuration, tokenProvider);
     }
 
     @SuppressWarnings("unchecked")

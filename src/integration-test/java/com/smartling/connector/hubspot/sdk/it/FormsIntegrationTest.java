@@ -50,7 +50,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Before
     public void init()
     {
-        final Configuration configuration = Configuration.build(clientId, refreshToken);
+        final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
         hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         basicFormId = System.getProperty("hubspot.basicFormId");
     }
@@ -99,7 +99,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
         assertThat(formDetails).overridingErrorMessage("Form details list should not be null").isNotNull();
         assertThat(formDetails.size()).overridingErrorMessage("Form details count should not be positive").isPositive();
 
-        formDetails.stream().forEach(d -> assertFormDetailIsNotEmpty(d));
+        formDetails.forEach(this::assertFormDetailIsNotEmpty);
     }
 
     private void assertFormDetailIsNotEmpty(FormDetail formDetail)
@@ -130,13 +130,13 @@ public class FormsIntegrationTest extends BaseIntegrationTest
         String guid = clonedForm.getGuid();
         formsToDelete.add(guid);
         String content = hubspotClient.getFormContentById(guid);
-        return new ImmutablePair<String, String>(guid, content);
+        return new ImmutablePair<>(guid, content);
     }
 
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
-        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-token");
+        final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri" ,"wrong-token");
         HubspotFormClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
         client.listForms();
     }

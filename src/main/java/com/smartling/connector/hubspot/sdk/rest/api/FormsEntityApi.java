@@ -10,12 +10,12 @@ import feign.RequestLine;
 
 public interface FormsEntityApi
 {
-    @RequestLine("GET /forms/v2/forms?access_token={access_token}")
-    List<FormDetail> forms(@Param("access_token") String accessToken);
+    @RequestLine("GET /forms/v2/forms")
+    List<FormDetail> forms();
 
-    @RequestLine("GET /forms/v2/forms/{form_guid}?access_token={access_token}")
-    FormDetail formDetail(@Param("form_guid") String form_guid, @Param("access_token") String accessToken);
+    @RequestLine("GET /forms/v2/forms/{form_guid}")
+    FormDetail formDetail(@Param("form_guid") String form_guid);
 
-    @RequestLine("DELETE /forms/v2/forms/{form_guid}?access_token={access_token}")
-    ResultInfo delete(@Param("form_guid") String guid, @Param("access_token") String accessToken);
+    @RequestLine("DELETE /forms/v2/forms/{form_guid}")
+    ResultInfo delete(@Param("form_guid") String guid);
 }

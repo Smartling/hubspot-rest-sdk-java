@@ -22,11 +22,13 @@ public class HubspotTokenProviderTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
-    private static final String BASE_URL = "http://localhost:" + PORT;
-    private static final String REFRESH_TOKEN = "3333-4444-5555";
-    private static final String CLIENT_ID = "0000-1111-2222";
-    private static final String ACCESS_TOKEN = "access-token";
-    private static final int EXPIRES_IN_TOKEN = 28799;
+    private static final String BASE_URL         = "http://localhost:" + PORT;
+    private static final String REFRESH_TOKEN    = "3333-4444-5555";
+    private static final String CLIENT_ID        = "0000-1111-2222";
+    private static final String CLIENT_SECRET    = "6666-7777-8888";
+    private static final String ACCESS_TOKEN     = "access-token";
+    private static final String REDIRECT_URI     = "https://hubspot.smartling.com/oauth/redirect";
+    private static final int    EXPIRES_IN_TOKEN = 28799;
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -34,12 +36,12 @@ public class HubspotTokenProviderTest
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private TokenProvider tokenProvider = new HubspotTokenProvider(Configuration.build(BASE_URL, CLIENT_ID, REFRESH_TOKEN));
+    private TokenProvider tokenProvider = new HubspotTokenProvider(Configuration.build(BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN));
 
     @Before
     public void setUp() throws Exception
     {
-        stubFor(post(HttpMockUtils.urlStartingWith("/auth")).willReturn(HttpMockUtils.aJsonResponse(getTokenData())));
+        stubFor(post(HttpMockUtils.urlStartingWith("/oauth/v1/token")).willReturn(HttpMockUtils.aJsonResponse(getTokenData())));
     }
 
     @Test
@@ -49,8 +51,10 @@ public class HubspotTokenProviderTest
         assertEquals(ACCESS_TOKEN, token.getAccessToken());
         assertEquals(EXPIRES_IN_TOKEN, token.getExpiresIn());
 
-        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/auth"))
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/"))
                 .withRequestBody(HttpMockUtils.withFormParam("client_id", CLIENT_ID))
+                .withRequestBody(HttpMockUtils.withFormParam("client_secret", CLIENT_SECRET))
+                .withRequestBody(HttpMockUtils.withFormParam("redirect_uri", REDIRECT_URI))
                 .withRequestBody(HttpMockUtils.withFormParam("refresh_token", REFRESH_TOKEN))
                 .withRequestBody(HttpMockUtils.withFormParam("grant_type", "refresh_token")) );
     }

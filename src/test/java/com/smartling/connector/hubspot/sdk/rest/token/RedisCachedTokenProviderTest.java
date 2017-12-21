@@ -1,5 +1,26 @@
 package com.smartling.connector.hubspot.sdk.rest.token;
 
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.rest.Configuration;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
+import org.redisson.Redisson;
+import org.redisson.core.Node;
+import org.redisson.core.NodesGroup;
+import org.redisson.core.RBucket;
+import org.redisson.core.RLock;
+
+import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -12,29 +33,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.redisson.Redisson;
-import org.redisson.core.Node;
-import org.redisson.core.NodesGroup;
-import org.redisson.core.RBucket;
-import org.redisson.core.RLock;
-
-import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.rest.Configuration;
 
 public class RedisCachedTokenProviderTest
 {
@@ -69,7 +67,7 @@ public class RedisCachedTokenProviderTest
 
         doReturn(this.nodesGroup).when(this.redisson).getNodesGroup();
         doReturn(true).when(this.nodesGroup).pingAll();
-        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
+        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
         configuration.setProperties(Collections.singletonMap(RedisCachedTokenProvider.REDIS_SINGLE_SERVER_ADDRESS, REDIS_URL));
         this.cachedDecorator = new RedisCachedTokenProvider(configuration, this.tokenProvider)
         {
@@ -92,15 +90,10 @@ public class RedisCachedTokenProviderTest
         doReturn(this.bucket).when(this.redisson).getBucket(String.format(TOKEN_BUCKET_NAME_FORMAT, refreshToken));
         doReturn(this.lock).when(this.redisson).getLock(String.format(TOKEN_LOCK_NAME_FORMAT, refreshToken));
 
-        doAnswer(new Answer<Void>()
-        {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable
-            {
-                Runnable runnable = invocation.getArgumentAt(0, Runnable.class);
-                runnable.run();
-                return null;
-            }
+        doAnswer((Answer<Void>)invocation -> {
+            Runnable runnable = invocation.getArgumentAt(0, Runnable.class);
+            runnable.run();
+            return null;
         }).when(this.shutdownExecutor).execute(any(Runnable.class));
     }
 
@@ -189,7 +182,7 @@ public class RedisCachedTokenProviderTest
     {
         doReturn(false).when(this.nodesGroup).pingAll();
         String refreshToken = RandomStringUtils.randomAlphanumeric(64);
-        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
+        Configuration configuration = Configuration.build(RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), RandomStringUtils.randomAlphanumeric(32), refreshToken);
         configuration.setProperties(Collections.singletonMap(RedisCachedTokenProvider.REDIS_SINGLE_SERVER_ADDRESS, REDIS_URL));
         this.cachedDecorator = new RedisCachedTokenProvider(configuration, this.tokenProvider)
         {

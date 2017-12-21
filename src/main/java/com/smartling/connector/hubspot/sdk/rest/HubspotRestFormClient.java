@@ -13,6 +13,7 @@ import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsRawApi;
 
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
@@ -27,18 +28,20 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     private final FormsRawApi formsRawApi;
     private final FormsEntityApi formsEntityApi;
 
-    public HubspotRestFormClient(final Configuration configuration, final RestExecutor executor)
+    public HubspotRestFormClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
-        super(executor);
+        super(tokenProvider);
 
         Options connectionConfig = new Options(
                 configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
 
         formsRawApi = Feign.builder()
+                .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .target(FormsRawApi.class, configuration.getApiUrl());
 
         formsEntityApi = Feign.builder()
+                              .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
                               .decoder(new GsonDecoder(configuredGson()))
                               .target(FormsEntityApi.class, configuration.getApiUrl());
@@ -48,35 +51,35 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listForms() throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.forms(token));
+        return execute(formsEntityApi::forms);
     }
 
 
     @Override
     public String getFormContentById(String guid) throws HubspotApiException
     {
-        return execute(token -> formsRawApi.form(guid, token));
+        return execute(() -> formsRawApi.form(guid));
     }
 
 
     @Override
     public FormDetail getFormDetailById(String guid) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.formDetail(guid, token));
+        return execute(() -> formsEntityApi.formDetail(guid));
     }
 
 
     @Override
     public FormDetail cloneFormAsDetail(String guid) throws HubspotApiException
     {
-        String body = execute(token -> formsRawApi.form(guid, token));
+        String body = execute(() -> formsRawApi.form(guid));
         JsonObject srcForm = parseForm(body);
 
         setupCloneFields(srcForm);
 
-        String newBody = execute(token -> formsRawApi.create(srcForm.toString(), token));
+        String newBody = execute(() -> formsRawApi.create(srcForm.toString()));
         JsonObject newObj = parseForm(newBody);
-        return execute(token -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString(), token));
+        return execute(() -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString()));
     }
 
     private static void setupCloneFields(JsonObject form) {
@@ -92,7 +95,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
 
         resetDeletableField(form);
 
-        return execute(token -> formsRawApi.update(guid, form.toString(), token));
+        return execute(() -> formsRawApi.update(guid, form.toString()));
     }
 
     private static void resetDeletableField(JsonObject form) {
@@ -108,13 +111,13 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(token -> formsEntityApi.forms(token)).stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
+        return execute(formsEntityApi::forms).stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
 
     @Override
     public ResultInfo delete(String guid) throws HubspotApiException
     {
-        execute(token -> formsEntityApi.delete(guid, token));
+        execute(() -> formsEntityApi.delete(guid));
         ResultInfo result = new ResultInfo();
         result.setSucceeded(true);
         return result;

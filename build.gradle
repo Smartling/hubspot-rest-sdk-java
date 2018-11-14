@@ -33,6 +33,7 @@ dependencies {
     compile 'com.netflix.feign:feign-httpclient:8.6.0'
     compile 'org.redisson:redisson:2.1.1'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile "org.projectlombok:lombok:1.16.18"
 
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'junit:junit:4.12'

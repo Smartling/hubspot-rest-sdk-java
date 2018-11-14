@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
 import com.smartling.connector.hubspot.sdk.HubspotClientManager;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
@@ -32,6 +33,12 @@ public class HubspotRestClientManager implements HubspotClientManager
     public HubspotFormClient getFormClient()
     {
         return new HubspotRestFormClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotBlogPostClient getBlogPostClient()
+    {
+        return new HubspotRestBlogPostClient(configuration, tokenProvider);
     }
 
     @SuppressWarnings("unchecked")

@@ -1,0 +1,56 @@
+package com.smartling.connector.hubspot.sdk.rest;
+
+import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
+import com.smartling.connector.hubspot.sdk.rest.api.BlogPostApi;
+import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import feign.Feign;
+import feign.Request.Options;
+import feign.gson.GsonDecoder;
+
+public class HubspotRestBlogPostClient extends AbstractHubspotRestClient implements HubspotBlogPostClient
+{
+    private final BlogPostApi blogPostApi;
+
+    public HubspotRestBlogPostClient(final Configuration configuration, final TokenProvider tokenProvider)
+    {
+        super(tokenProvider);
+
+        Options connectionConfig = new Options(
+                configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
+
+        blogPostApi = Feign.builder()
+                              .requestInterceptor(getAuthenticationInterceptor())
+                              .options(connectionConfig)
+                              .decoder(new GsonDecoder(configuredGson()))
+                              .target(BlogPostApi.class, configuration.getApiUrl());
+    }
+
+    @Override
+    public BlogPostDetails listBlogPosts(int limit, int offset) throws HubspotApiException
+    {
+        return execute(() -> blogPostApi.blogPosts(limit, offset));
+    }
+
+    @Override
+    public BlogPostDetails listBlogPosts(int limit, int offset, BlogPostFilter filter) throws HubspotApiException
+    {
+        return execute(() -> blogPostApi.blogPosts(limit, offset, filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
+                filter.getPostName(), filter.getSlug(), filter.getState() != null ? filter.getState().name() : null));
+    }
+
+    @Override
+    public BlogPostDetail getBlogPostById(Long id) throws HubspotApiException
+    {
+        return execute(() -> blogPostApi.blogPostDetail(id));
+    }
+
+    @Override
+    public void createBlogPost(BlogPostDetail blogPostDetail)
+    {
+
+    }
+}

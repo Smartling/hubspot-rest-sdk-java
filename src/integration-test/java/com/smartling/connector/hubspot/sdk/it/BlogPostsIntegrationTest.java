@@ -41,7 +41,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListBlogPosts() throws Exception
     {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(1, 0);
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1);
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
 
@@ -56,7 +56,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListBlogPostsFilterByName() throws Exception
     {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(1, 0, createSearchFilter(null, BASIC_POST_NAME, false, null, null, null));
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createSearchFilter(null, BASIC_POST_NAME, false, null, null, null));
 
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
@@ -74,7 +74,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
         HubspotBlogPostClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostClient();
-        hubspotClient.listBlogPosts(1, 0);
+        hubspotClient.listBlogPosts(0, 1);
     }
 
     private BlogPostFilter createSearchFilter(Long blogId, String name, Boolean archived, String campaign, String slug, BlogPostFilter.State state) {

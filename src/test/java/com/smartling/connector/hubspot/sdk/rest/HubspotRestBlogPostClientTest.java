@@ -76,7 +76,7 @@ public class HubspotRestBlogPostClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
 
-        hubspotClient.listBlogPosts(15, 5);
+        hubspotClient.listBlogPosts(5, 15);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts"))
                         .withQueryParam("limit", equalTo("15"))

@@ -30,16 +30,17 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     }
 
     @Override
-    public BlogPostDetails listBlogPosts(int limit, int offset) throws HubspotApiException
+    public BlogPostDetails listBlogPosts(int offset, int limit) throws HubspotApiException
     {
-        return execute(() -> blogPostApi.blogPosts(limit, offset));
+        return execute(() -> blogPostApi.blogPosts(offset, limit));
     }
 
     @Override
-    public BlogPostDetails listBlogPosts(int limit, int offset, BlogPostFilter filter) throws HubspotApiException
+    public BlogPostDetails listBlogPosts(int offset, int limit, BlogPostFilter filter) throws HubspotApiException
     {
-        return execute(() -> blogPostApi.blogPosts(limit, offset, filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
-                filter.getPostName(), filter.getSlug(), filter.getState() != null ? filter.getState().name() : null));
+        return execute(() -> blogPostApi.blogPosts(filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
+                filter.getPostName(), filter.getSlug(), filter.getState() != null ? filter.getState().name() : null,
+                offset, limit));
     }
 
     @Override

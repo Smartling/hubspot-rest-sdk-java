@@ -6,7 +6,6 @@ import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
-import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -35,7 +34,7 @@ public class HubspotRestBlogPostClientTest
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
     private static final String BASE_URL      = "http://localhost:" + PORT;
-    private static final long POST_ID = 127L;
+    private static final String POST_ID = "127";
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -109,7 +108,7 @@ public class HubspotRestBlogPostClientTest
     private void assertPostDetail(final BlogPostDetail blogPostDetail)
     {
         assertThat(blogPostDetail.getName()).isEqualTo("My Blog Post - ES2");
-        assertThat(blogPostDetail.getId()).isEqualTo(6514475261L);
+        assertThat(blogPostDetail.getId()).isEqualTo("6514475261");
         assertThat(blogPostDetail.getUpdated()).hasTime(1542120534306L);
     }
 }

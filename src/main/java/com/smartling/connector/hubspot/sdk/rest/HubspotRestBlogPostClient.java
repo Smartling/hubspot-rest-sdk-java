@@ -44,7 +44,7 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     }
 
     @Override
-    public BlogPostDetail getBlogPostById(Long id) throws HubspotApiException
+    public BlogPostDetail getBlogPostById(String id) throws HubspotApiException
     {
         return execute(() -> blogPostApi.blogPostDetail(id));
     }

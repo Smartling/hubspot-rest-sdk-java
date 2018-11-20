@@ -18,7 +18,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class BlogPostsIntegrationTest extends BaseIntegrationTest
 {
     private static final String BASIC_POST_NAME        = "Sample - How To Post";
-    public static final long BLOG_POST_ID = 6522541212L;
+    private static final String BLOG_POST_ID = "6522541212";
 
     private HubspotBlogPostClient hubspotClient;
 
@@ -77,7 +77,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         hubspotClient.listBlogPosts(0, 1);
     }
 
-    private BlogPostFilter createSearchFilter(Long blogId, String name, Boolean archived, String campaign, String slug, BlogPostFilter.State state) {
+    private BlogPostFilter createSearchFilter(String blogId, String name, Boolean archived, String campaign, String slug, BlogPostFilter.State state) {
         BlogPostFilter filter = new BlogPostFilter();
         filter.setBlogId(blogId);
         filter.setPostName(name);

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BlogPostDetail implements NameAware
 {
-    Long id;
+    String id;
     Long blogAuthorId;
     Long contentGroupId;
     String featuredImage;

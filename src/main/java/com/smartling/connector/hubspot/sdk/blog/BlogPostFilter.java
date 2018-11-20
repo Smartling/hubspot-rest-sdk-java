@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BlogPostFilter
 {
-    private Long blogId;
+    private String blogId;
     private String postName;
     private Boolean archived;
     private String campaign;

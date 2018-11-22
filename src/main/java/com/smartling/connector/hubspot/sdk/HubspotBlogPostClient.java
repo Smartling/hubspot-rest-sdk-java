@@ -1,11 +1,13 @@
 package com.smartling.connector.hubspot.sdk;
 
+import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 
 public interface HubspotBlogPostClient extends HubspotClient
 {
+    BlogDetails listBlogs(int offset, int limit) throws HubspotApiException;
 
     BlogPostDetails listBlogPosts(int offset, int limit) throws HubspotApiException;
 

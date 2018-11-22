@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -19,6 +21,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -56,6 +59,30 @@ public class HubspotRestBlogPostClientTest
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
         this.hubspotClient = new HubspotRestBlogPostClient(configuration, tokenProvider);
+    }
+
+    @Test
+    public void shouldListBlogs() throws IOException, URISyntaxException, HubspotApiException
+    {
+        givenThat(get(HttpMockUtils.path("/content/api/v2/blogs")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blogs.json"))));
+
+        BlogDetails blogDetails = hubspotClient.listBlogs(5, 15);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blogs"))
+                .withQueryParam("limit", equalTo("15"))
+                .withQueryParam("offset", equalTo("5"))
+        );
+
+        assertThat(blogDetails.getTotalCount()).isEqualTo(1);
+        assertBlogDetail(blogDetails.getDetailList().get(0));
+    }
+
+    private void assertBlogDetail(BlogDetail blogDetail)
+    {
+        assertThat(blogDetail.getId()).isEqualTo("6522540979");
+        assertThat(blogDetail.getSlug()).isEqualTo("blog");
+        assertThat(blogDetail.getTitle()).isEqualTo("Default HubSpot Blog");
+        assertThat(blogDetail.getUpdated()).isAfter(new Date(0));
     }
 
     @Test

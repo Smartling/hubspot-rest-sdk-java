@@ -128,7 +128,19 @@
       "views": 0,
       "widget_containers": {},
       "widgetcontainers": {},
-      "widgets": {}
+      "widgets": {
+        "blog_comments": {
+          "body": {
+          },
+          "name": "blog_comments",
+          "meta": {
+          },
+          "type": "blog_comments",
+          "id": "blog_comments",
+          "css": {
+          }
+        }
+      }
     }
   ],
   "offset": 0,

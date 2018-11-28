@@ -149,5 +149,7 @@ public class HubspotRestBlogPostClientTest
 
         assertThat(blogPostDetail.getId()).isEqualTo("6514475261");
         assertThat(blogPostDetail.getUpdated()).hasTime(1542120534306L);
+        assertThat(blogPostDetail.getWidgets()).containsKey("blog_comments");
+        assertThat(blogPostDetail.getWidgets().get("blog_comments")).hasSize(6);
     }
 }

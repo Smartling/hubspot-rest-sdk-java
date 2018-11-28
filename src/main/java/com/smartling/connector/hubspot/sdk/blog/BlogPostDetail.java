@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -27,4 +28,5 @@ public class BlogPostDetail implements NameAware
     Long contentGroupId;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Date updated;
+    Map<String, Map> widgets;
 }

@@ -11,12 +11,20 @@ import java.util.Date;
 @NoArgsConstructor
 public class BlogPostDetail implements NameAware
 {
-    String id;
-    Long blogAuthorId;
-    Long contentGroupId;
-    String name;
+    String htmlTitle;
+    String label;
+    String metaDescription;
+    String pageTitle;
     String postBody;
+    String postBodyRss;
     String postSummary;
+    String postSummaryRss;
+    String postEmailContent;
+    String postListContent;
+    String postRssContent;
+    String id;
+    String name;
+    Long contentGroupId;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Date updated;
 }

@@ -135,6 +135,18 @@ public class HubspotRestBlogPostClientTest
     private void assertPostDetail(final BlogPostDetail blogPostDetail)
     {
         assertThat(blogPostDetail.getName()).isEqualTo("My Blog Post - ES2");
+        assertThat(blogPostDetail.getHtmlTitle()).isEqualTo("My Blog Post - ES2");
+        assertThat(blogPostDetail.getLabel()).isEqualTo("My Blog Post - ES2");
+        assertThat(blogPostDetail.getPageTitle()).isEqualTo("My Blog Post - ES2");
+        assertThat(blogPostDetail.getMetaDescription()).isEqualTo("meta");
+        assertThat(blogPostDetail.getPostBody()).startsWith("<p><span");
+        assertThat(blogPostDetail.getPostBodyRss()).isEqualTo("post body rss");
+        assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span");
+        assertThat(blogPostDetail.getPostSummaryRss()).startsWith("summary rss");
+        assertThat(blogPostDetail.getPostEmailContent()).startsWith("<html>");
+        assertThat(blogPostDetail.getPostListContent()).startsWith("<html>");
+        assertThat(blogPostDetail.getPostRssContent()).startsWith("post rss content");
+
         assertThat(blogPostDetail.getId()).isEqualTo("6514475261");
         assertThat(blogPostDetail.getUpdated()).hasTime(1542120534306L);
     }

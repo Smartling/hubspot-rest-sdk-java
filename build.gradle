@@ -28,9 +28,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.netflix.feign:feign-core:8.6.0'
-    compile 'com.netflix.feign:feign-gson:8.6.0'
-    compile 'com.netflix.feign:feign-httpclient:8.6.0'
+    compile 'io.github.openfeign:feign-core:10.1.0'
+    compile 'io.github.openfeign:feign-gson:10.1.0'
+    compile 'io.github.openfeign:feign-httpclient:10.1.0'
     compile 'org.redisson:redisson:2.1.1'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile "org.projectlombok:lombok:1.16.18"

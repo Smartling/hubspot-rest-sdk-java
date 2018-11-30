@@ -21,6 +21,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
 {
     private static final String BASIC_POST_NAME        = "Sample - How To Post";
     private static final String BLOG_POST_ID = "6522541212";
+    private static final String BLOG_ID = "6522540979";
 
     private HubspotBlogPostClient hubspotClient;
 
@@ -51,6 +52,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     {
         BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID);
 
+        assertThat(blogPost).isNotNull();
         assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
         assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
     }
@@ -61,6 +63,22 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1);
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+
+        List<BlogPostDetail> detailList = blogPostDetails.getDetailList();
+        assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
+
+        BlogPostDetail blogPost = detailList.get(0);
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
+    }
+
+    @Test
+    public void shouldListBlogPostsFilterByBlogId() throws Exception
+    {
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createSearchFilter(BLOG_ID, null, false, null, null, null));
+
+        assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
+        assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
 
         List<BlogPostDetail> detailList = blogPostDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);

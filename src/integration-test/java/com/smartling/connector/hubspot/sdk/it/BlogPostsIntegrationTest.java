@@ -19,8 +19,10 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class BlogPostsIntegrationTest extends BaseIntegrationTest
 {
-    private static final String BASIC_POST_NAME        = "Sample - How To Post";
-    private static final String BLOG_POST_ID = "6522541212";
+    private static final String BASIC_POST_NAME1 = "Sample - How To Post";
+    private static final String BASIC_POST_NAME2 = "Sample - How To Post";
+    private static final String BLOG_POST_ID1 = "6522541212";
+    private static final String BLOG_POST_ID2 = "6522541212";
     private static final String BLOG_ID = "6522540979";
 
     private HubspotBlogPostClient hubspotClient;
@@ -50,32 +52,19 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldReturnBlogPost() throws Exception
     {
-        BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID);
+        BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID1);
 
         assertThat(blogPost).isNotNull();
-        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
-        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
-    }
-
-    @Test
-    public void shouldListBlogPosts() throws Exception
-    {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1);
-        assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
-
-        List<BlogPostDetail> detailList = blogPostDetails.getDetailList();
-        assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
-
-        BlogPostDetail blogPost = detailList.get(0);
-        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
-        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME1);
     }
 
     @Test
     public void shouldListBlogPostsFilterByBlogId() throws Exception
     {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createSearchFilter(BLOG_ID, null, false, null, null, null));
+        String otherBlogId = "6626419595";
+        String otherBlogPostId = "6696936190";
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 5, createBlogFilter(otherBlogId), null);
 
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
@@ -84,14 +73,13 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
 
         BlogPostDetail blogPost = detailList.get(0);
-        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
-        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
+        assertThat(blogPost.getId()).isEqualTo(otherBlogPostId);
     }
 
     @Test
     public void shouldListBlogPostsFilterByName() throws Exception
     {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createSearchFilter(null, BASIC_POST_NAME, false, null, null, null));
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createSearchFilter(BLOG_ID, BASIC_POST_NAME1, false, null, null, null), null);
 
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
@@ -100,8 +88,24 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
 
         BlogPostDetail blogPost = detailList.get(0);
-        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID);
-        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME);
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME1);
+    }
+
+    @Test
+    public void shouldListBlogPostsOrderDesc() throws Exception
+    {
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), "publish_date");
+
+        assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
+        assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+
+        List<BlogPostDetail> detailList = blogPostDetails.getDetailList();
+        assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
+
+        BlogPostDetail blogPost = detailList.get(0);
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID2);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME2);
     }
 
     @Test(expected = HubspotApiException.class)
@@ -109,10 +113,18 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
         HubspotBlogPostClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostClient();
-        hubspotClient.listBlogPosts(0, 1);
+        hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), null);
     }
 
-    private BlogPostFilter createSearchFilter(String blogId, String name, Boolean archived, String campaign, String slug, BlogPostFilter.State state) {
+    private BlogPostFilter createBlogFilter(String blogId)
+    {
+        BlogPostFilter filter = new BlogPostFilter();
+        filter.setBlogId(blogId);
+        return filter;
+    }
+
+    private BlogPostFilter createSearchFilter(String blogId, String name, Boolean archived, String campaign, String slug, BlogPostFilter.State state)
+    {
         BlogPostFilter filter = new BlogPostFilter();
         filter.setBlogId(blogId);
         filter.setPostName(name);

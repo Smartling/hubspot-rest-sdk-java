@@ -8,6 +8,7 @@ import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -102,7 +103,7 @@ public class HubspotRestBlogPostClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
 
-        hubspotClient.listBlogPosts(5, 15);
+        hubspotClient.listBlogPosts(5, 15, new BlogPostFilter(), null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts"))
                         .withQueryParam("limit", equalTo("15"))
@@ -115,7 +116,7 @@ public class HubspotRestBlogPostClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
 
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(5, 15);
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(5, 15, new BlogPostFilter(), null);
 
         assertThat(blogPostDetails).isNotNull();
         assertThat(blogPostDetails.getTotalCount()).isEqualTo(8);

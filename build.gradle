@@ -21,7 +21,7 @@ description = 'Hubspot SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version '4.0.7-SNAPSHOT'
+version '4.0.8-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -33,7 +33,7 @@ dependencies {
     compile 'io.github.openfeign:feign-httpclient:10.1.0'
     compile 'org.redisson:redisson:2.1.1'
     compile 'org.apache.commons:commons-lang3:3.4'
-    compile "org.projectlombok:lombok:1.16.18"
+    compile "org.projectlombok:lombok:1.18.4"
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 
     testCompile 'org.easytesting:fest-assert-core:2.0M10'

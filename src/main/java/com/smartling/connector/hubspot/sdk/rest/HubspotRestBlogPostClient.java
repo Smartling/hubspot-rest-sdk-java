@@ -12,6 +12,7 @@ import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import lombok.NonNull;
 
 public class HubspotRestBlogPostClient extends AbstractHubspotRestClient implements HubspotBlogPostClient
 {
@@ -46,17 +47,11 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     }
 
     @Override
-    public BlogPostDetails listBlogPosts(int offset, int limit) throws HubspotApiException
-    {
-        return execute(() -> blogPostApi.blogPosts(offset, limit));
-    }
-
-    @Override
-    public BlogPostDetails listBlogPosts(int offset, int limit, BlogPostFilter filter) throws HubspotApiException
+    public BlogPostDetails listBlogPosts(int offset, int limit,  @NonNull BlogPostFilter filter, String orderBy) throws HubspotApiException
     {
         return execute(() -> blogPostApi.blogPosts(filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
                 filter.getPostName(), filter.getSlug(), filter.getState() != null ? filter.getState().name() : null,
-                offset, limit));
+                offset, limit, orderBy));
     }
 
     @Override

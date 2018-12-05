@@ -63,14 +63,14 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     }
 
     @Override
-    public void createBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
+    public BlogPostDetail createBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
     {
-        execute(() -> blogPostApi.createBlogPost(blogPostDetail));
+       return execute(() -> blogPostApi.createBlogPost(blogPostDetail));
     }
 
     @Override
-    public void updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
+    public BlogPostDetail updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
     {
-        execute(() -> blogPostApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
+        return execute(() -> blogPostApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
     }
 }

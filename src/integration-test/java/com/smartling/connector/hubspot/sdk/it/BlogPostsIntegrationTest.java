@@ -124,7 +124,8 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         blogPostDetail.setId(BLOG_POST_ID2);
         blogPostDetail.setSlug(UUID.randomUUID().toString());
 
-        hubspotClient.updateBlogPost(blogPostDetail);
+        BlogPostDetail updatedBlogPost = hubspotClient.updateBlogPost(blogPostDetail);
+        assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
     }
 
     private BlogPostFilter createBlogFilter(String blogId)

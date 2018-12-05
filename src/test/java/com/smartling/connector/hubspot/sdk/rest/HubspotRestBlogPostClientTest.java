@@ -49,7 +49,7 @@ public class HubspotRestBlogPostClientTest
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
     private static final String BASE_URL      = "http://localhost:" + PORT;
-    private static final String POST_ID = "127";
+    private static final String POST_ID = "6514475261";
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -125,34 +125,38 @@ public class HubspotRestBlogPostClientTest
     @Test
     public void shouldCallCreateBlogPost() throws Exception
     {
-        withPostHttpResponseData("/content/api/v2/blog-posts", "[{}]");
+        withPostHttpResponseData("/content/api/v2/blog-posts", loadResource("blog_post.json"));
 
         String json = loadResource("translated_blog_post.json");
         BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
 
-        hubspotClient.createBlogPost(blogPostDetail);
+        BlogPostDetail blogPost = hubspotClient.createBlogPost(blogPostDetail);
 
         ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
         valueMatchingStrategy.setEqualToJson(json);
         verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
                 .withRequestBody(valueMatchingStrategy));
+
+        assertThat(blogPost.getId()).isEqualTo(POST_ID);
     }
 
     @Test
     public void shouldCallUpdateBlogPost() throws Exception
     {
-        withPutHttpResponseData("/content/api/v2/blog-posts/1", "[{}]");
+        withPutHttpResponseData("/content/api/v2/blog-posts/1", loadResource("blog_post.json"));
 
         String json = loadResource("translated_blog_post.json");
         BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
         blogPostDetail.setId("1");
 
-        hubspotClient.updateBlogPost(blogPostDetail);
+        BlogPostDetail blogPost = hubspotClient.updateBlogPost(blogPostDetail);
 
         ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
         valueMatchingStrategy.setEqualToJson(json);
         verify(putRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts/1"))
                 .withRequestBody(valueMatchingStrategy));
+
+        assertThat(blogPost.getId()).isEqualTo(POST_ID);
     }
 
     @Test
@@ -183,8 +187,8 @@ public class HubspotRestBlogPostClientTest
     {
         stubFor(post(urlEqualTo(url))
                 .willReturn(aResponse()
-                        .withStatus(200)
-                        .withBody(String.format("{\"response\":{\"data\":%s,\"code\":\"SUCCESS\",\"messages\":[]}}", data))));
+                        .withStatus(201)
+                        .withBody(data)));
     }
 
     private void withPutHttpResponseData(String url, String data)
@@ -192,7 +196,7 @@ public class HubspotRestBlogPostClientTest
         stubFor(put(urlEqualTo(url))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(String.format("{\"response\":{\"data\":%s,\"code\":\"SUCCESS\",\"messages\":[]}}", data))));
+                        .withBody(data)));
     }
 
     private String loadResource(String name) throws IOException, URISyntaxException
@@ -209,7 +213,7 @@ public class HubspotRestBlogPostClientTest
         assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span");
         assertThat(blogPostDetail.isPublishImmediately()).isTrue();
         assertThat(blogPostDetail.getSlug()).isEqualTo("tb-es/-temporary-slug-d69558bb-941d-4d3e-8ba9-f5e39d97ab12");
-        assertThat(blogPostDetail.getId()).isEqualTo("6514475261");
+        assertThat(blogPostDetail.getId()).isEqualTo(POST_ID);
         assertThat(blogPostDetail.getWidgets()).containsKey("blog_comments");
         assertThat(blogPostDetail.getWidgets().get("blog_comments")).hasSize(6);
     }

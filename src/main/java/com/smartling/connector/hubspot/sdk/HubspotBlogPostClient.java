@@ -14,5 +14,7 @@ public interface HubspotBlogPostClient extends HubspotClient
 
     BlogPostDetail getBlogPostById(String id) throws HubspotApiException;
 
-    void createBlogPost(BlogPostDetail blogPostDetail);
+    void createBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException;
+
+    void updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException;
 }

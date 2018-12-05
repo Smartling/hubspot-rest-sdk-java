@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -20,9 +21,9 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class BlogPostsIntegrationTest extends BaseIntegrationTest
 {
     private static final String BASIC_POST_NAME1 = "Sample - How To Post";
-    private static final String BASIC_POST_NAME2 = "Sample - How To Post";
+    private static final String BASIC_POST_NAME2 = "Second blog post";
     private static final String BLOG_POST_ID1 = "6522541212";
-    private static final String BLOG_POST_ID2 = "6522541212";
+    private static final String BLOG_POST_ID2 = "6696820666";
     private static final String BLOG_ID = "6522540979";
 
     private HubspotBlogPostClient hubspotClient;
@@ -95,7 +96,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListBlogPostsOrderDesc() throws Exception
     {
-        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), "publish_date");
+        BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), "-publish_date");
 
         assertThat(blogPostDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(blogPostDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
@@ -114,6 +115,16 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
         HubspotBlogPostClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostClient();
         hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), null);
+    }
+
+    @Test
+    public void shouldUpdateBlogPost() throws HubspotApiException
+    {
+        BlogPostDetail blogPostDetail = new BlogPostDetail();
+        blogPostDetail.setId(BLOG_POST_ID2);
+        blogPostDetail.setSlug(UUID.randomUUID().toString());
+
+        hubspotClient.updateBlogPost(blogPostDetail);
     }
 
     private BlogPostFilter createBlogFilter(String blogId)

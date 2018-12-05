@@ -1,6 +1,10 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
@@ -26,10 +30,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -112,9 +123,42 @@ public class HubspotRestBlogPostClientTest
     }
 
     @Test
+    public void shouldCallCreateBlogPost() throws Exception
+    {
+        withPostHttpResponseData("/content/api/v2/blog-posts", "[{}]");
+
+        String json = loadResource("translated_blog_post.json");
+        BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
+
+        hubspotClient.createBlogPost(blogPostDetail);
+
+        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
+        valueMatchingStrategy.setEqualToJson(json);
+        verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
+                .withRequestBody(valueMatchingStrategy));
+    }
+
+    @Test
+    public void shouldCallUpdateBlogPost() throws Exception
+    {
+        withPutHttpResponseData("/content/api/v2/blog-posts/1", "[{}]");
+
+        String json = loadResource("translated_blog_post.json");
+        BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
+        blogPostDetail.setId("1");
+
+        hubspotClient.updateBlogPost(blogPostDetail);
+
+        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
+        valueMatchingStrategy.setEqualToJson(json);
+        verify(putRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts/1"))
+                .withRequestBody(valueMatchingStrategy));
+    }
+
+    @Test
     public void shouldDeserializeFields() throws Exception
     {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
+        givenThat(get(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
 
         BlogPostDetails blogPostDetails = hubspotClient.listBlogPosts(5, 15, new BlogPostFilter(), null);
 
@@ -127,6 +171,30 @@ public class HubspotRestBlogPostClientTest
         assertPostDetail(detailList.get(0));
     }
 
+    private BlogPostDetail getTranslatedBlogPost(String json)
+    {
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        return gson.fromJson(json, BlogPostDetail.class);
+    }
+
+    private void withPostHttpResponseData(String url, String data)
+    {
+        stubFor(post(urlEqualTo(url))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(String.format("{\"response\":{\"data\":%s,\"code\":\"SUCCESS\",\"messages\":[]}}", data))));
+    }
+
+    private void withPutHttpResponseData(String url, String data)
+    {
+        stubFor(put(urlEqualTo(url))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(String.format("{\"response\":{\"data\":%s,\"code\":\"SUCCESS\",\"messages\":[]}}", data))));
+    }
+
     private String loadResource(String name) throws IOException, URISyntaxException
     {
         URI uri = HubspotRestBlogPostClientTest.class.getClassLoader().getResource(name).toURI();
@@ -136,20 +204,12 @@ public class HubspotRestBlogPostClientTest
     private void assertPostDetail(final BlogPostDetail blogPostDetail)
     {
         assertThat(blogPostDetail.getName()).isEqualTo("My Blog Post - ES2");
-        assertThat(blogPostDetail.getHtmlTitle()).isEqualTo("My Blog Post - ES2");
-        assertThat(blogPostDetail.getLabel()).isEqualTo("My Blog Post - ES2");
-        assertThat(blogPostDetail.getPageTitle()).isEqualTo("My Blog Post - ES2");
         assertThat(blogPostDetail.getMetaDescription()).isEqualTo("meta");
         assertThat(blogPostDetail.getPostBody()).startsWith("<p><span");
-        assertThat(blogPostDetail.getPostBodyRss()).isEqualTo("post body rss");
         assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span");
-        assertThat(blogPostDetail.getPostSummaryRss()).startsWith("summary rss");
-        assertThat(blogPostDetail.getPostEmailContent()).startsWith("<html>");
-        assertThat(blogPostDetail.getPostListContent()).startsWith("<html>");
-        assertThat(blogPostDetail.getPostRssContent()).startsWith("post rss content");
-
+        assertThat(blogPostDetail.isPublishImmediately()).isTrue();
+        assertThat(blogPostDetail.getSlug()).isEqualTo("tb-es/-temporary-slug-d69558bb-941d-4d3e-8ba9-f5e39d97ab12");
         assertThat(blogPostDetail.getId()).isEqualTo("6514475261");
-        assertThat(blogPostDetail.getUpdated()).hasTime(1542120534306L);
         assertThat(blogPostDetail.getWidgets()).containsKey("blog_comments");
         assertThat(blogPostDetail.getWidgets().get("blog_comments")).hasSize(6);
     }

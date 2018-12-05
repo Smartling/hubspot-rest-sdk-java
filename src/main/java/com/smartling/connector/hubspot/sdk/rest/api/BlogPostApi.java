@@ -20,5 +20,9 @@ public interface BlogPostApi
 
     @RequestLine("POST /content/api/v2/blog-posts")
     @Headers("Content-Type: application/json")
-    void createBlogPost(BlogPostDetail postDetail);
+    Void createBlogPost(BlogPostDetail postDetail);
+
+    @RequestLine("PUT /content/api/v2/blog-posts/{blog_post_id}")
+    @Headers("Content-Type: application/json")
+    Void updateBlogPost(@Param("blog_post_id") String blogPostId, BlogPostDetail postDetail);
 }

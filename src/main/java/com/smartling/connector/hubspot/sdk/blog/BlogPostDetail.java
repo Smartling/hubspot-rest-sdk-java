@@ -18,5 +18,4 @@ public class BlogPostDetail implements NameAware
     String postSummary;
     boolean publishImmediately = true;
     String slug;
-    Map<String, Map> widgets;
 }

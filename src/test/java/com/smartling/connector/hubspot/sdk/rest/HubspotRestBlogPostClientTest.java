@@ -214,7 +214,5 @@ public class HubspotRestBlogPostClientTest
         assertThat(blogPostDetail.isPublishImmediately()).isTrue();
         assertThat(blogPostDetail.getSlug()).isEqualTo("tb-es/-temporary-slug-d69558bb-941d-4d3e-8ba9-f5e39d97ab12");
         assertThat(blogPostDetail.getId()).isEqualTo(POST_ID);
-        assertThat(blogPostDetail.getWidgets()).containsKey("blog_comments");
-        assertThat(blogPostDetail.getWidgets().get("blog_comments")).hasSize(6);
     }
 }

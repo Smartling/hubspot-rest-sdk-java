@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
+import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
@@ -9,6 +10,8 @@ import lombok.NonNull;
 public interface HubspotBlogPostClient extends HubspotClient
 {
     BlogDetails listBlogs(int offset, int limit) throws HubspotApiException;
+
+    BlogDetail getBlogById(String blogId) throws HubspotApiException;
 
     BlogPostDetails listBlogPosts(int offset, int limit, @NonNull BlogPostFilter filter, String orderBy) throws HubspotApiException;
 

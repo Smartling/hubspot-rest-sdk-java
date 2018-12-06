@@ -50,6 +50,16 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldReturnBlog() throws Exception
+    {
+        BlogDetail blog = hubspotClient.getBlogById(BLOG_ID);
+
+        assertThat(blog).isNotNull();
+        assertThat(blog.getSlug()).isEqualTo("blog");
+    }
+
+
+    @Test
     public void shouldReturnBlogPost() throws Exception
     {
         BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID1);

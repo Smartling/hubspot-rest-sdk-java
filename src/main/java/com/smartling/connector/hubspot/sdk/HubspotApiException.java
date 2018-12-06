@@ -13,7 +13,7 @@ public class HubspotApiException extends Exception
     public HubspotApiException(final String message, final FeignException ex)
     {
         super(message, ex);
-        response = new Response(ex.status(), ex.contentUTF8());
+        response = new Response(ex.status(), ex.content() != null ? ex.contentUTF8() : null);
     }
 
     public HubspotApiException(final String message, final Exception cause)

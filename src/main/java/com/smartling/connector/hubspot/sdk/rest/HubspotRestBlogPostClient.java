@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
@@ -46,6 +47,12 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     public BlogDetails listBlogs(int offset, int limit) throws HubspotApiException
     {
         return execute(() -> blogApi.blogs(offset, limit));
+    }
+
+    @Override
+    public BlogDetail getBlogById(String blogId) throws HubspotApiException
+    {
+        return execute(() -> blogApi.blogById(blogId));
     }
 
     @Override

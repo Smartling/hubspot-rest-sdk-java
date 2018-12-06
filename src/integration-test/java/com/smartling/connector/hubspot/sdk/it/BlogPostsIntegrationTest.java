@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -120,13 +119,28 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldUpdateBlogPost() throws HubspotApiException
     {
+        String otherBlogPostId = "6696936190";
+
         BlogPostDetail blogPostDetail = new BlogPostDetail();
-        blogPostDetail.setId(BLOG_POST_ID2);
-        blogPostDetail.setSlug(UUID.randomUUID().toString());
+        blogPostDetail.setId(otherBlogPostId);
+        blogPostDetail.setMetaDescription("new meta");
 
         BlogPostDetail updatedBlogPost = hubspotClient.updateBlogPost(blogPostDetail);
-        assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
+        assertThat(updatedBlogPost.getId()).isEqualTo(otherBlogPostId);
     }
+
+    @Test(expected = HubspotApiException.class)
+    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException
+    {
+        String otherBlogPostId = "6696936190";
+
+        BlogPostDetail blogPostById = hubspotClient.getBlogPostById(BLOG_POST_ID2);
+
+        blogPostById.setId(otherBlogPostId);
+
+        hubspotClient.updateBlogPost(blogPostById);
+    }
+
 
     private BlogPostFilter createBlogFilter(String blogId)
     {

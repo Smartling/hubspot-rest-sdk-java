@@ -21,18 +21,20 @@ description = 'Hubspot SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version '3.0.0-SNAPSHOT'
+version '4.0.11-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.netflix.feign:feign-core:8.6.0'
-    compile 'com.netflix.feign:feign-gson:8.6.0'
-    compile 'com.netflix.feign:feign-httpclient:8.6.0'
+    compile 'io.github.openfeign:feign-core:10.1.0'
+    compile 'io.github.openfeign:feign-gson:10.1.0'
+    compile 'io.github.openfeign:feign-httpclient:10.1.0'
     compile 'org.redisson:redisson:2.1.1'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile "org.projectlombok:lombok:1.18.4"
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'junit:junit:4.12'

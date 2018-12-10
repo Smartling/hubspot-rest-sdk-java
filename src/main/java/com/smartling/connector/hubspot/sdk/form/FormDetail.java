@@ -9,7 +9,9 @@ public class FormDetail implements NameAware
 {
     private String guid;
     private String name;
+    @SerializedName("submitText") //TODO: review why in camelCase
     private String submitText;
+    @SerializedName("tmsId")
     private String tmsId;
     @SerializedName("updatedAt")
     private Date   updated;

@@ -3,17 +3,12 @@ package com.smartling.connector.hubspot.sdk;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 public class HubspotApiException extends Exception
 {
-    @Getter
-    private Response response;
-
     public HubspotApiException(final String message, final FeignException ex)
     {
-        super(message, ex);
-        response = new Response(ex.status(), ex.content() != null ? ex.contentUTF8() : null);
+        super(message + "\n" + new Response(ex.status(), ex.content() != null ? ex.contentUTF8() : null), ex);
     }
 
     public HubspotApiException(final String message, final Exception cause)

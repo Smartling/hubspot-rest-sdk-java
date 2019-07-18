@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk.marketingEmail;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.annotations.JsonAdapter;
 import com.smartling.connector.hubspot.sdk.NameAware;
@@ -18,6 +19,7 @@ public class MarketingEmailDetail implements NameAware
 
     @JsonAdapter(RawJsonAdapter.class)
     @JsonDeserialize(using = RawJsonDeserializer.class)
+    @JsonRawValue
     String flexAreas;
 
     String fromName;
@@ -32,5 +34,6 @@ public class MarketingEmailDetail implements NameAware
 
     @JsonAdapter(RawJsonAdapter.class)
     @JsonDeserialize(using = RawJsonDeserializer.class)
+    @JsonRawValue
     String widgets;
 }

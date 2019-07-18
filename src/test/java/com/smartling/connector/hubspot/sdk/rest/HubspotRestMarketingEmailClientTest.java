@@ -1,16 +1,14 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetail;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetails;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailFilter;
@@ -147,6 +145,21 @@ public class HubspotRestMarketingEmailClientTest {
         assertThat(detailList).isNotEmpty();
 
         assertEmailDetail(detailList.get(0));
+    }
+
+    @Test
+    public void shouldDeserializeRawFieldsWithJackson() throws Exception
+    {
+        String json = loadResource("translated_marketing_email.json");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MarketingEmailDetail emailDetail = mapper.readValue(json, MarketingEmailDetail.class);
+
+        String serializedJson = mapper.writeValueAsString(emailDetail);
+
+        assertThat(serializedJson).isNotNull();
+        assertThat(serializedJson).isEqualTo(json);
     }
 
     private MarketingEmailDetail getTranslatedEmail(String json)

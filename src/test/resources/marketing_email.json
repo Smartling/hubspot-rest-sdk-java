@@ -1,0 +1,595 @@
+{
+  "ab": false,
+  "abHoursToWait": 4,
+  "abSampleSizeDefault": null,
+  "abSamplingDefault": null,
+  "abSuccessMetric": null,
+  "abTestPercentage": 50,
+  "abVariation": false,
+  "absoluteUrl": "http://sl-mm-test-dev-6151717-6151717.hs-sites.com/-temporary-slug-f8c4d45c-8246-404f-a7f1-47947167090c",
+  "allEmailCampaignIds": [
+    74768626
+  ],
+  "analyticsPageId": "11358385314",
+  "analyticsPageType": "email",
+  "archived": false,
+  "author": "testapi@hubspot.com",
+  "authorAt": 1563410535135,
+  "authorName": "HubSpot Test",
+  "blogRssSettings": null,
+  "canSpamSettingsId": 11356566236,
+  "categoryId": 2,
+  "contentAccessRuleIds": [],
+  "contentTypeCategory": 2,
+  "createPage": false,
+  "created": 1563406177844,
+  "createdById": 215482,
+  "currentState": "DRAFT",
+  "currentlyPublished": false,
+  "customReplyTo": "",
+  "customReplyToEnabled": false,
+  "domain": "",
+  "emailBody": "{% content_attribute \"email_body\" %}{{ default_email_body }}{% end_content_attribute %}",
+  "emailNote": "",
+  "emailTemplateMode": "DRAG_AND_DROP",
+  "emailType": "BATCH_EMAIL",
+  "emailbodyPlaintext": "",
+  "feedbackEmailCategory": null,
+  "feedbackSurveyId": null,
+  "flexAreas": {
+    "main": {
+      "boxFirstElementIndex": 0,
+      "boxLastElementIndex": 0,
+      "boxed": false,
+      "isSingleColumnFullWidth": false,
+      "sections": [
+        {
+          "columns": [
+            {
+              "id": "builtin_column_0-0",
+              "widgets": [
+                "builtin_module_0_0_0"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-0",
+          "style": {
+            "backgroundColor": "#EAF0F6",
+            "backgroundType": "CONTENT",
+            "paddingBottom": "10px",
+            "paddingTop": "10px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_1-0",
+              "widgets": [
+                "module_15634091855761",
+                "builtin_module_1_0_0"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-1",
+          "style": {
+            "backgroundType": "CONTENT",
+            "paddingBottom": "0px",
+            "paddingTop": "10px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_2-0",
+              "widgets": [
+                "builtin_module_2_0_0",
+                "module_153970326731935"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-2",
+          "style": {
+            "backgroundType": "CONTENT",
+            "paddingBottom": "0px",
+            "paddingTop": "0px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "column_1563408499110_0",
+              "widgets": [
+                "module_15634085021273"
+              ],
+              "width": 4
+            },
+            {
+              "id": "column_1563408499110_1",
+              "widgets": [
+                "module_15634085094525"
+              ],
+              "width": 8
+            }
+          ],
+          "id": "section_1563408499110",
+          "style": {
+            "backgroundType": "CONTENT"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_3-0",
+              "widgets": [
+                "builtin_module_3_0_0",
+                "builtin_module_3_0_1"
+              ],
+              "width": 6
+            },
+            {
+              "id": "builtin_column_3-1",
+              "widgets": [
+                "builtin_module_3_1_0",
+                "builtin_module_3_1_1"
+              ],
+              "width": 6
+            }
+          ],
+          "id": "builtin_section-3",
+          "style": {
+            "backgroundType": "CONTENT",
+            "paddingBottom": "0px",
+            "paddingTop": "0px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_4-0",
+              "widgets": [
+                "module_153978175731681"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-4",
+          "style": {
+            "backgroundType": "CONTENT",
+            "paddingBottom": "0px",
+            "paddingTop": "0px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_5-0",
+              "widgets": [
+                "builtin_module_5_0_0"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-5",
+          "style": {
+            "backgroundType": "CONTENT",
+            "paddingBottom": "20px",
+            "paddingTop": "20px"
+          }
+        },
+        {
+          "columns": [
+            {
+              "id": "builtin_column_6-0",
+              "widgets": [
+                "builtin_module_6_0_0"
+              ],
+              "width": 12
+            }
+          ],
+          "id": "builtin_section-6",
+          "style": {
+            "backgroundColor": "",
+            "backgroundType": "CONTENT",
+            "paddingBottom": "0px",
+            "paddingTop": "30px"
+          }
+        }
+      ]
+    }
+  },
+  "freezeDate": 1563410486419,
+  "fromName": "HubSpot Test",
+  "hasContentAccessRules": false,
+  "htmlTitle": "",
+  "id": 11358385328,
+  "isGraymailSuppressionEnabled": true,
+  "isLocalTimezoneSend": false,
+  "isPublished": false,
+  "isRecipientFatigueSuppressionEnabled": null,
+  "language": "en",
+  "layoutSections": {},
+  "leadFlowId": null,
+  "liveDomain": "sl-mm-test-dev-6151717-6151717.hs-sites.com",
+  "mailingListsExcluded": [],
+  "mailingListsIncluded": [
+    1
+  ],
+  "maxRssEntries": 5,
+  "metaDescription": "",
+  "name": "sl-mm-test-email",
+  "pageExpiryEnabled": false,
+  "pageRedirected": false,
+  "pastMabExperimentIds": [],
+  "portalId": 6151717,
+  "previewKey": "cgghuhMc",
+  "primaryEmailCampaignId": 74768626,
+  "processingStatus": "UNDEFINED",
+  "publishDate": 1563492894000,
+  "publishImmediately": false,
+  "publishedAt": 1563410487043,
+  "publishedByEmail": "testapi@hubspot.com",
+  "publishedById": 215482,
+  "publishedByName": "HubSpot Test",
+  "publishedUrl": "",
+  "replyTo": "testapi@hubspot.com",
+  "resolvedDomain": "sl-mm-test-dev-6151717-6151717.hs-sites.com",
+  "rssEmailByText": "By",
+  "rssEmailClickThroughText": "Read more &raquo;",
+  "rssEmailCommentText": "Comment &raquo;",
+  "rssEmailEntryTemplateEnabled": false,
+  "rssEmailImageMaxWidth": 0,
+  "rssEmailUrl": "",
+  "slug": "-temporary-slug-f8c4d45c-8246-404f-a7f1-47947167090c",
+  "smartEmailFields": {},
+  "state": "DRAFT",
+  "styleSettings": {
+    "background_color": "#FFFFFF",
+    "background_image": null,
+    "background_image_type": null,
+    "body_border_color": "#EAF0F6",
+    "body_border_color_choice": "BORDER_MANUAL",
+    "body_border_width": "1",
+    "body_color": "#ffffff",
+    "color_picker_favorite1": null,
+    "color_picker_favorite2": null,
+    "color_picker_favorite3": null,
+    "color_picker_favorite4": null,
+    "color_picker_favorite5": null,
+    "color_picker_favorite6": null,
+    "email_body_padding": null,
+    "email_body_width": null,
+    "heading_one_font": {
+      "bold": null,
+      "color": null,
+      "font": null,
+      "font_style": {},
+      "italic": null,
+      "size": "24",
+      "underline": null
+    },
+    "heading_two_font": {
+      "bold": null,
+      "color": null,
+      "font": null,
+      "font_style": {},
+      "italic": null,
+      "size": "22",
+      "underline": null
+    },
+    "links_font": {
+      "bold": null,
+      "color": "#00a4bd",
+      "font": null,
+      "font_style": {},
+      "italic": null,
+      "size": null,
+      "underline": null
+    },
+    "primary_accent_color": null,
+    "primary_font": "Arial, sans-serif",
+    "primary_font_color": "#23496d",
+    "primary_font_line_height": null,
+    "primary_font_size": "15",
+    "secondary_accent_color": null,
+    "secondary_font": "Arial, sans-serif",
+    "secondary_font_color": "#23496d",
+    "secondary_font_line_height": null,
+    "secondary_font_size": "12",
+    "user_module_defaults": null
+  },
+  "subcategory": "batch",
+  "subject": "Subject",
+  "subscription": 7090171,
+  "subscriptionName": "Marketing Information",
+  "teamPerms": [],
+  "templatePath": "Email/dnd/Promotion.html",
+  "themeSettingsValues": {},
+  "transactional": false,
+  "unpublishedAt": 0,
+  "updated": 1563410535135,
+  "updatedById": 215482,
+  "url": "http://sl-mm-test-dev-6151717-6151717.hs-sites.com/-temporary-slug-f8c4d45c-8246-404f-a7f1-47947167090c",
+  "useRssHeadlineAsSubject": false,
+  "userPerms": [],
+  "vidsExcluded": [],
+  "vidsIncluded": [],
+  "widgets": {
+    "builtin_module_0_0_0": {
+      "body": {
+        "alignment": "center",
+        "hs_enable_module_padding": true,
+        "img": {
+          "alt": "HubSpot logo orange",
+          "height": 72,
+          "src": "https://static.hsappstatic.net/TemplateAssets/static-1.32/img/hs_default_template_images/email_dnd_template_images/company-logo-orange.png",
+          "width": 240
+        },
+        "link": null,
+        "module_id": 1367093
+      },
+      "module_id": 1367093,
+      "name": "builtin_module_0_0_0",
+      "order": 1,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_1_0_0": {
+      "body": {
+        "alignment": "center",
+        "hs_enable_module_padding": true,
+        "img": {
+          "alt": "Promotion - wide",
+          "height": 230,
+          "src": "https://static.hsappstatic.net/TemplateAssets/static-1.32/img/hs_default_template_images/email_dnd_template_images/promotion-wide.png",
+          "width": 600
+        },
+        "link": null,
+        "module_id": 1367093
+      },
+      "module_id": 1367093,
+      "name": "builtin_module_1_0_0",
+      "order": 4,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_2_0_0": {
+      "body": {
+        "html": "<h1>Promote your goods and services</h1><p>Use an attention-grabbing headline that explains how your sale will work. You should also include a CTA with a link to your online store or website right away so your contacts can easily start shopping.</p>",
+        "i18nKey": "richText.promotion.primary",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "builtin_module_2_0_0",
+      "order": 6,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_3_0_0": {
+      "body": {
+        "alignment": "center",
+        "hs_enable_module_padding": true,
+        "img": {
+          "alt": "Promotion - square",
+          "height": 300,
+          "src": "https://static.hsappstatic.net/TemplateAssets/static-1.32/img/hs_default_template_images/email_dnd_template_images/promotion-square.png",
+          "width": 300
+        },
+        "link": null,
+        "module_id": 1367093
+      },
+      "module_id": 1367093,
+      "name": "builtin_module_3_0_0",
+      "order": 11,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_3_0_1": {
+      "body": {
+        "html": "<h1>Highlight your best deals</h1><p style=\"margin-bottom:10px;\">Add a brief description for a product or service that’s available in your promotion. Include a link to where the reader can <a target=\"_blank\" href=\"\">learn more or shop</a>.</p>",
+        "i18nKey": "richText.promotion.secondary",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "builtin_module_3_0_1",
+      "order": 13,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_3_1_0": {
+      "body": {
+        "alignment": "center",
+        "hs_enable_module_padding": true,
+        "img": {
+          "alt": "Promotion - square",
+          "height": 300,
+          "src": "https://static.hsappstatic.net/TemplateAssets/static-1.32/img/hs_default_template_images/email_dnd_template_images/promotion-square.png",
+          "width": 300
+        },
+        "link": null,
+        "module_id": 1367093
+      },
+      "module_id": 1367093,
+      "name": "builtin_module_3_1_0",
+      "order": 14,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_3_1_1": {
+      "body": {
+        "html": "<h1>Highlight your best deals</h1><p style=\"margin-bottom:10px;\">Add a brief description for a product or service that’s available in your promotion. Include a link to where the reader can <a target=\"_blank\" href=\"\">learn more or shop</a>.</p>",
+        "i18nKey": "richText.promotion.secondary",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "builtin_module_3_1_1",
+      "order": 16,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_5_0_0": {
+      "body": {
+        "html": "<p style=\"text-align: center;margin-bottom:10px;\">Have questions? Either respond to this email or contact the sender on <a href=\"mailto:youremail@example.com\">youremail@example.com</a></p>",
+        "i18nKey": "richText.promotion.footer",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "builtin_module_5_0_0",
+      "order": 19,
+      "smart_type": null,
+      "type": "module"
+    },
+    "builtin_module_6_0_0": {
+      "body": {
+        "align": "center",
+        "font": {
+          "color": "#23496d",
+          "font": "Arial, sans-serif",
+          "size": {
+            "units": "px",
+            "value": 12
+          },
+          "styles": {}
+        },
+        "hs_enable_module_padding": false,
+        "link_font": {
+          "color": "#00a4bd",
+          "font": "Helvetica,Arial,sans-serif",
+          "size": {
+            "units": "px",
+            "value": 12
+          },
+          "styles": {
+            "bold": false,
+            "italic": false,
+            "text-decoration": "underline",
+            "underline": true
+          }
+        },
+        "module_id": 2869621,
+        "unsubscribe_link_type": "both"
+      },
+      "module_id": 2869621,
+      "name": "builtin_module_6_0_0",
+      "order": 20,
+      "smart_type": null,
+      "type": "module"
+    },
+    "module_153970326731935": {
+      "body": {
+        "alignment": "center",
+        "background_color": "#00a4bd",
+        "corner_radius": 8,
+        "cta_field": null,
+        "destination": "https://google.com",
+        "font_style": {
+          "color": "#ffffff",
+          "font": "Arial, sans-serif",
+          "size": {
+            "units": "px",
+            "value": 16
+          },
+          "styles": {
+            "bold": false,
+            "italic": false,
+            "underline": false
+          }
+        },
+        "make_full_width": true,
+        "module_id": 1976948,
+        "text": "Shop now"
+      },
+      "module_id": 1976948,
+      "name": "module_153970326731935",
+      "order": 7,
+      "smart_type": null,
+      "type": "module"
+    },
+    "module_153978175731681": {
+      "body": {
+        "alignment": "center",
+        "color": {
+          "color": "#99acc2",
+          "opacity": 100
+        },
+        "css": {},
+        "height": 1,
+        "hs_enable_module_padding": false,
+        "line_type": "solid",
+        "module_id": 2191110,
+        "width": 100
+      },
+      "module_id": 2191110,
+      "name": "module_153978175731681",
+      "order": 17,
+      "smart_type": null,
+      "type": "module"
+    },
+    "module_15634085021273": {
+      "body": {
+        "alignment": "center",
+        "css": {
+          "padding-bottom": "10px",
+          "padding-left": "20px",
+          "padding-right": "20px",
+          "padding-top": "10px"
+        },
+        "hs_enable_module_padding": true,
+        "img": {
+          "alt": "facebook_legacy_color",
+          "height": 32,
+          "src": "https://cdn2.hubspot.net/hubfs/6151717/hs_marketplace_assets/modules/Follow%20Me/77/facebook_legacy_color.png",
+          "width": 32
+        },
+        "link": null,
+        "module_id": 1367093
+      },
+      "module_id": 1367093,
+      "name": "module_15634085021273",
+      "order": 8,
+      "smart_type": null,
+      "type": "module"
+    },
+    "module_15634085094525": {
+      "body": {
+        "html": "<h2>Test SL-MM Heading</h2>\n<p>What is the weather?</p>",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "module_15634085094525",
+      "order": 10,
+      "smart_type": null,
+      "type": "module"
+    },
+    "module_15634091855761": {
+      "body": {
+        "html": "<h1>El Chapo trial: Mexican drug lord Joaquín Guzmán gets life in prison</h1>\n<p>A US judge has sentenced Mexican drug kingpin Joaquín \"El Chapo\" Guzmán to life in prison plus 30 years.</p>\n<p>Guzmán, 62, was found guilty of 10 charges, including drug trafficking and money laundering, by a federal court in New York in February.</p>\n<p>He escaped a Mexican jail through a tunnel in 2015, but was later arrested. He was extradited to the US in 2017.</p>\n<p>He is a former head of the Sinaloa cartel, which officials say was the biggest supplier of drugs to the US.</p>",
+        "module_id": 1155639
+      },
+      "module_id": 1155639,
+      "name": "module_15634091855761",
+      "order": 3,
+      "smart_type": null,
+      "type": "module"
+    },
+    "preview_text": {
+      "body": {
+        "value": ""
+      },
+      "export_to_template_context": false,
+      "isInContainer": false,
+      "is_global": false,
+      "key": "preview_text",
+      "label": "Preview Text <span class=help-text>This will be used as the preview text that displays in some email clients</span>",
+      "line_number": 3,
+      "name": "preview_text",
+      "order": 0,
+      "overrideable": true,
+      "parent_name": null,
+      "smart_type": null,
+      "type": "text"
+    }
+  }
+}

@@ -46,7 +46,7 @@ public abstract class AbstractHubspotRestClient
         }
     }
 
-    protected static Gson configuredGson()
+    protected Gson configuredGson()
     {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateSerializer())

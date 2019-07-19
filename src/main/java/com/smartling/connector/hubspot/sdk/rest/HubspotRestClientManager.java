@@ -37,6 +37,12 @@ public class HubspotRestClientManager implements HubspotClientManager
         return new HubspotRestBlogPostsClient(configuration, tokenProvider);
     }
 
+    @Override
+    public HubspotMarketingEmailsClient getMarketingEmailsClient()
+    {
+        return new HubspotRestMarketingEmailClient(configuration, tokenProvider);
+    }
+
     @SuppressWarnings("unchecked")
     public static TokenProvider createTokenProvider(final Configuration configuration)
     {

@@ -44,7 +44,7 @@ public class HubspotRestMarketingEmailClient extends AbstractHubspotRestClient i
     @Override
     public MarketingEmailDetails listEmails(int offset, int limit, @NonNull MarketingEmailFilter filter, String orderBy) throws HubspotApiException
     {
-        return execute(() -> marketingEmailApi.emails(filter.getArchived(), filter.getCampaign(), filter.getContentGroupId(),
+        return execute(() -> marketingEmailApi.emails(filter.getArchived(), filter.getCampaign(),
                 filter.getEmailName(), offset, limit, orderBy));
     }
 

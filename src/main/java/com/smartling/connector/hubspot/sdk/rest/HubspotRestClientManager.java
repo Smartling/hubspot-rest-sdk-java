@@ -3,6 +3,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
 import com.smartling.connector.hubspot.sdk.HubspotClientManager;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailClient;
 import com.smartling.connector.hubspot.sdk.HubspotPageClient;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -35,6 +36,12 @@ public class HubspotRestClientManager implements HubspotClientManager
     public HubspotBlogPostClient getBlogPostClient()
     {
         return new HubspotRestBlogPostClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotMarketingEmailClient getMarketingEmailClient()
+    {
+        return new HubspotRestMarketingEmailClient(configuration, tokenProvider);
     }
 
     @SuppressWarnings("unchecked")

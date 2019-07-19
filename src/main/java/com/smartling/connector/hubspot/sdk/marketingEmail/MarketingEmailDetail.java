@@ -16,22 +16,22 @@ public class MarketingEmailDetail implements NameAware
     @JsonAdapter(RawJsonAdapter.class)
     @JsonDeserialize(using = RawJsonDeserializer.class)
     @JsonRawValue
-    String flexAreas;
+    private String flexAreas;
 
-    String fromName;
-
-    @JsonAdapter(RawJsonAdapter.class)
-    @JsonDeserialize(using = RawJsonDeserializer.class)
-    @JsonRawValue
-    String id;
-
-    String name;
-    boolean publishImmediately = true;
-    String subject;
-    String templatePath;
+    private String fromName;
 
     @JsonAdapter(RawJsonAdapter.class)
     @JsonDeserialize(using = RawJsonDeserializer.class)
     @JsonRawValue
-    String widgets;
+    private String id;
+
+    private String name;
+    private boolean publishImmediately = true;
+    private String subject;
+    private String templatePath;
+
+    @JsonAdapter(RawJsonAdapter.class)
+    @JsonDeserialize(using = RawJsonDeserializer.class)
+    @JsonRawValue
+    private String widgets;
 }

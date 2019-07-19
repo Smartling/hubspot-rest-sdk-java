@@ -9,26 +9,24 @@ import com.smartling.connector.hubspot.sdk.serialization.RawJsonDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 public class MarketingEmailDetail implements NameAware
 {
-    String id;
-
     @JsonAdapter(RawJsonAdapter.class)
     @JsonDeserialize(using = RawJsonDeserializer.class)
     @JsonRawValue
     String flexAreas;
 
     String fromName;
-    List<Integer> mailingListsIncluded;
+
+    @JsonAdapter(RawJsonAdapter.class)
+    @JsonDeserialize(using = RawJsonDeserializer.class)
+    @JsonRawValue
+    String id;
+
     String name;
-    String metaDescription;
     boolean publishImmediately = true;
-    String replyTo;
-    String slug;
     String subject;
     String templatePath;
 

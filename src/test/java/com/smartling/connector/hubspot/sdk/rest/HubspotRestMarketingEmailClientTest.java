@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -99,7 +100,7 @@ public class HubspotRestMarketingEmailClientTest {
     {
         withPostHttpResponseData("/marketing-emails/v1/emails", loadResource("marketing_email.json"));
 
-        String json = loadResource("translated_marketing_email.json");
+        String json = minifyJson(loadResource("translated_marketing_email.json"));
         MarketingEmailDetail emailDetail = getTranslatedEmail(json);
 
         MarketingEmailDetail email = emailClient.createEmail(emailDetail);
@@ -115,9 +116,9 @@ public class HubspotRestMarketingEmailClientTest {
     @Test
     public void shouldCallUpdateEmail() throws Exception
     {
-        withPutHttpResponseData("/marketing-emails/v1/emails/1", loadResource("marketing_email.json"));
+        withPutHttpResponseData("/marketing-emails/v1/emails/1", minifyJson(loadResource("marketing_email.json")));
 
-        String json = loadResource("translated_marketing_email.json");
+        String json = minifyJson(loadResource("translated_marketing_email.json"));
         MarketingEmailDetail emailDetail = getTranslatedEmail(json);
         emailDetail.setId("1");
 
@@ -150,7 +151,7 @@ public class HubspotRestMarketingEmailClientTest {
     @Test
     public void shouldDeserializeRawFieldsWithJackson() throws Exception
     {
-        String json = loadResource("translated_marketing_email.json");
+        String json = minifyJson(loadResource("translated_marketing_email.json"));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -160,6 +161,13 @@ public class HubspotRestMarketingEmailClientTest {
 
         assertThat(serializedJson).isNotNull();
         assertThat(serializedJson).isEqualTo(json);
+    }
+
+    private String minifyJson(final String json) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        JsonNode jsonNode = mapper.readValue(json, JsonNode.class);
+        return jsonNode.toString();
     }
 
     private MarketingEmailDetail getTranslatedEmail(String json)
@@ -190,13 +198,26 @@ public class HubspotRestMarketingEmailClientTest {
         return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 
-    private void assertEmailDetail(final MarketingEmailDetail emailDetail)
+    private void assertEmailDetail(final MarketingEmailDetail emailDetail) throws Exception
     {
         assertThat(emailDetail.getName()).isEqualTo("Subject");
-        assertThat(emailDetail.getMetaDescription()).isEqualTo("meta");
-        assertThat(emailDetail.getFlexAreas()).startsWith("{\"main\":{\"boxFirstElementIndex\":0," +
-                "\"boxLastElementIndex\":0,\"boxed\":false,\"isSingleColumnFullWidth\":false," +
-                "\"sections\":[{\"columns\":[{\"id\":\"builtin_column_0-0\",");
+        assertThat(emailDetail.getFlexAreas()).startsWith("{" +
+                "\"main\":{" +
+                "\"boxFirstElementIndex\":0," +
+                "\"boxLastElementIndex\":0," +
+                "\"boxed\":false," +
+                "\"isSingleColumnFullWidth\":false," +
+                "\"sections\":[" +
+                "{" +
+                "\"columns\":[" +
+                "{" +
+                "\"id\":\"builtin_column_0-0\"," +
+                "\"widgets\":[" +
+                "\"builtin_module_0_0_0\"" +
+                "]," +
+                "\"width\":12" +
+                "}" +
+                "],");
         assertThat(emailDetail.getWidgets()).startsWith("{" +
                 "\"builtin_module_0_0_0\":{" +
                 "\"body\":{" +

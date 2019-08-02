@@ -5,11 +5,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageDetails;
 import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+import com.smartling.connector.hubspot.sdk.page.PageState;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 import org.fest.assertions.core.Condition;
@@ -31,20 +32,18 @@ import static org.hamcrest.Matchers.not;
 
 public class PagesIntegrationTest extends BaseIntegrationTest
 {
-    private static final String BASIC_PAGE_NAME        = "Base Page for integration tests";
+    private static final String BASIC_PAGE_NAME        = "test";
     private static final String META_DESCRIPTION       = "meta_description";
     private static final String META_KEYWORDS          = "meta.keywords";
-    private static final String TMS_ID                 = "tms_id";
     private static final String ROOT_PATH              = "$.";
     private static final String META_DESCRIPTION_PATH  = ROOT_PATH + META_DESCRIPTION;
     private static final String META_KEYWORDS_PATH     = ROOT_PATH + META_KEYWORDS;
     private static final String ID_PATH                = "$.id";
 
-    private HubspotPageClient hubspotClient;
+    private HubspotPagesClient hubspotClient;
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now + ". Added some metacharacters: % (it is percent).";
-    private String        tmsId                  = "Tms Id ";
     private List<Long>    pagesToDelete          = Lists.newArrayList();
 
     private long basicPageId;
@@ -109,7 +108,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListPages() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1);
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1, null, null);
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
 
@@ -122,7 +121,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListPagesFilterByName() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1, createSearchFilter(null, BASIC_PAGE_NAME, null, null));
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1, null, createSearchFilter(null, BASIC_PAGE_NAME, null, null));
         
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
@@ -137,7 +136,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListPagesFilterByArchived() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, true, null));
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1000, null, createSearchFilter(null, null, true, null));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(archivedPageId, pageDetails);
@@ -147,33 +146,33 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListPagesFilterByNotLive() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, null, true));
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1000, null, createSearchFilter(null, null, null, true));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(notLivePageId, pageDetails);
-        assertThat(pageDetails.getDetailList()).are(suchThat("Not a draft", item -> item.isDraft()));
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a draft", item -> item.getCurrentState() == PageState.DRAFT));
     }
     
     @Test
     public void shouldListPagesFilterByLive() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(null, null, null, false));
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1000, null, createSearchFilter(null, null, null, false));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(basicPageId, pageDetails);
-        assertThat(pageDetails.getDetailList()).are(suchThat("Not a live", item -> !item.isDraft()));
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a live", item -> item.getCurrentState() != PageState.DRAFT));
     }
     
     @Test
     public void shouldListPagesFilterByCampaign() throws Exception
     {
-        PageDetails pageDetails = hubspotClient.listPages(0, 1000, createSearchFilter(notLivePageCampaignId, null, false, true));
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1000, null, createSearchFilter(notLivePageCampaignId, null, false, true));
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(notLivePageId, pageDetails);
     }
     
-    private void assertPageDetailsNotEmpty(PageDetails pageDetails)
+    private void assertPageDetailsNotEmpty(ListWrapper<PageDetail> pageDetails)
     {
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
         assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should be positive"+ pageDetails.getTotalCount()).isPositive();
@@ -181,31 +180,12 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotEmpty();
     }
 
-    @Test
-    public void shouldListPagesByTmsId() throws Exception
-    {
-        // create clone with tmsId
-        String clonedPage = getCloneAndChangeIt();
-        long clonedPageId = getId(clonedPage);
-        hubspotClient.updatePage(clonedPage, clonedPageId);
-
-        PageDetails pageDetails = hubspotClient.listPagesByTmsId(tmsId);
-
-        assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
-
-        List<PageDetail> detailList = pageDetails.getDetailList();
-        assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotEmpty();
-
-        assertPageDetailIsNotEmpty(detailList.get(0));
-    }
-
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
-        HubspotPageClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
-        hubspotClient.listPages(0, 1);
+        HubspotPagesClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPagesClient();
+        hubspotClient.listPages(0, 1, null, null);
     }
 
     private String getCloneAndChangeIt() throws HubspotApiException
@@ -292,7 +272,6 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         // Doesn't work now
         // TODO check if it is necessary
         //obj.addProperty(META_KEYWORDS, updatedMetaKeywords);
-        obj.addProperty(TMS_ID, tmsId);
         return obj.toString();
     }
 
@@ -314,7 +293,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
                 .assertThat(ID_PATH, not(basicPageId), "Cloned page should have another id");
     }
     
-    private void assertHasPageWithId(long id, PageDetails pageDetails) {
+    private void assertHasPageWithId(long id, ListWrapper<PageDetail> pageDetails) {
         Optional<PageDetail> result = pageDetails.getDetailList().stream().filter(page -> id == page.getId()).findFirst();
         if (!result.isPresent()) {
             throw new AssertionError(String.format("Page [ID='%s'] not found in:\n%s", id, pageDetails.getDetailList()));
@@ -326,7 +305,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         filter.setCampaign(campaign);
         filter.setName(name);
         filter.setArchived(archived);
-        filter.setDraft(draft);   
+        filter.setPageState(PageState.DRAFT);
         return filter;
     }
     

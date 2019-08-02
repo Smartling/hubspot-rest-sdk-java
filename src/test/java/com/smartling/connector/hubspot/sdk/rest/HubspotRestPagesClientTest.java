@@ -2,11 +2,12 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageDetails;
 import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+import com.smartling.connector.hubspot.sdk.page.PageState;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -28,9 +29,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.smartling.connector.hubspot.sdk.page.PageState.DRAFT;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestPageClientTest
+public class HubspotRestPagesClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -45,7 +47,7 @@ public class HubspotRestPageClientTest
 
     private TokenProvider tokenProvider;
     private String originalToken;
-    private HubspotPageClient hubspotClient;
+    private HubspotPagesClient hubspotClient;
 
     @Before
     public void setUpMocks() throws Exception
@@ -56,7 +58,7 @@ public class HubspotRestPageClientTest
         final RefreshTokenData refreshTokenData = new RefreshTokenData();
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
-        this.hubspotClient = new HubspotRestPageClient(configuration, tokenProvider);
+        this.hubspotClient = new HubspotRestPagesClient(configuration, tokenProvider);
     }
 
     @Test
@@ -151,7 +153,7 @@ public class HubspotRestPageClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPages(5, 15);
+        hubspotClient.listPages(5, 15, null, null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
                         .withQueryParam("limit", equalTo("15"))
@@ -162,36 +164,24 @@ public class HubspotRestPageClientTest
     @Test
     public void shouldCallListPagesUrlWithRightParams() throws HubspotApiException
     {
-        final Integer offset = 5;
-        final Integer limit = 15;
+        final int offset = 5;
+        final int limit = 15;
         final String campaign = "some-hash-id";
         final String name = "Page_name";
         final Boolean archived = Boolean.FALSE;
-        final Boolean draft = Boolean.TRUE;
-        PageSearchFilter filter = createSearchFilter(campaign, name, archived, draft);
+        final PageState state = DRAFT;
+        PageSearchFilter filter = createSearchFilter(campaign, name, archived, state);
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPages(offset, limit, filter);
+        hubspotClient.listPages(offset, limit, null, filter);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("limit", equalTo(limit.toString()))
-                        .withQueryParam("offset", equalTo(offset.toString()))
+                        .withQueryParam("limit", equalTo(Integer.toString(limit)))
+                        .withQueryParam("offset", equalTo(Integer.toString(offset)))
                         .withQueryParam("campaign", equalTo(campaign))
                         .withQueryParam("name__icontains", equalTo(name))
                         .withQueryParam("archived", equalTo(archived.toString()))
-                        .withQueryParam("is_draft", equalTo(draft.toString()))
-        );
-    }
-
-    @Test
-    public void shouldCallListPagesByTmsIdUrl() throws HubspotApiException
-    {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
-
-        hubspotClient.listPagesByTmsId("someId");
-
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("tms_id", equalTo("someId"))
+                        .withQueryParam("is_draft", equalTo("true"))
         );
     }
 
@@ -200,7 +190,7 @@ public class HubspotRestPageClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPagesByTmsId("someId");
+        hubspotClient.listPages(0, 10, null, null);
     }
 
     @Test
@@ -208,8 +198,8 @@ public class HubspotRestPageClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPagesByTmsId("someId");
-        hubspotClient.listPagesByTmsId("someId");
+        hubspotClient.listPages(0, 10, null, null);
+        hubspotClient.listPages(0, 10, null, null);
     }
 
     @Test
@@ -217,7 +207,7 @@ public class HubspotRestPageClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        PageDetails pageDetails = hubspotClient.listPages(5, 15);
+        ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(5, 15, null, null);
 
         assertThat(pageDetails).isNotNull();
         assertThat(pageDetails.getTotalCount()).isEqualTo(6);
@@ -228,12 +218,12 @@ public class HubspotRestPageClientTest
         assertPageDetail(detailList.get(0));
     }
 
-    private PageSearchFilter createSearchFilter(String campaign, String name, Boolean archived, Boolean draft) {
+    private PageSearchFilter createSearchFilter(String campaign, String name, Boolean archived, PageState state) {
         PageSearchFilter filter = new PageSearchFilter();
         filter.setCampaign(campaign);
         filter.setName(name);
         filter.setArchived(archived);
-        filter.setDraft(draft);
+        filter.setPageState(state);
         return filter;
     }
 

@@ -33,7 +33,7 @@ Another methods load and pass page as JSON transparently (SDK user is responcibl
 
 Requesting 10 pages, starting from the first one (i.e. with no offset):
 
-`PageDetails pageDetails = hubspotClient.listPages(0, 10);`
+`ListWrapper<PageDetail> pages = hubspotClient.listPages(0, 10);`
 
 ### Loading whole page as JSON
 

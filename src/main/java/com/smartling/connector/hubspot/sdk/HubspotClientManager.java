@@ -2,7 +2,7 @@ package com.smartling.connector.hubspot.sdk;
 
 public interface HubspotClientManager
 {
-    HubspotPageClient getPageClient();
+    HubspotPagesClient getPagesClient();
     HubspotFormClient getFormClient();
     HubspotBlogPostClient getBlogPostClient();
 }

@@ -10,6 +10,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsRawApi;
 
@@ -17,6 +18,8 @@ import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 public class HubspotRestFormClient extends AbstractHubspotRestClient implements HubspotFormClient
 {
@@ -49,9 +52,15 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
 
 
     @Override
-    public List<FormDetail> listForms() throws HubspotApiException
+    public List<FormDetail> listForms(int offset, int limit, @NonNull FormFilter filter, String orderBy) throws HubspotApiException
     {
-        return execute(formsEntityApi::forms);
+        return execute(() -> formsEntityApi.forms(
+                filter.getFormType() == null ? "ALL" : filter.getFormType(),
+                filter.getName(),
+                offset,
+                limit,
+                orderBy
+        ));
     }
 
 
@@ -111,7 +120,8 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(formsEntityApi::forms).stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
+        return execute(() -> formsEntityApi.forms("ALL", StringUtils.EMPTY, 0, 0, StringUtils.EMPTY))
+            .stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
 
     @Override

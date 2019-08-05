@@ -16,7 +16,7 @@ public class FormDetail implements NameAware
     @SerializedName("updatedAt")
     private Date   updated;
     @SerializedName("formType")
-    private FormType formType;
+    private String formType;
     @SerializedName("isPublished")
     private boolean isPublished;
 
@@ -61,8 +61,8 @@ public class FormDetail implements NameAware
     {
         this.tmsId = tmsId;
     }
-    public FormType getFormType() { return formType; }
-    public void setFormType(FormType formType) { this.formType = formType; }
+    public String getFormType() { return formType; }
+    public void setFormType(String formType) { this.formType = formType; }
     public boolean isPublished() { return isPublished; }
     public void setPublished(boolean published) { isPublished = published; }
 }

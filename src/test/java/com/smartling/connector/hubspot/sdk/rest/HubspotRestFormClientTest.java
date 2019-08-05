@@ -6,7 +6,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
-import com.smartling.connector.hubspot.sdk.form.FormType;
+import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
@@ -172,9 +172,44 @@ public class HubspotRestFormClientTest
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
-        hubspotClient.listForms();
+        hubspotClient.listForms(0, 50, new FormFilter(), null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
+    }
+
+    @Test
+    public void shouldCallListFormsWithFilter() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
+
+        FormFilter filter = new FormFilter();
+        filter.setFormType("FLOW");
+        filter.setName("popup");
+        hubspotClient.listForms(10, 5, filter, "updatedAt");
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("formTypes", equalTo("FLOW"))
+                .withQueryParam("name__icontains", equalTo("popup"))
+                .withQueryParam("order", equalTo("updatedAt"))
+                .withQueryParam("offset", equalTo("10"))
+                .withQueryParam("limit", equalTo("5")));
+    }
+
+    @Test
+    public void shouldCallListAllFormsWithFilter() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
+
+        FormFilter filter = new FormFilter();
+        filter.setName("popup");
+        hubspotClient.listForms(10, 5, filter, "updatedAt");
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("formTypes", equalTo("ALL"))
+                .withQueryParam("name__icontains", equalTo("popup"))
+                .withQueryParam("order", equalTo("updatedAt"))
+                .withQueryParam("offset", equalTo("10"))
+                .withQueryParam("limit", equalTo("5")));
     }
 
     @Test
@@ -209,7 +244,7 @@ public class HubspotRestFormClientTest
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
-        List<FormDetail> formDetails = hubspotClient.listForms();
+        List<FormDetail> formDetails = hubspotClient.listForms(0, 50, new FormFilter(), null);
 
         assertThat(formDetails).isNotEmpty();
 
@@ -223,7 +258,7 @@ public class HubspotRestFormClientTest
         assertThat(formDetail.getName()).isEqualTo("Default HubSpot Blog Comment Form 11357778888");
         assertThat(formDetail.getSubmitText()).isEqualTo("Submit Comment");
         assertThat(formDetail.getUpdated()).isEqualTo(new Date(1563405893542L));
-        assertThat(formDetail.getFormType()).isEqualTo(FormType.BLOG_COMMENT);
+        assertThat(formDetail.getFormType()).isEqualTo("BLOG_COMMENT");
         assertThat(formDetail.isPublished()).isEqualTo(true);
     }
 
@@ -273,7 +308,7 @@ public class HubspotRestFormClientTest
 
     private String loadResource(String name) throws IOException, URISyntaxException
     {
-        URI uri = HubspotRestBlogPostClientTest.class.getClassLoader().getResource(name).toURI();
+        URI uri = HubspotRestFormClientTest.class.getClassLoader().getResource(name).toURI();
         return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 }

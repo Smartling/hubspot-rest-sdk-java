@@ -7,6 +7,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -95,7 +96,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldListForms() throws Exception
     {
-        List<FormDetail> formDetails = hubspotClient.listForms();
+        List<FormDetail> formDetails = hubspotClient.listForms(0, 50, new FormFilter(), null);
         assertThat(formDetails).overridingErrorMessage("Form details list should not be null").isNotNull();
         assertThat(formDetails.size()).overridingErrorMessage("Form details count should not be positive").isPositive();
 
@@ -138,7 +139,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri" ,"wrong-token");
         HubspotFormClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
-        client.listForms();
+        client.listForms(0, 50, new FormFilter(), null);
     }
 
     @Test

@@ -1,0 +1,3509 @@
+[
+  {
+    "portalId": 6151717,
+    "guid": "0eb6c714-0fe4-4b0b-a6cf-fb69665ecefb",
+    "name": "Default HubSpot Blog Comment Form 11357778888",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Submit Comment",
+    "followUpId": "",
+    "notifyRecipients": "",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "First Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 0,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lastname",
+            "label": "Last Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 2,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "website",
+            "label": "Website",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 3,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "comment",
+            "label": "Comment",
+            "type": "string",
+            "fieldType": "textarea",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 4,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lifecyclestage",
+            "label": "Lifecycle Stage",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 6,
+            "required": false,
+            "selectedOptions": [
+              "subscriber"
+            ],
+            "options": [
+              {
+                "label": "Subscriber",
+                "value": "subscriber",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": true,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1563405893542,
+    "updatedAt": 1563405893542,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [],
+    "deletable": false,
+    "inlineMessage": "",
+    "tmsId": "",
+    "captchaEnabled": true,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "BLOG_COMMENT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "",
+    "isPublished": true,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "fa23db0a-6267-445f-8f34-efc2eefaaeb8",
+    "name": "Subscribe to Default HubSpot Blog Notifications 11357778888",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Subscribe",
+    "followUpId": "",
+    "notifyRecipients": "",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 0,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "blog_default_hubspot_blog_11357778888_subscription",
+            "label": "Notification Frequency",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": true,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lifecyclestage",
+            "label": "Lifecycle Stage",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 2,
+            "required": false,
+            "selectedOptions": [
+              "subscriber"
+            ],
+            "options": [
+              {
+                "label": "Subscriber",
+                "value": "subscriber",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": true,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1563405893923,
+    "updatedAt": 1563405893923,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [],
+    "deletable": false,
+    "inlineMessage": "",
+    "tmsId": "",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "HUBSPOT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "04c699c9-1b66-4d77-82c4-cc3ccabdb7d1",
+    "name": "Test event registration form 2",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Submit",
+    "followUpId": "",
+    "notifyRecipients": "215482",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "company",
+            "label": "Company name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "First name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "jobtitle",
+            "label": "Job title",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lastname",
+            "label": "Last name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1564049126150,
+    "updatedAt": 1564049126150,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [
+      {
+        "name": "lang",
+        "value": "en"
+      }
+    ],
+    "deletable": true,
+    "inlineMessage": "Thanks for submitting the form.",
+    "tmsId": "",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "HUBSPOT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "{\"fontFamily\":\"arial, helvetica, sans-serif\",\"backgroundWidth\":\"100%\",\"labelTextColor\":\"#33475b\",\"labelTextSize\":\"13px\",\"helpTextColor\":\"#7C98B6\",\"helpTextSize\":\"11px\",\"legalConsentTextColor\":\"#33475b\",\"legalConsentTextSize\":\"14px\",\"submitColor\":\"#ff7a59\",\"submitAlignment\":\"left\",\"submitFontColor\":\"#ffffff\",\"submitSize\":\"12px\"}",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "cff10fcf-6a7d-459d-abe4-6691d8fb0e81",
+    "name": "Test event registration form",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Submit",
+    "followUpId": "",
+    "notifyRecipients": "215482",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "company",
+            "label": "Company name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "First name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "jobtitle",
+            "label": "Job title",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lastname",
+            "label": "Last name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1564048462476,
+    "updatedAt": 1564049341561,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [
+      {
+        "name": "lang",
+        "value": "en"
+      }
+    ],
+    "deletable": true,
+    "inlineMessage": "Thanks for submitting the form.",
+    "tmsId": "",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "HUBSPOT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "{\"fontFamily\":\"arial, helvetica, sans-serif\",\"backgroundWidth\":\"100%\",\"labelTextColor\":\"#33475b\",\"labelTextSize\":\"13px\",\"helpTextColor\":\"#7C98B6\",\"helpTextSize\":\"11px\",\"legalConsentTextColor\":\"#33475b\",\"legalConsentTextSize\":\"14px\",\"submitColor\":\"#ff7a59\",\"submitAlignment\":\"left\",\"submitFontColor\":\"#ffffff\",\"submitSize\":\"12px\"}",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "a15d0fdf-e7f5-4774-b1e6-362cd9c4ac83",
+    "name": "Event registration form",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Submit",
+    "followUpId": "",
+    "notifyRecipients": "215482",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "do_you_work",
+            "label": "Do you work?",
+            "type": "enumeration",
+            "fieldType": "booleancheckbox",
+            "description": "<strong>Let</strong> us know about <span style=\"text-decoration: underline;\"><em>your</em></span> occupancy",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "No",
+                "value": "false",
+                "displayOrder": -1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Yes",
+                "value": "true",
+                "displayOrder": -1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "company",
+            "label": "<strong>Company</strong> <span style=\"text-decoration: underline;\"><em>name</em></span>",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<span style=\"text-decoration: underline;\"><em>Your</em></span> <strong>company</strong> full or short name",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "Roscosmos",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "tell_us_about_your_clients",
+            "label": "<strong>Tell</strong> us about <span style=\"text-decoration: underline;\"><em>your</em></span> clients",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "Just <strong>choose</strong> one of the following option",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Budget",
+                "value": "Budget",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Private",
+                "value": "Private",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Social",
+                "value": "Social",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "Radio buttons placeholder - strange thing",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "<span style=\"text-decoration: underline;\"><em>Your</em></span> <strong>email</strong>",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<strong>This field</strong> <span style=\"text-decoration: underline;\"><em>is required</em></span>",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "you@company.org",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": "<p><strong>This is a rich text area</strong>, <span style=\"text-decoration: underline;\"><em>you can add whatever copy you like</em></span>.</p>"
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "tell_us_about_your_email",
+            "label": "<strong>Tell</strong> us about <span style=\"text-decoration: underline;\"><em>your</em></span> email",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "We use only business emails",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Business",
+                "value": "Business",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Private",
+                "value": "Private",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "you@company.org",
+            "placeholder": "",
+            "dependentFieldFilters": [
+              {
+                "filters": [
+                  {
+                    "operator": "SET_EQ",
+                    "strValue": "",
+                    "boolValue": false,
+                    "numberValue": 0,
+                    "strValues": [
+                      "Private"
+                    ],
+                    "numberValues": []
+                  }
+                ],
+                "dependentFormField": {
+                  "name": "gender",
+                  "label": "Gender",
+                  "type": "string",
+                  "fieldType": "text",
+                  "description": "What gender do <span style=\"text-decoration: underline;\"><em>you</em></span> <strong>prefer</strong>?",
+                  "groupName": "contactinformation",
+                  "displayOrder": -1,
+                  "required": false,
+                  "selectedOptions": [],
+                  "options": [],
+                  "validation": {
+                    "name": "",
+                    "message": "",
+                    "data": "",
+                    "useDefaultBlockList": false,
+                    "blockedEmailAddresses": []
+                  },
+                  "enabled": true,
+                  "hidden": false,
+                  "defaultValue": "",
+                  "isSmartField": false,
+                  "unselectedLabel": "",
+                  "placeholder": "Male",
+                  "dependentFieldFilters": [],
+                  "labelHidden": false,
+                  "propertyObjectType": "CONTACT",
+                  "metaData": []
+                },
+                "formFieldAction": "DISPLAY"
+              }
+            ],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "phone",
+            "label": "Phone number",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "7:20:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "address",
+            "label": "Street address",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "city",
+            "label": "City",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "state",
+            "label": "State/Region",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "country",
+            "label": "Country",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "choose_options_to_call",
+            "label": "Choose options to call",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Sales",
+                "value": "Sales",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Marketing",
+                "value": "Marketing",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Talking about life",
+                "value": "Talking about life",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "mobilephone",
+            "label": "Mobile phone number",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "7:20:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "First name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "describe_your_position",
+            "label": "Describe your position",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Typical Employee",
+                "value": "Typical Employee",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Manager",
+                "value": "Manager",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Top",
+                "value": "Top",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "jobtitle",
+            "label": "Job title",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lastname",
+            "label": "Last name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "what_kind_of_industry_do_you_present_",
+            "label": "What <strong>kind</strong> of industry do <em><span style=\"text-decoration: underline;\">you</span></em> present?",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "Choose only one option",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Education",
+                "value": "Education",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Energy",
+                "value": "Energy",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Politics",
+                "value": "Politics",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Transport",
+                "value": "Transport",
+                "displayOrder": 3,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Telecom",
+                "value": "Telecom",
+                "displayOrder": 4,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "Select industry, please",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "industry",
+            "label": "Industry",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "work_email",
+            "label": "Work email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "twitterhandle",
+            "label": "Twitter Username",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Check on <a href=\"https://twitter.com\" rel=\"nofollow noopener\" target=\"_blank\">Twitter</a> site",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "@username",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "website",
+            "label": "Website URL",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "date_of_birth_picker",
+            "label": "Date of Birth",
+            "type": "date",
+            "fieldType": "date",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "date_of_birth",
+            "label": "Date of birth",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<strong>Type</strong> the date if <em><span style=\"text-decoration: underline;\">you</span></em> cannot use picker above",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "01/01/1985",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "company_size_num",
+            "label": "Company size",
+            "type": "number",
+            "fieldType": "number",
+            "description": "Put number of employees",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "5:100000:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "200",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "annualrevenue",
+            "label": "Annual Revenue",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": "<p><span style=\"text-decoration: underline;\"><em><strong>This is a rich text area, you can add whatever copy you like.</strong></em></span></p>\n<p>Simple List</p>\n<ul>\n<li>1. Tell about yourself</li>\n<li>2. Call us</li>\n<li>3. Ask manager</li>\n</ul>\n<p>Steps to reproduce</p>\n<ol style=\"list-style-type: upper-roman;\">\n<li>Catch</li>\n<li>Move</li>\n<li>Release</li>\n</ol>\n<p style=\"text-align: center;\">Center</p>\n<p style=\"text-align: right;\">Right</p>"
+        }
+      }
+    ],
+    "createdAt": 1564585663214,
+    "updatedAt": 1564661412661,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [
+      {
+        "name": "lang",
+        "value": "en"
+      },
+      {
+        "name": "legalConsentOptions",
+        "value": "{\"legitimateInterestSubscriptionTypes\":[7089301],\"communicationConsentCheckboxes\":[{\"communicationTypeId\":7089301,\"label\":\"I agree to receive other communications from sl-mm-test-dev-6151717.com.\",\"required\":false}],\"legitimateInterestLegalBasis\":\"LEGITIMATE_INTEREST_PQL\",\"communicationConsentText\":\"sl-mm-test-dev-6151717.com is committed to protecting and respecting your privacy, and we’ll only use your personal information to administer your account and to provide the products and services you requested from us. From time to time, we would like to contact you about our products and services, as well as other content that may be of interest to you. If you consent to us contacting you for this purpose, please tick below to say how you would like us to contact you:\",\"processingConsentType\":\"REQUIRED_CHECKBOX\",\"processingConsentText\":\"In order to provide you the content requested, we need to store and process your personal data. If you consent to us storing your personal data for this purpose, please tick the checkbox below.\",\"processingConsentCheckboxLabel\":\"I agree to allow sl-mm-test-dev-6151717.com to store and process my personal data.\",\"privacyPolicyText\":\"You can unsubscribe from these communications at any time. For more information on how to unsubscribe, our privacy practices, and how we are committed to protecting and respecting your privacy, please review our Privacy Policy.\",\"isLegitimateInterest\":false}"
+      }
+    ],
+    "deletable": true,
+    "inlineMessage": "<p>Thanks for submitting the form.</p>\n<p>Don't forget to visit our <a href=\"https://ya.ru\" rel=\"noopener\" target=\"_blank\">site</a> or <a href=\"sales@company.org\" rel=\" noopener\">email</a> us</p>",
+    "tmsId": "",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "HUBSPOT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "{\"fontFamily\":\"arial, helvetica, sans-serif\",\"backgroundWidth\":\"100%\",\"labelTextColor\":\"#33475b\",\"labelTextSize\":\"13px\",\"helpTextColor\":\"#7C98B6\",\"helpTextSize\":\"11px\",\"legalConsentTextColor\":\"#33475b\",\"legalConsentTextSize\":\"14px\",\"submitColor\":\"#ff7a59\",\"submitAlignment\":\"left\",\"submitFontColor\":\"#ffffff\",\"submitSize\":\"12px\"}",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "9a2ae894-411e-4d9e-8b67-7b7c42c7bde1",
+    "name": "Event registration form(6724977255)",
+    "action": "",
+    "method": "POST",
+    "cssClass": "hs-form stacked",
+    "redirect": "",
+    "submitText": "Soumettre",
+    "followUpId": "",
+    "notifyRecipients": "215482",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "do_you_work",
+            "label": "Travaillez vous",
+            "type": "enumeration",
+            "fieldType": "booleancheckbox",
+            "description": "<strong> Laissez - </strong> nous savons <span style=\"text-decoration: underline;\"> <em> votre </em> </span> occupation",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Non",
+                "value": "false",
+                "displayOrder": -1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Oui",
+                "value": "true",
+                "displayOrder": -1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "company",
+            "label": "<strong> Société </strong> <span style=\"text-decoration: underline;\"> <em> Nom </em> </span>",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<span style=\"text-decoration: underline;\"> <em> Votre </em> </span> <strong> société </strong> complet ou abrégé",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "Roscosmos",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "tell_us_about_your_clients",
+            "label": "<strong> Dites-nous </strong> sur <span style=\"text-decoration: underline;\"> <em> vos </em> </span> clients",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "Juste <strong> choisissez </strong> une des options suivantes",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Budget",
+                "value": "Budget",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Privé",
+                "value": "Private",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Social",
+                "value": "Social",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "Espace réservé aux boutons radio - chose étrange",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "<span style=\"text-decoration: underline;\"> <em> Votre </em> </span> <strong> email </strong>",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<strong> Ce champ </strong> <span style=\"text-decoration: underline;\"> <em> est requis </em> </span>",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "you@company.org",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": "<p><strong>Ceci est une zone de texte enrichi</strong>, <span style=\"text-decoration: underline;\"><em>vous pouvez ajouter ce que vous voulez comme copie</em></span>.</p>"
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "tell_us_about_your_email",
+            "label": "<strong> Parlez </strong> nous de <span style=\"text-decoration: underline;\"> <em> votre </em> </span> email",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "Nous n'utilisons que des courriels professionnels",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Affaires",
+                "value": "Business",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Privé",
+                "value": "Private",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "you@company.org",
+            "placeholder": "",
+            "dependentFieldFilters": [
+              {
+                "filters": [
+                  {
+                    "operator": "SET_EQ",
+                    "strValue": "",
+                    "boolValue": false,
+                    "numberValue": 0,
+                    "strValues": [
+                      "Private"
+                    ],
+                    "numberValues": []
+                  }
+                ],
+                "dependentFormField": {
+                  "name": "gender",
+                  "label": "Le sexe",
+                  "type": "string",
+                  "fieldType": "text",
+                  "description": "Quel genre <strong>préférez-vous</strong> <span style=\"text-decoration: underline;\"> <em> vous </em> </span>",
+                  "groupName": "contactinformation",
+                  "displayOrder": -1,
+                  "required": false,
+                  "selectedOptions": [],
+                  "options": [],
+                  "validation": {
+                    "name": "",
+                    "message": "",
+                    "data": "",
+                    "useDefaultBlockList": false,
+                    "blockedEmailAddresses": []
+                  },
+                  "enabled": true,
+                  "hidden": false,
+                  "defaultValue": "",
+                  "isSmartField": false,
+                  "unselectedLabel": "",
+                  "placeholder": "Mâle",
+                  "dependentFieldFilters": [],
+                  "labelHidden": false,
+                  "propertyObjectType": "CONTACT",
+                  "metaData": []
+                },
+                "formFieldAction": "DISPLAY"
+              }
+            ],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "phone",
+            "label": "Numéro de téléphone",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "7:20:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "address",
+            "label": "adresse de rue",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "city",
+            "label": "Ville",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "state",
+            "label": "Etat / Région",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "country",
+            "label": "Pays",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "choose_options_to_call",
+            "label": "Choisissez les options à appeler",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Ventes",
+                "value": "Sales",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Commercialisation",
+                "value": "Marketing",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Parler de la vie",
+                "value": "Talking about life",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "mobilephone",
+            "label": "numéro de téléphone portable",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "7:20:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "Prénom",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "describe_your_position",
+            "label": "Décrivez votre position",
+            "type": "enumeration",
+            "fieldType": "radio",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Employé typique",
+                "value": "Typical Employee",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Directeur",
+                "value": "Manager",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Haut",
+                "value": "Top",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "jobtitle",
+            "label": "Profession",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "lastname",
+            "label": "Nom de famille",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "what_kind_of_industry_do_you_present_",
+            "label": "Qu'est - ce que <strong>type</strong> de l' industrie do <em><span style=\"text-decoration: underline;\">vous</span></em> présent.",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "Choisissez une seule option",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [
+              {
+                "label": "Éducation",
+                "value": "Education",
+                "displayOrder": 0,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Énergie",
+                "value": "Energy",
+                "displayOrder": 1,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Politique",
+                "value": "Politics",
+                "displayOrder": 2,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Transport",
+                "value": "Transport",
+                "displayOrder": 3,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              },
+              {
+                "label": "Telecom",
+                "value": "Telecom",
+                "displayOrder": 4,
+                "doubleData": 0.0,
+                "hidden": false,
+                "description": "",
+                "readOnly": false
+              }
+            ],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "Sélectionnez une industrie, s'il vous plaît",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "industry",
+            "label": "Industrie",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "work_email",
+            "label": "Email de travail",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "twitterhandle",
+            "label": "Nom d'utilisateur Twitter",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Vérifiez sur <a href=\"https://twitter.com\" rel=\"nofollow noopener\" target=\"_blank\"> Twitter </a> site",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "@Nom d'utilisateur",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "website",
+            "label": "URL de site web",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "date_of_birth_picker",
+            "label": "Date de naissance",
+            "type": "date",
+            "fieldType": "date",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "date_of_birth",
+            "label": "Date de naissance",
+            "type": "string",
+            "fieldType": "text",
+            "description": "<strong> Tapez </strong> la date si <em> <span style=\"text-decoration: underline;\"> vous </span> </em> ne pouvez pas utiliser le sélecteur ci-dessus",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "01/01/1985",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "company_size_num",
+            "label": "Taille de l'entreprise",
+            "type": "number",
+            "fieldType": "number",
+            "description": "Mettez le nombre d'employés",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "5:100000:true",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "200",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          },
+          {
+            "name": "annualrevenue",
+            "label": "Revenu annuel",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": -1,
+            "required": false,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": true,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": false,
+        "isSmartGroup": true,
+        "richText": {
+          "content": "<p><span style=\"text-decoration: underline;\"><em><strong>C'est une zone de texte riche, vous pouvez ajouter ce que vous voulez comme copie.</strong></em></span></p>\n<p>Liste simple</p>\n<ul>\n<li>1. Parlez de vous</li>\n<li>2. Appelez-nous</li>\n<li>3. Demander au gestionnaire</li>\n</ul>\n<p>Étapes pour reproduire</p>\n<ol style=\"list-style-type: upper-roman;\">\n<li>Capture</li>\n<li>Bouge toi</li>\n<li>Libération</li>\n</ol>\n<p style=\"text-align: center;\">Centre</p>\n<p style=\"text-align: right;\">Droite</p>"
+        }
+      }
+    ],
+    "createdAt": 1564665992613,
+    "updatedAt": 1564665996241,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [
+      {
+        "name": "lang",
+        "value": "en"
+      },
+      {
+        "name": "legalConsentOptions",
+        "value": "{\"legitimateInterestSubscriptionTypes\":[7089301],\"communicationConsentCheckboxes\":[{\"communicationTypeId\":7089301,\"label\":\"I agree to receive other communications from sl-mm-test-dev-6151717.com.\",\"required\":false}],\"legitimateInterestLegalBasis\":\"LEGITIMATE_INTEREST_PQL\",\"communicationConsentText\":\"sl-mm-test-dev-6151717.com is committed to protecting and respecting your privacy, and we’ll only use your personal information to administer your account and to provide the products and services you requested from us. From time to time, we would like to contact you about our products and services, as well as other content that may be of interest to you. If you consent to us contacting you for this purpose, please tick below to say how you would like us to contact you:\",\"processingConsentType\":\"REQUIRED_CHECKBOX\",\"processingConsentText\":\"In order to provide you the content requested, we need to store and process your personal data. If you consent to us storing your personal data for this purpose, please tick the checkbox below.\",\"processingConsentCheckboxLabel\":\"I agree to allow sl-mm-test-dev-6151717.com to store and process my personal data.\",\"privacyPolicyText\":\"You can unsubscribe from these communications at any time. For more information on how to unsubscribe, our privacy practices, and how we are committed to protecting and respecting your privacy, please review our Privacy Policy.\",\"isLegitimateInterest\":false}"
+      }
+    ],
+    "deletable": true,
+    "inlineMessage": "<p>Merci d'avoir envoyé le formulaire.</p>\n<p>N'oubliez pas de visiter notre <a href=\"https://ya.ru\" rel=\"noopener\" target=\"_blank\"> site </a> ou <a href=\"sales@company.org\" rel=\" noopener\"> email </a> us</p>",
+    "tmsId": "a15d0fdf-e7f5-4774-b1e6-362cd9c4ac83-6724977255",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": true,
+    "editable": true,
+    "formType": "HUBSPOT",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "{\"fontFamily\":\"arial, helvetica, sans-serif\",\"backgroundWidth\":\"100%\",\"labelTextColor\":\"#33475b\",\"labelTextSize\":\"13px\",\"helpTextColor\":\"#7C98B6\",\"helpTextSize\":\"11px\",\"legalConsentTextColor\":\"#33475b\",\"legalConsentTextSize\":\"14px\",\"submitColor\":\"#ff7a59\",\"submitAlignment\":\"left\",\"submitFontColor\":\"#ffffff\",\"submitSize\":\"12px\"}",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  },
+  {
+    "portalId": 6151717,
+    "guid": "f8be0039-c2b4-4380-b97d-1afaeddfe751",
+    "name": "Pop-up form: Popup Form",
+    "action": "",
+    "method": "POST",
+    "cssClass": "",
+    "redirect": "",
+    "submitText": "",
+    "followUpId": "",
+    "notifyRecipients": "215482",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 0,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "you@company.org",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "firstname",
+            "label": "First Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 1,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "Ivan Ivanov",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      },
+      {
+        "fields": [
+          {
+            "name": "date_of_birth",
+            "label": "Date of birth",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 2,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "dd/mm/yy",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1564737549824,
+    "updatedAt": 1564738148652,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [
+      {
+        "name": "legalConsentOptions",
+        "value": "{\"communicationConsentCheckboxes\":[{\"communicationTypeId\":7089301,\"label\":\"<p>I agree to receive other communications from sl-mm-test-dev-6151717.com.</p>\",\"required\":false}],\"communicationConsentText\":\"<p>sl-mm-test-dev-6151717.com is committed to protecting and respecting your privacy, and we’ll only use your personal information to administer your account and to provide the products and services you requested from us. From time to time, we would like to contact you about our products and services, as well as other content that may be of interest to you. If you consent to us contacting you for this purpose, please tick below to say how you would like us to contact you:</p>\",\"processingConsentType\":\"REQUIRED_CHECKBOX\",\"processingConsentText\":\"<p>In order to provide you the content requested, we need to store and process your personal data. If you consent to us storing your personal data for this purpose, please tick the checkbox below.</p>\",\"processingConsentCheckboxLabel\":\"<p>I agree to allow sl-mm-test-dev-6151717.com to store and process my personal data.</p>\",\"privacyPolicyText\":\"<p>You can unsubscribe from these communications at any time. For more information on how to unsubscribe, our privacy practices, and how we are committed to protecting and respecting your privacy, please review our Privacy Policy.</p>\",\"isLegitimateInterest\":false}"
+      }
+    ],
+    "deletable": false,
+    "inlineMessage": "",
+    "tmsId": "",
+    "captchaEnabled": true,
+    "campaignGuid": "",
+    "cloneable": false,
+    "editable": false,
+    "formType": "FLOW",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 5891984,
+    "kickbackEmailsJson": "[{\"emailData\":{\"emailSenderUserId\":215482,\"emailMessageHtml\":\"<p><strong>The longest</strong> <em>email</em></p>\",\"emailSubjectLine\":\"subject plain text\",\"emailSubscriptionId\":7090171,\"fromName\":\"HubSpot Test\"},\"emailId\":11792165257,\"emailCampaignId\":75293099}]"
+  },
+  {
+    "portalId": 6151717,
+    "guid": "c191a8e3-085e-46a4-8d86-920037e33ef3",
+    "name": "Pop-up form: New form (August 2, 2019 3:38:46 PM)",
+    "action": "",
+    "method": "POST",
+    "cssClass": "",
+    "redirect": "",
+    "submitText": "",
+    "followUpId": "",
+    "notifyRecipients": "testapi@hubspot.com",
+    "leadNurturingCampaignId": "",
+    "formFieldGroups": [
+      {
+        "fields": [
+          {
+            "name": "email",
+            "label": "Email",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "contactinformation",
+            "displayOrder": 0,
+            "required": true,
+            "selectedOptions": [],
+            "options": [],
+            "validation": {
+              "name": "",
+              "message": "",
+              "data": "",
+              "useDefaultBlockList": false,
+              "blockedEmailAddresses": []
+            },
+            "enabled": true,
+            "hidden": false,
+            "defaultValue": "",
+            "isSmartField": false,
+            "unselectedLabel": "",
+            "placeholder": "",
+            "dependentFieldFilters": [],
+            "labelHidden": false,
+            "propertyObjectType": "CONTACT",
+            "metaData": []
+          }
+        ],
+        "default": true,
+        "isSmartGroup": false,
+        "richText": {
+          "content": ""
+        }
+      }
+    ],
+    "createdAt": 1564742326694,
+    "updatedAt": 1564742326694,
+    "performableHtml": "",
+    "migratedFrom": "",
+    "ignoreCurrentValues": false,
+    "metaData": [],
+    "deletable": false,
+    "inlineMessage": "",
+    "tmsId": "",
+    "captchaEnabled": false,
+    "campaignGuid": "",
+    "cloneable": false,
+    "editable": false,
+    "formType": "FLOW",
+    "deletedAt": 0,
+    "themeName": "canvas",
+    "parentId": 0,
+    "style": "",
+    "isPublished": false,
+    "publishAt": 0,
+    "unpublishAt": 0,
+    "publishedAt": 0,
+    "multivariateTest": {
+      "variants": [],
+      "startAtTimestamp": 0,
+      "endAtTimestamp": 0,
+      "winningVariantId": "",
+      "finished": false,
+      "controlId": ""
+    },
+    "kickbackEmailWorkflowId": 0,
+    "kickbackEmailsJson": ""
+  }
+]

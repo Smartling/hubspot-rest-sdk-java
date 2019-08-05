@@ -9,12 +9,16 @@ public class FormDetail implements NameAware
 {
     private String guid;
     private String name;
-    @SerializedName("submitText") //TODO: review why in camelCase
+    @SerializedName("submitText")
     private String submitText;
     @SerializedName("tmsId")
     private String tmsId;
     @SerializedName("updatedAt")
     private Date   updated;
+    @SerializedName("formType")
+    private String formType;
+    @SerializedName("isPublished")
+    private boolean isPublished;
 
     public String getGuid()
     {
@@ -57,4 +61,8 @@ public class FormDetail implements NameAware
     {
         this.tmsId = tmsId;
     }
+    public String getFormType() { return formType; }
+    public void setFormType(String formType) { this.formType = formType; }
+    public boolean isPublished() { return isPublished; }
+    public void setPublished(boolean published) { isPublished = published; }
 }

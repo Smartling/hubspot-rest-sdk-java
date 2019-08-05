@@ -13,6 +13,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class PageDetail extends PageDetailShort
 {
+    public static final String FIELDS = PageDetailShort.FIELDS + ",html_title,subcategory,campaign,campaign_name,url,folder_id,portal_id,translated_content";
+
     private String  htmlTitle;
     private Subcategory  subcategory; // This is set to empty or to "landing_page" for landing pages, or to "site_page" for site pages
     private String  campaign; // The guid of the marketing campaign this page is associated with

@@ -12,6 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PageDetailShort implements NameAware
 {
+    public static final String FIELDS = "id,name,current_state,archived,created,updated,slug,language";
+
     private long    id;
     private String  name;
     private PageState  currentState;

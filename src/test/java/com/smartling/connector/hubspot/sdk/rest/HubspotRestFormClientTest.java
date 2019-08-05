@@ -6,6 +6,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.form.FormType;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
@@ -14,6 +15,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -74,7 +81,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldCallGetFormUrlForFormDetail() throws HubspotApiException
+    public void shouldCallGetFormUrlForFormDetail() throws Exception
     {
 
         givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(HttpMockUtils.aJsonResponse(formDetail())));
@@ -96,7 +103,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldCallCloneFormUrlForEntityApi() throws HubspotApiException
+    public void shouldCallCloneFormUrlForEntityApi() throws Exception
     {
         String body = formDetail();
         String original = new JsonParser().parse(body).toString();
@@ -120,7 +127,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void cloneShouldResetDeletableToTrue() throws HubspotApiException
+    public void cloneShouldResetDeletableToTrue() throws Exception
     {
         final String guid = "6364429e-9c68-4c38-a71c-e1edb98825fc";
         String body = formDetail();
@@ -161,7 +168,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldCallListFormsUrl() throws HubspotApiException
+    public void shouldCallListFormsUrl() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
@@ -171,7 +178,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldCallListFormsByTmsIdUrl() throws HubspotApiException
+    public void shouldCallListFormsByTmsIdUrl() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
@@ -181,7 +188,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldCallRefreshTokenFirst() throws HubspotApiException
+    public void shouldCallRefreshTokenFirst() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
@@ -189,7 +196,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldNotUseSameTokenForMultipleCalls() throws HubspotApiException
+    public void shouldNotUseSameTokenForMultipleCalls() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
@@ -198,7 +205,7 @@ public class HubspotRestFormClientTest
     }
 
     @Test
-    public void shouldDeserializeFields() throws HubspotApiException
+    public void shouldDeserializeFields() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
@@ -206,151 +213,23 @@ public class HubspotRestFormClientTest
 
         assertThat(formDetails).isNotEmpty();
 
-        assertThat(formDetails.size()).isEqualTo(2);
+        assertThat(formDetails.size()).isEqualTo(8);
         assertFormDetail(formDetails.get(0));
     }
 
     private void assertFormDetail(FormDetail formDetail)
     {
-        assertThat(formDetail.getGuid()).isEqualTo("0033cf74de6a48c4ac5d805d72d69822");
-        assertThat(formDetail.getName()).isEqualTo("Dummy UnitTest Form [6bd6532d-2a9b-49] (Leads API)");
-        assertThat(formDetail.getSubmitText()).isEqualTo("Submit");
-        assertThat(formDetail.getUpdated()).isEqualTo(new Date(1433967918640L));
+        assertThat(formDetail.getGuid()).isEqualTo("0eb6c714-0fe4-4b0b-a6cf-fb69665ecefb");
+        assertThat(formDetail.getName()).isEqualTo("Default HubSpot Blog Comment Form 11357778888");
+        assertThat(formDetail.getSubmitText()).isEqualTo("Submit Comment");
+        assertThat(formDetail.getUpdated()).isEqualTo(new Date(1563405893542L));
+        assertThat(formDetail.getFormType()).isEqualTo(FormType.BLOG_COMMENT);
+        assertThat(formDetail.isPublished()).isEqualTo(true);
     }
 
-    private String formDetail()
+    private String formDetail() throws Exception
     {
-        return   "{"
-                +" \"portalId\": 123,"
-                +" \"guid\": \"6364429e-9c68-4c38-a71c-e1edb98825fc\","
-                +" \"name\": \"My New Form\","
-                +" \"action\": \"\","
-                +" \"method\": \"POST\","
-                +" \"cssClass\": \"hs-form stacked\","
-                +" \"redirect\": \"\","
-                +" \"submitText\": \"Submit\","
-                +" \"followUpId\": \"\","
-                +" \"notifyRecipients\": \"\","
-                +" \"leadNurturingCampaignId\": \"\","
-                +" \"formFieldGroups\": ["
-                +" {"
-                +"    \"fields\": ["
-                +"    {"
-                +"       \"name\": \"firstname\","
-                +"       \"label\": \"First Name\","
-                +"       \"type\": \"string\","
-                +"       \"fieldType\": \"text\","
-                +"       \"description\": \"\","
-                +"       \"groupName\": \"contactinformation\","
-                +"       \"displayOrder\": -1,"
-                +"       \"required\": false,"
-                +"       \"selectedOptions\": [],"
-                +"       \"options\": [],"
-                +"       \"validation\": "
-                +"       {"
-                +"          \"name\": \"\","
-                +"          \"message\": \"\","
-                +"          \"data\": \"\","
-                +"          \"useDefaultBlockList\": false"
-                +"       },"
-                +"       \"enabled\": true,"
-                +"       \"hidden\": false,"
-                +"       \"defaultValue\": \"\","
-                +"       \"isSmartField\": false,"
-                +"       \"unselectedLabel\": \"\","
-                +"       \"placeholder\": \"\""
-                +"    },"
-                +"    {"
-                +"       \"name\": \"lastname\","
-                +"       \"label\": \"Last Name\","
-                +"       \"type\": \"string\","
-                +"       \"fieldType\": \"text\","
-                +"       \"description\": \"\","
-                +"       \"groupName\": \"contactinformation\","
-                +"       \"displayOrder\": -1,"
-                +"       \"required\": false,"
-                +"       \"selectedOptions\": [],"
-                +"       \"options\": [],"
-                +"       \"validation\": "
-                +"       {"
-                +"          \"name\": \"\","
-                +"          \"message\": \"\","
-                +"          \"data\": \"\","
-                +"          \"useDefaultBlockList\": false"
-                +"       },"
-                +"       \"enabled\": true,"
-                +"       \"hidden\": false,"
-                +"       \"defaultValue\": \"\","
-                +"       \"isSmartField\": false,"
-                +"       \"unselectedLabel\": \"\","
-                +"       \"placeholder\": \"\""
-                +"    } ],"
-                +"    \"default\": true,"
-                +"    \"isSmartGroup\": false"
-                +" },"
-                +" {"
-                +"    \"fields\": ["
-                +"    {"
-                +"       \"name\": \"city\","
-                +"       \"label\": \"City\","
-                +"       \"type\": \"string\","
-                +"       \"fieldType\": \"text\","
-                +"       \"description\": \"\","
-                +"       \"groupName\": \"\","
-                +"       \"displayOrder\": -1,"
-                +"       \"required\": false,"
-                +"       \"selectedOptions\": [],"
-                +"       \"options\": [],"
-                +"       \"validation\": {"
-                +"          \"name\": \"\","
-                +"          \"message\": \"\","
-                +"          \"data\": \"\","
-                +"          \"useDefaultBlockList\": false"
-                +"       },"
-                +"       \"enabled\": true,"
-                +"       \"hidden\": false,"
-                +"       \"defaultValue\": \"\","
-                +"       \"isSmartField\": false,"
-                +"       \"unselectedLabel\": \"\","
-                +"       \"placeholder\": \"\""
-                +"    } ],"
-                +"    \"default\": true,"
-                +"    \"isSmartGroup\": false"
-                +" },"
-                +" {"
-                +"    \"fields\": ["
-                +"    {"
-                +"       \"name\": \"email\","
-                +"       \"label\": \"Email\","
-                +"       \"type\": \"string\","
-                +"       \"fieldType\": \"text\","
-                +"       \"description\": \"\","
-                +"       \"groupName\": \"contactinformation\","
-                +"       \"displayOrder\": -1,"
-                +"       \"required\": true,"
-                +"       \"selectedOptions\": [],"
-                +"       \"options\": [],"
-                +"       \"validation\": {"
-                +"          \"name\": \"email\","
-                +"          \"message\": \"Please enter a valid email address\","
-                +"          \"data\": \"\","
-                +"          \"useDefaultBlockList\": false"
-                +"       },"
-                +"       \"enabled\": true,"
-                +"       \"hidden\": false,"
-                +"       \"defaultValue\": \"\","
-                +"       \"isSmartField\": false,"
-                +"       \"unselectedLabel\": \"\","
-                +"       \"placeholder\": \"\""
-                +"    } ],"
-                +"    \"default\": true,"
-                +"    \"isSmartGroup\": false"
-                +" } ],"
-                +" \"createdAt\": 1430010213580,"
-                +" \"updatedAt\": 1430010886071,"
-                +" \"metaData\": [],"
-                +" \"deletable\": true"
-                +"}";
+        return loadResource("form.json");
     }
 
     private String formSnippet()
@@ -387,306 +266,14 @@ public class HubspotRestFormClientTest
                 +"}";
     }
 
-    private String formDetails()
+    private String formDetails() throws Exception
     {
-        return   "[ {"
-                +"     \"guid\":\"0033cf74de6a48c4ac5d805d72d69822\","
-                +"     \"name\":\"Dummy UnitTest Form [6bd6532d-2a9b-49] (Leads API)\","
-                +"     \"action\":\"\","
-                +"     \"method\":\"PUT\","
-                +"     \"cssClass\":\"\","
-                +"     \"redirect\":\"\","
-                +"     \"fields\":["
-                +"     {"
-                +"        \"name\":\"firstname\","
-                +"        \"label\":\"First Name\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"\","
-                +"        \"displayOrder\":0,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":"
-                +"        {"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"lastname\","
-                +"        \"label\":\"Last Name\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"\","
-                +"        \"displayOrder\":1,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":{"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"adress_1\","
-                +"        \"label\":\"Adress 1\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"\","
-                +"        \"displayOrder\":2,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":"
-                +"        {"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     } ],"
-                +"     \"submitText\":\"Submit\","
-                +"     \"followUpId\":\"\","
-                +"     \"notifyRecipients\":\"\","
-                +"     \"leadNurturingCampaignId\":\"\","
-                +"     \"formFieldGroups\":["
-                +"     {"
-                +"        \"name\":\"group-0\","
-                +"        \"fieldNames\":[ \"firstname\" ],"
-                +"        \"default\":true"
-                +"     },"
-                +"        {"
-                +"        \"name\":\"group-1\","
-                +"        \"fieldNames\":[ \"lastname\" ],"
-                +"        \"default\":true"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"group-2\","
-                +"        \"fieldNames\":[ \"adress_1\" ],"
-                +"        \"default\":true"
-                +"     } ],"
-                +"     \"createdAt\":1318534279910,"
-                +"     \"updatedAt\":1433967918640,"
-                +"     \"performableHtml\":\"\","
-                +"     \"migratedFrom\":\"ld\","
-                +"     \"ignoreCurrentValues\":false,"
-                +"     \"metaData\":[ ],"
-                +"     \"deletable\":true,"
-                +"     \"inlineMessage\":\"\","
-                +"     \"socialLoginEnabled\":false,"
-                +"     \"socialLoginTypes\":[ ],"
-                +"     \"tmsId\":\"\","
-                +"     \"captchaEnabled\":false,"
-                +"     \"campaignGuid\":\"\","
-                +"     \"embeddedCode\":\"<script charset=\\\"utf-8\\\" src=\\\"http://js.hubspot.com/forms/current.js\\\"></script>\n<script>\n hbspt.forms.create({\n portalId: '62515',\n formId: '0033cf74de6a48c4ac5d805d72d69822'\n });\n </script>\""
-                +"  },"
-                +"  {"
-                +"     \"guid\":\"012d1150-2f7a-4b36-83e3-a0b33a463ed4\","
-                +"     \"name\":\"UC: 1, Lead Gen - Education\","
-                +"     \"action\":\"\","
-                +"     \"method\":\"POST\","
-                +"     \"cssClass\":\"hs-form stacked\","
-                +"     \"redirect\":\"\","
-                +"     \"fields\":["
-                +"     {"
-                +"        \"name\":\"firstname\","
-                +"        \"label\":\"First Name\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"contactinformation\","
-                +"        \"displayOrder\":-1,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":"
-                +"        {"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"lastname\","
-                +"        \"label\":\"Last Name\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"contactinformation\","
-                +"        \"displayOrder\":-1,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":{"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"email\","
-                +"        \"label\":\"Email\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"contactinformation\","
-                +"        \"displayOrder\":-1,"
-                +"        \"required\":true,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":{"
-                +"           \"name\":\"email\","
-                +"           \"message\":\"Please enter a valid email address\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"book2meet_company_phone\","
-                +"        \"label\":\"Phone number\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"\","
-                +"        \"displayOrder\":-1,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":{"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     },"
-                +"     {"
-                +"        \"name\":\"current_education_level\","
-                +"        \"label\":\"Current Education Level\","
-                +"        \"type\":\"string\","
-                +"        \"fieldType\":\"text\","
-                +"        \"description\":\"\","
-                +"        \"groupName\":\"\","
-                +"        \"displayOrder\":-1,"
-                +"        \"required\":false,"
-                +"        \"selectedOptions\":[ ],"
-                +"        \"options\":[ ],"
-                +"        \"validation\":{"
-                +"           \"name\":\"\","
-                +"           \"message\":\"\","
-                +"           \"data\":\"\","
-                +"           \"useDefaultBlockList\":false"
-                +"        },"
-                +"        \"enabled\":true,"
-                +"        \"hidden\":false,"
-                +"        \"defaultValue\":\"\","
-                +"        \"isSmartField\":false,"
-                +"        \"unselectedLabel\":\"\","
-                +"        \"placeholder\":\"\","
-                +"        \"dependentFieldFilters\":[ ]"
-                +"     } ],"
-                +"  \"submitText\":\"Submit\","
-                +"  \"followUpId\":\"\","
-                +"  \"notifyRecipients\":\"\","
-                +"  \"leadNurturingCampaignId\":\"\","
-                +"  \"formFieldGroups\":["
-                +"  {"
-                +"     \"name\":\"group-0\","
-                +"     \"fieldNames\":[ \"firstname\" ],"
-                +"     \"default\":true"
-                +"  },"
-                +"  {"
-                +"     \"name\":\"group-1\","
-                +"     \"fieldNames\":[ \"lastname\" ],"
-                +"     \"default\":true"
-                +"  },"
-                +"  {"
-                +"     \"name\":\"group-2\","
-                +"     \"fieldNames\":[ \"email\" ],"
-                +"     \"default\":true"
-                +"  },"
-                +"  {"
-                +"     \"name\":\"group-3\","
-                +"     \"fieldNames\":[ \"book2meet_company_phone\" ],"
-                +"     \"default\":true"
-                +"  },"
-                +"  {"
-                +"     \"name\":\"group-4\","
-                +"     \"fieldNames\":[ \"current_education_level\" ],"
-                +"     \"default\":true"
-                +"  } ],"
-                +"  \"createdAt\":1438642147748,"
-                +"  \"updatedAt\":1438642234188,"
-                +"  \"performableHtml\":\"\","
-                +"  \"migratedFrom\":\"\","
-                +"  \"ignoreCurrentValues\":false,"
-                +"  \"metaData\":[ ],"
-                +"  \"deletable\":true,"
-                +"  \"inlineMessage\":\"\","
-                +"  \"socialLoginEnabled\":false,"
-                +"  \"socialLoginTypes\":[ \"FACEBOOK\", \"LINKEDIN\", \"GOOGLEPLUS\" ],"
-                +"  \"tmsId\":\"\","
-                +"  \"captchaEnabled\":false,"
-                +"  \"campaignGuid\":\"\","
-                +"  \"embeddedCode\":\"<script charset=\\\"utf-8\\\" src=\\\"http://js.hubspot.com/forms/current.js\\\"></script>\n<script>\n hbspt.forms.create({\n portalId: '62515',\n formId: '012d1150-2f7a-4b36-83e3-a0b33a463ed4'\n });\n </script>\""
-                +"} ]";
+        return  loadResource("forms.json");
+    }
+
+    private String loadResource(String name) throws IOException, URISyntaxException
+    {
+        URI uri = HubspotRestBlogPostClientTest.class.getClassLoader().getResource(name).toURI();
+        return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 }

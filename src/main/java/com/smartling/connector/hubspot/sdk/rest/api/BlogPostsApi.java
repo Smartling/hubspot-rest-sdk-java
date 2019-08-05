@@ -6,7 +6,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 
-public interface BlogPostApi
+public interface BlogPostsApi
 {
     @RequestLine("GET /content/api/v2/blog-posts?archived={archived}&campaign={campaign}&content_group_id={content_group_id}&name__icontains={name}&slug={slug}&state={state}&offset={offset}&limit={limit}&order_by={order_by}")
     BlogPostDetails blogPosts(@Param("archived") Boolean archived, @Param("campaign") String campaign,

@@ -1,14 +1,14 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
-import com.smartling.connector.hubspot.sdk.rest.api.BlogApi;
-import com.smartling.connector.hubspot.sdk.rest.api.BlogPostApi;
+import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
+import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
@@ -16,49 +16,49 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import lombok.NonNull;
 
-public class HubspotRestBlogPostClient extends AbstractHubspotRestClient implements HubspotBlogPostClient
+public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implements HubspotBlogPostsClient
 {
-    private final BlogPostApi blogPostApi;
-    private final BlogApi blogApi;
+    private final BlogPostsApi blogPostsApi;
+    private final BlogsApi blogsApi;
 
-    public HubspotRestBlogPostClient(final Configuration configuration, final TokenProvider tokenProvider)
+    public HubspotRestBlogPostsClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
         super(tokenProvider);
 
         Options connectionConfig = new Options(
                 configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
 
-        blogPostApi = Feign.builder()
+        blogPostsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .encoder(new GsonEncoder(configuredGson()))
                 .decoder(new GsonDecoder(configuredGson()))
-                .target(BlogPostApi.class, configuration.getApiUrl());
+                .target(BlogPostsApi.class, configuration.getApiUrl());
 
-        blogApi = Feign.builder()
+        blogsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .decoder(new GsonDecoder(configuredGson()))
-                .target(BlogApi.class, configuration.getApiUrl());
+                .target(BlogsApi.class, configuration.getApiUrl());
 
     }
 
     @Override
     public BlogDetails listBlogs(int offset, int limit) throws HubspotApiException
     {
-        return execute(() -> blogApi.blogs(offset, limit));
+        return execute(() -> blogsApi.blogs(offset, limit));
     }
 
     @Override
     public BlogDetail getBlogById(String blogId) throws HubspotApiException
     {
-        return execute(() -> blogApi.blogById(blogId));
+        return execute(() -> blogsApi.blogById(blogId));
     }
 
     @Override
     public BlogPostDetails listBlogPosts(int offset, int limit, @NonNull BlogPostFilter filter, String orderBy) throws HubspotApiException
     {
-        return execute(() -> blogPostApi.blogPosts(filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
+        return execute(() -> blogPostsApi.blogPosts(filter.getArchived(), filter.getCampaign(), filter.getBlogId(),
                 filter.getPostName(), filter.getSlug(), filter.getState() != null ? filter.getState().name() : null,
                 offset, limit, orderBy));
     }
@@ -66,18 +66,18 @@ public class HubspotRestBlogPostClient extends AbstractHubspotRestClient impleme
     @Override
     public BlogPostDetail getBlogPostById(String id) throws HubspotApiException
     {
-        return execute(() -> blogPostApi.blogPostDetail(id));
+        return execute(() -> blogPostsApi.blogPostDetail(id));
     }
 
     @Override
     public BlogPostDetail createBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
     {
-       return execute(() -> blogPostApi.createBlogPost(blogPostDetail));
+       return execute(() -> blogPostsApi.createBlogPost(blogPostDetail));
     }
 
     @Override
     public BlogPostDetail updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
     {
-        return execute(() -> blogPostApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
+        return execute(() -> blogPostsApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
     }
 }

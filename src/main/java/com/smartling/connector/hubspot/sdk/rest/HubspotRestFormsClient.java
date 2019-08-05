@@ -1,15 +1,16 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
+import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsRawApi;
 
@@ -17,18 +18,26 @@ import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
-public class HubspotRestFormClient extends AbstractHubspotRestClient implements HubspotFormClient
+public class HubspotRestFormsClient extends AbstractHubspotRestClient implements HubspotFormsClient
 {
     private static final String GUID_PROPERTY_NAME = "guid";
     private static final String NAME_PROPERTY_NAME = "name";
     private static final String DELETABLE_PROPERTY_NAME = "deletable";
     private static final String CLONED_NAME_TEMPLATE = "%s - Cloned - %d";
 
+    public static final String ALL_FORM_TYPE_FILTER = "ALL";
+    public static final String DEFAULT_FORM_TYPE_FILTER = "ALL";
+    public static final int DEFAULT_LIMIT_FILTER = 50;
+    public static final String DEFAULT_ORDER_BY = "-updatedAt";
+    public static final String NAME_SEARCH_QUERY_PARAMETER_NAME = "name__icontains";
+
     private final FormsRawApi formsRawApi;
     private final FormsEntityApi formsEntityApi;
 
-    public HubspotRestFormClient(final Configuration configuration, final TokenProvider tokenProvider)
+    public HubspotRestFormsClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
         super(tokenProvider);
 
@@ -49,9 +58,19 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
 
 
     @Override
-    public List<FormDetail> listForms() throws HubspotApiException
+    public List<FormDetail> listForms(int offset, int limit, @NonNull FormFilter filter, String orderBy) throws HubspotApiException
     {
-        return execute(formsEntityApi::forms);
+        Map<String, Object> queryMap = StringUtils.isBlank(filter.getName()) ?
+                Collections.emptyMap() :
+                Collections.singletonMap(NAME_SEARCH_QUERY_PARAMETER_NAME, filter.getName());
+
+        return execute(() -> formsEntityApi.forms(
+                filter.getFormType() == null ? DEFAULT_FORM_TYPE_FILTER : filter.getFormType(),
+                offset,
+                limit == 0 ? DEFAULT_LIMIT_FILTER : limit,
+                orderBy == null ? DEFAULT_ORDER_BY : orderBy,
+                queryMap
+        ));
     }
 
 
@@ -67,7 +86,6 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     {
         return execute(() -> formsEntityApi.formDetail(guid));
     }
-
 
     @Override
     public FormDetail cloneFormAsDetail(String guid) throws HubspotApiException
@@ -106,12 +124,6 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     private static JsonObject parseForm(String content) {
         JsonParser parser = new JsonParser();
         return parser.parse(content).getAsJsonObject();
-    }
-
-    @Override
-    public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
-    {
-        return execute(formsEntityApi::forms).stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
 
     @Override

@@ -35,7 +35,6 @@ dependencies {
     compile 'io.github.openfeign:feign-core:10.2.3'
     compile 'io.github.openfeign:feign-gson:10.2.3'
     compile 'io.github.openfeign:feign-httpclient:10.2.3'
-    compile 'org.redisson:redisson:2.1.1'
     compile 'org.apache.commons:commons-lang3:3.9'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 

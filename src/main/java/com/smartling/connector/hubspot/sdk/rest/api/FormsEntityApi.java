@@ -6,6 +6,7 @@ import java.util.Map;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 
+import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
@@ -19,6 +20,7 @@ public interface FormsEntityApi
                            @QueryMap Map<String, Object> queryMap);
 
     @RequestLine("GET /forms/v2/forms/{form_guid}")
+    @Headers("Content-Type: application/json")
     FormDetail formDetail(@Param("form_guid") String form_guid);
 
     @RequestLine("DELETE /forms/v2/forms/{form_guid}")

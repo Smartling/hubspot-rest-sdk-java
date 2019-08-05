@@ -32,11 +32,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile 'io.github.openfeign:feign-core:10.1.0'
-    compile 'io.github.openfeign:feign-gson:10.1.0'
-    compile 'io.github.openfeign:feign-httpclient:10.1.0'
-    compile 'org.redisson:redisson:2.1.1'
-    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'io.github.openfeign:feign-core:10.2.3'
+    compile 'io.github.openfeign:feign-gson:10.2.3'
+    compile 'io.github.openfeign:feign-httpclient:10.2.3'
+    compile 'org.apache.commons:commons-lang3:3.9'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 
     compileOnly "org.projectlombok:lombok:1.18.8"

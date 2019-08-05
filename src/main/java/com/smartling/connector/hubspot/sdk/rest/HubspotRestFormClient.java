@@ -1,6 +1,9 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,12 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     private static final String DELETABLE_PROPERTY_NAME = "deletable";
     private static final String CLONED_NAME_TEMPLATE = "%s - Cloned - %d";
 
+    public static final String ALL_FORM_TYPE_FILTER = "ALL";
+    public static final String DEFAULT_FORM_TYPE_FILTER = ALL_FORM_TYPE_FILTER;
+    public static final int DEFAULT_LIMIT_FILTER = 50;
+    public static final String DEFAULT_ORDER_BY = "-updatedAt";
+    public static final String NAME_SEARCH_QUERY_PARAMETER_NAME = "name__icontains";
+
     private final FormsRawApi formsRawApi;
     private final FormsEntityApi formsEntityApi;
 
@@ -54,12 +63,17 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listForms(int offset, int limit, @NonNull FormFilter filter, String orderBy) throws HubspotApiException
     {
+        Map<String, Object> queryMap = new HashMap<>();
+        if (StringUtils.isNotBlank(filter.getName())) {
+            queryMap.put(NAME_SEARCH_QUERY_PARAMETER_NAME, filter.getName());
+        }
+
         return execute(() -> formsEntityApi.forms(
-                filter.getFormType() == null ? "ALL" : filter.getFormType(),
-                filter.getName(),
+                filter.getFormType() == null ? DEFAULT_FORM_TYPE_FILTER : filter.getFormType(),
                 offset,
-                limit,
-                orderBy
+                limit == 0 ? DEFAULT_LIMIT_FILTER : limit,
+                orderBy == null ? DEFAULT_ORDER_BY : orderBy,
+                queryMap
         ));
     }
 
@@ -120,7 +134,7 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listFormsByTmsId(String tmsId) throws HubspotApiException
     {
-        return execute(() -> formsEntityApi.forms("ALL", StringUtils.EMPTY, 0, 0, StringUtils.EMPTY))
+        return execute(() -> formsEntityApi.forms(ALL_FORM_TYPE_FILTER, 0, 0, DEFAULT_ORDER_BY, Collections.emptyMap()))
             .stream().filter(e -> Objects.equals(tmsId, e.getTmsId())).collect(Collectors.toList());
     }
 

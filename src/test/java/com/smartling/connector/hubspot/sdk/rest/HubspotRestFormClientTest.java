@@ -189,7 +189,7 @@ public class HubspotRestFormClientTest
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
                 .withQueryParam("formTypes", equalTo("FLOW"))
-                .withQueryParam("name__icontains", equalTo("popup"))
+                .withQueryParam(HubspotRestFormClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))
                 .withQueryParam("limit", equalTo("5")));
@@ -205,11 +205,33 @@ public class HubspotRestFormClientTest
         hubspotClient.listForms(10, 5, filter, "updatedAt");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("formTypes", equalTo("ALL"))
-                .withQueryParam("name__icontains", equalTo("popup"))
+                .withQueryParam("formTypes", equalTo(HubspotRestFormClient.DEFAULT_FORM_TYPE_FILTER))
+                .withQueryParam(HubspotRestFormClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))
                 .withQueryParam("limit", equalTo("5")));
+    }
+
+    @Test
+    public void shouldCallListFormsWithWithDefaultOrder() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
+
+        hubspotClient.listForms(10, 5, new FormFilter(), null);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("order", equalTo(HubspotRestFormClient.DEFAULT_ORDER_BY)));
+    }
+
+    @Test
+    public void shouldCallListFormsWithWithDefaultLimit() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
+
+        hubspotClient.listForms(10, 0, new FormFilter(), null);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("limit", equalTo(Integer.toString(HubspotRestFormClient.DEFAULT_LIMIT_FILTER))));
     }
 
     @Test
@@ -219,7 +241,8 @@ public class HubspotRestFormClientTest
 
         hubspotClient.listFormsByTmsId("someId");
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+            .withQueryParam("formTypes", equalTo(HubspotRestFormClient.ALL_FORM_TYPE_FILTER)));
     }
 
     @Test

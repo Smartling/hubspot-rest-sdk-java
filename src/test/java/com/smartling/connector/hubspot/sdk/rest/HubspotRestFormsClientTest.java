@@ -3,7 +3,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.form.FormFilter;
@@ -40,7 +40,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestFormClientTest
+public class HubspotRestFormsClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -54,7 +54,7 @@ public class HubspotRestFormClientTest
     public ExpectedException expectedException = ExpectedException.none();
 
     private TokenProvider tokenProvider;
-    private HubspotFormClient hubspotClient;
+    private HubspotFormsClient hubspotClient;
     private String originalToken;
 
     @Before
@@ -66,7 +66,7 @@ public class HubspotRestFormClientTest
         final RefreshTokenData refreshTokenData = new RefreshTokenData();
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
-        this.hubspotClient = new HubspotRestFormClient(configuration, tokenProvider);
+        this.hubspotClient = new HubspotRestFormsClient(configuration, tokenProvider);
     }
 
     @Test
@@ -189,7 +189,7 @@ public class HubspotRestFormClientTest
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
                 .withQueryParam("formTypes", equalTo("FLOW"))
-                .withQueryParam(HubspotRestFormClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
+                .withQueryParam(HubspotRestFormsClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))
                 .withQueryParam("limit", equalTo("5")));
@@ -205,8 +205,8 @@ public class HubspotRestFormClientTest
         hubspotClient.listForms(10, 5, filter, "updatedAt");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("formTypes", equalTo(HubspotRestFormClient.DEFAULT_FORM_TYPE_FILTER))
-                .withQueryParam(HubspotRestFormClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
+                .withQueryParam("formTypes", equalTo(HubspotRestFormsClient.DEFAULT_FORM_TYPE_FILTER))
+                .withQueryParam(HubspotRestFormsClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))
                 .withQueryParam("limit", equalTo("5")));
@@ -220,7 +220,7 @@ public class HubspotRestFormClientTest
         hubspotClient.listForms(10, 5, new FormFilter(), null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("order", equalTo(HubspotRestFormClient.DEFAULT_ORDER_BY)));
+                .withQueryParam("order", equalTo(HubspotRestFormsClient.DEFAULT_ORDER_BY)));
     }
 
     @Test
@@ -231,18 +231,7 @@ public class HubspotRestFormClientTest
         hubspotClient.listForms(10, 0, new FormFilter(), null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("limit", equalTo(Integer.toString(HubspotRestFormClient.DEFAULT_LIMIT_FILTER))));
-    }
-
-    @Test
-    public void shouldCallListFormsByTmsIdUrl() throws Exception
-    {
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
-
-        hubspotClient.listFormsByTmsId("someId");
-
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-            .withQueryParam("formTypes", equalTo(HubspotRestFormClient.ALL_FORM_TYPE_FILTER)));
+                .withQueryParam("limit", equalTo(Integer.toString(HubspotRestFormsClient.DEFAULT_LIMIT_FILTER))));
     }
 
     @Test
@@ -250,7 +239,7 @@ public class HubspotRestFormClientTest
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
-        hubspotClient.listFormsByTmsId("someId");
+        hubspotClient.listForms(0, 10, new FormFilter(), null);
     }
 
     @Test
@@ -258,8 +247,8 @@ public class HubspotRestFormClientTest
     {
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
-        hubspotClient.listFormsByTmsId("someId");
-        hubspotClient.listFormsByTmsId("someId");
+        hubspotClient.listForms(0, 10, new FormFilter(), null);
+        hubspotClient.listForms(0, 10, new FormFilter(), null);
     }
 
     @Test
@@ -331,7 +320,7 @@ public class HubspotRestFormClientTest
 
     private String loadResource(String name) throws IOException, URISyntaxException
     {
-        URI uri = HubspotRestFormClientTest.class.getClassLoader().getResource(name).toURI();
+        URI uri = HubspotRestFormsClientTest.class.getClassLoader().getResource(name).toURI();
         return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 }

@@ -19,9 +19,6 @@ public interface PagesEntityApi
             @Param("name") String name, @Param("campaign") String campaign, @Param("limit") int limit,
             @Param("offset") int offset);
 
-    @RequestLine("GET /content/api/v2/pages?tms_id={tms_id}")
-    PageDetails findByTmsId(@Param("tms_id") String tmsId);
-
     @RequestLine("DELETE /content/api/v2/pages/{page_id}")
     ResultInfo delete(@Param("page_id") long pageId);
 

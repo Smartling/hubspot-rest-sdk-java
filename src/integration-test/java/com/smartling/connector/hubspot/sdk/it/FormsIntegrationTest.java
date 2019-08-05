@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotFormClient;
+import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.form.FormFilter;
@@ -35,15 +35,13 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     private static final String NAME                   = "name";
     private static final String METHOD                 = "method";
     private static final String SUBMITTEXT             = "submitText";
-    private static final String TMS_ID                 = "tmsId";
     private static final String ROOT_PATH              = "$.";
     private static final String NAME_PATH              = ROOT_PATH + NAME;
     private static final String METHOD_PATH            = ROOT_PATH + METHOD;
     private static final String SUBMITTEXT_PATH        = ROOT_PATH + SUBMITTEXT;
     private static final String ID_PATH                = "$.guid";
 
-    private HubspotFormClient hubspotClient;
-    private String        tmsId                  = "Tms Id ";
+    private HubspotFormsClient hubspotClient;
     private List<String>  formsToDelete          = Lists.newArrayList();
 
     private String basicFormId;
@@ -52,7 +50,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     public void init()
     {
         final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
-        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
+        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormsClient();
         basicFormId = System.getProperty("hubspot.basicFormId");
     }
 
@@ -110,21 +108,6 @@ public class FormsIntegrationTest extends BaseIntegrationTest
         assertThat(formDetail.getUpdated()).isNotNull();
     }
 
-    @Test
-    public void shouldListFormsByTmsId() throws Exception
-    {
-        Pair<String, String> clonedForm = getClone();
-        JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(clonedForm.getValue()).getAsJsonObject();
-        obj.addProperty(TMS_ID, tmsId);
-        hubspotClient.updateFormContent(clonedForm.getKey(), obj.toString());
-
-        List<FormDetail> formDetails = hubspotClient.listFormsByTmsId(tmsId);
-
-        assertThat(formDetails).overridingErrorMessage("Form details should not be empty").isNotEmpty();
-        assertFormDetailIsNotEmpty(formDetails.get(0));
-    }
-
     private Pair<String, String> getClone() throws HubspotApiException
     {
         FormDetail clonedForm = hubspotClient.cloneFormAsDetail(basicFormId);
@@ -138,7 +121,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri" ,"wrong-token");
-        HubspotFormClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormClient();
+        HubspotFormsClient client = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getFormsClient();
         client.listForms(0, 50, new FormFilter(), null);
     }
 

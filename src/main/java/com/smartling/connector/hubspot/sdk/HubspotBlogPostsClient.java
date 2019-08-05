@@ -7,7 +7,7 @@ import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import lombok.NonNull;
 
-public interface HubspotBlogPostClient extends HubspotClient
+public interface HubspotBlogPostsClient extends HubspotClient
 {
     BlogDetails listBlogs(int offset, int limit) throws HubspotApiException;
 

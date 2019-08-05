@@ -215,7 +215,6 @@
   ],
   "deletable": true,
   "inlineMessage": "Thanks for submitting the form.",
-  "tmsId": "",
   "captchaEnabled": false,
   "campaignGuid": "",
   "cloneable": true,

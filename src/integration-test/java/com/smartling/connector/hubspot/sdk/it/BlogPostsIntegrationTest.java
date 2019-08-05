@@ -1,7 +1,7 @@
 package com.smartling.connector.hubspot.sdk.it;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
@@ -25,13 +25,13 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     private static final String BLOG_POST_ID2 = "6741114424";
     private static final String BLOG_ID = "6724977225";
 
-    private HubspotBlogPostClient hubspotClient;
+    private HubspotBlogPostsClient hubspotClient;
 
     @Before
     public void init()
     {
         final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
-        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostClient();
+        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostsClient();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
-        HubspotBlogPostClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostClient();
+        HubspotBlogPostsClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostsClient();
         hubspotClient.listBlogPosts(0, 1, createBlogFilter(BLOG_ID), null);
     }
 

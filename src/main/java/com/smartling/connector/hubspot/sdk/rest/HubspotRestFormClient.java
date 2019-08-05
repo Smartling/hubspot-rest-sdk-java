@@ -63,10 +63,9 @@ public class HubspotRestFormClient extends AbstractHubspotRestClient implements 
     @Override
     public List<FormDetail> listForms(int offset, int limit, @NonNull FormFilter filter, String orderBy) throws HubspotApiException
     {
-        Map<String, Object> queryMap = new HashMap<>();
-        if (StringUtils.isNotBlank(filter.getName())) {
-            queryMap.put(NAME_SEARCH_QUERY_PARAMETER_NAME, filter.getName());
-        }
+        Map<String, Object> queryMap = StringUtils.isBlank(filter.getName()) ?
+                Collections.emptyMap() :
+                Collections.singletonMap(NAME_SEARCH_QUERY_PARAMETER_NAME, filter.getName());
 
         return execute(() -> formsEntityApi.forms(
                 filter.getFormType() == null ? DEFAULT_FORM_TYPE_FILTER : filter.getFormType(),

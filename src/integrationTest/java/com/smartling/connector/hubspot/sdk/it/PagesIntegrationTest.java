@@ -9,7 +9,6 @@ import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.page.PageState;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
@@ -19,7 +18,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -300,12 +301,12 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         }
     }
     
-    private PageSearchFilter createSearchFilter(String campaign, String name, Boolean archived, Boolean draft) {
-        PageSearchFilter filter = new PageSearchFilter();
-        filter.setCampaign(campaign);
-        filter.setName(name);
-        filter.setArchived(archived);
-        filter.setPageState(PageState.DRAFT);
+    private Map<String, Object> createSearchFilter(String campaign, String name, Boolean archived, Boolean isDraft) {
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("campaign", campaign);
+        filter.put("name__icontains", name);
+        filter.put("archived", archived);
+        filter.put("is_draft", isDraft);
         return filter;
     }
     

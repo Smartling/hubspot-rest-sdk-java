@@ -3,7 +3,8 @@ package com.smartling.connector.hubspot.sdk;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+
+import java.util.Map;
 
 public interface HubspotPagesClient extends HubspotClient
 {
@@ -19,7 +20,7 @@ public interface HubspotPagesClient extends HubspotClient
 
     String updatePage(final String page, final long updatePageId) throws HubspotApiException;
 
-    ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, PageSearchFilter filter) throws HubspotApiException;
+    ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 
     ResultInfo delete(long pageId) throws HubspotApiException;
 }

@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageDetails;
@@ -40,11 +40,10 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     private static final String META_KEYWORDS_PATH     = ROOT_PATH + META_KEYWORDS;
     private static final String ID_PATH                = "$.id";
 
-    private HubspotPageClient hubspotClient;
+    private HubspotPagesClient hubspotClient;
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now + ". Added some metacharacters: % (it is percent).";
-    private String        tmsId                  = "Tms Id ";
     private List<Long>    pagesToDelete          = Lists.newArrayList();
 
     private long basicPageId;
@@ -181,30 +180,11 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotEmpty();
     }
 
-    @Test
-    public void shouldListPagesByTmsId() throws Exception
-    {
-        // create clone with tmsId
-        String clonedPage = getCloneAndChangeIt();
-        long clonedPageId = getId(clonedPage);
-        hubspotClient.updatePage(clonedPage, clonedPageId);
-
-        PageDetails pageDetails = hubspotClient.listPagesByTmsId(tmsId);
-
-        assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
-
-        List<PageDetail> detailList = pageDetails.getDetailList();
-        assertThat(detailList).overridingErrorMessage("Page details should not be empty").isNotEmpty();
-
-        assertPageDetailIsNotEmpty(detailList.get(0));
-    }
-
     @Test(expected = HubspotApiException.class)
     public void shouldThrowExceptionIfAuthorizationFailed() throws HubspotApiException
     {
         final Configuration configuration = Configuration.build("wrong-client-id", "wrong-client-secret", "wrong-redirect-uri", "wrong-token");
-        HubspotPageClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
+        HubspotPagesClient hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPagesClient();
         hubspotClient.listPages(0, 1);
     }
 
@@ -292,7 +272,6 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         // Doesn't work now
         // TODO check if it is necessary
         //obj.addProperty(META_KEYWORDS, updatedMetaKeywords);
-        obj.addProperty(TMS_ID, tmsId);
         return obj.toString();
     }
 

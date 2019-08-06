@@ -4,7 +4,7 @@ import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageDetails;
 import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 
-public interface HubspotPageClient extends HubspotClient
+public interface HubspotPagesClient extends HubspotClient
 {
     String getPageById(long pageId) throws HubspotApiException;
 
@@ -19,8 +19,6 @@ public interface HubspotPageClient extends HubspotClient
     PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
 
     PageDetails listPages(int offset, int limit, PageSearchFilter filter) throws HubspotApiException;
-
-    PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException;
 
     ResultInfo delete(long pageId) throws HubspotApiException;
 }

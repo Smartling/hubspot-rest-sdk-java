@@ -2,7 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageDetails;
@@ -30,7 +30,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestPageClientTest
+public class HubspotRestPagesClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -45,7 +45,7 @@ public class HubspotRestPageClientTest
 
     private TokenProvider tokenProvider;
     private String originalToken;
-    private HubspotPageClient hubspotClient;
+    private HubspotPagesClient hubspotClient;
 
     @Before
     public void setUpMocks() throws Exception
@@ -56,7 +56,7 @@ public class HubspotRestPageClientTest
         final RefreshTokenData refreshTokenData = new RefreshTokenData();
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
-        this.hubspotClient = new HubspotRestPageClient(configuration, tokenProvider);
+        this.hubspotClient = new HubspotRestPagesClient(configuration, tokenProvider);
     }
 
     @Test
@@ -184,23 +184,11 @@ public class HubspotRestPageClientTest
     }
 
     @Test
-    public void shouldCallListPagesByTmsIdUrl() throws HubspotApiException
-    {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
-
-        hubspotClient.listPagesByTmsId("someId");
-
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages"))
-                        .withQueryParam("tms_id", equalTo("someId"))
-        );
-    }
-
-    @Test
     public void shouldCallRefreshTokenFirst() throws HubspotApiException
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPagesByTmsId("someId");
+        hubspotClient.listPages(0, 10);
     }
 
     @Test
@@ -208,8 +196,8 @@ public class HubspotRestPageClientTest
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
-        hubspotClient.listPagesByTmsId("someId");
-        hubspotClient.listPagesByTmsId("someId");
+        hubspotClient.listPages(0, 10);
+        hubspotClient.listPages(0, 10);
     }
 
     @Test

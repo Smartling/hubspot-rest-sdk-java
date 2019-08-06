@@ -1,7 +1,7 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotPageClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageDetails;
@@ -15,7 +15,7 @@ import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.httpclient.ApacheHttpClient;
 
-public class HubspotRestPageClient extends AbstractHubspotRestClient implements HubspotPageClient
+public class HubspotRestPagesClient extends AbstractHubspotRestClient implements HubspotPagesClient
 {
     private static final String EMPTY_JSON = "{}";
 
@@ -23,7 +23,7 @@ public class HubspotRestPageClient extends AbstractHubspotRestClient implements 
     private final PagesEntityApi pagesEntityApi;
     private final PagesEntityApi pagesEntityApiApache;
 
-    public HubspotRestPageClient(final Configuration configuration, final TokenProvider tokenProvider)
+    public HubspotRestPagesClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
         super(tokenProvider);
 
@@ -92,12 +92,6 @@ public class HubspotRestPageClient extends AbstractHubspotRestClient implements 
     {
         return execute(() -> pagesEntityApiApache.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
                                                               filter.getCampaign(), limit, offset));
-    }
-
-    @Override
-    public PageDetails listPagesByTmsId(final String tmsId) throws HubspotApiException
-    {
-        return execute(() -> pagesEntityApi.findByTmsId(tmsId));
     }
 
     @Override

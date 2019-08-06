@@ -6,7 +6,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotBlogPostClient;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
@@ -44,7 +44,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestBlogPostClientTest
+public class HubspotRestBlogPostsClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -59,7 +59,7 @@ public class HubspotRestBlogPostClientTest
 
     private TokenProvider tokenProvider;
     private String originalToken;
-    private HubspotBlogPostClient hubspotClient;
+    private HubspotBlogPostsClient hubspotClient;
 
     @Before
     public void setUpMocks() throws Exception
@@ -70,7 +70,7 @@ public class HubspotRestBlogPostClientTest
         final RefreshTokenData refreshTokenData = new RefreshTokenData();
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
-        this.hubspotClient = new HubspotRestBlogPostClient(configuration, tokenProvider);
+        this.hubspotClient = new HubspotRestBlogPostsClient(configuration, tokenProvider);
     }
 
     @Test
@@ -201,7 +201,7 @@ public class HubspotRestBlogPostClientTest
 
     private String loadResource(String name) throws IOException, URISyntaxException
     {
-        URI uri = HubspotRestBlogPostClientTest.class.getClassLoader().getResource(name).toURI();
+        URI uri = HubspotRestBlogPostsClientTest.class.getClassLoader().getResource(name).toURI();
         return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 

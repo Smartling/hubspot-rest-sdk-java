@@ -1,8 +1,10 @@
 package com.smartling.connector.hubspot.sdk;
 
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageDetails;
-import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
+
+import java.util.Map;
 
 public interface HubspotPagesClient extends HubspotClient
 {
@@ -12,13 +14,13 @@ public interface HubspotPagesClient extends HubspotClient
 
     String clonePage(long originalPageId) throws HubspotApiException;
 
+    String createLanguageVariation(long pageId, CreateLanguageVariationRequest createLanguageVariationRequest) throws HubspotApiException;
+
     PageDetail clonePageAsDetail(long originalPageId) throws HubspotApiException;
 
     String updatePage(final String page, final long updatePageId) throws HubspotApiException;
 
-    PageDetails listPages(final int offset, final int limit) throws HubspotApiException;
-
-    PageDetails listPages(int offset, int limit, PageSearchFilter filter) throws HubspotApiException;
+    ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 
     ResultInfo delete(long pageId) throws HubspotApiException;
 }

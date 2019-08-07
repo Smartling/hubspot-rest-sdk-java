@@ -69,9 +69,7 @@ tasks.withType(Test) {
 }
 
 testSets {
-    integrationTest {
-        dirName = 'integration-test'
-    }
+    integrationTest {}
 }
 
 // TODO enable int tests when we have long-term working sandbox env

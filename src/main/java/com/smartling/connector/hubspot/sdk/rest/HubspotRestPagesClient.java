@@ -3,17 +3,19 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageDetails;
-import com.smartling.connector.hubspot.sdk.page.PageSearchFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
-
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.httpclient.ApacheHttpClient;
+
+import java.util.Collections;
+import java.util.Map;
 
 public class HubspotRestPagesClient extends AbstractHubspotRestClient implements HubspotPagesClient
 {
@@ -48,7 +50,6 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
                                     .client(new ApacheHttpClient())
                                     .decoder(new GsonDecoder(configuredGson()))
                                     .target(PagesEntityApi.class, configuration.getApiUrl());
-
     }
 
     @Override
@@ -58,44 +59,45 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     }
 
     @Override
-    public PageDetail getPageDetailById(final long pageId) throws HubspotApiException
+    public PageDetail getPageDetailById(long pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.pageDetail(pageId));
     }
 
     @Override
-    public String clonePage(final long originalPageId) throws HubspotApiException
+    public String clonePage(long originalPageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.clone(originalPageId, EMPTY_JSON));
     }
 
     @Override
-    public PageDetail clonePageAsDetail(final long originalPageId) throws HubspotApiException
+    public String createLanguageVariation(long pageId, CreateLanguageVariationRequest createLanguageVariationRequest) throws HubspotApiException
+    {
+        return execute(() -> pagesRawApi.createLanguageVariation(pageId, createLanguageVariationRequest));
+    }
+
+    @Override
+    public PageDetail clonePageAsDetail(long originalPageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.clone(originalPageId, EMPTY_JSON));
     }
 
     @Override
-    public String updatePage(final String page, final long updatePageId) throws HubspotApiException
+    public String updatePage(String page, long updatePageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.update(updatePageId, page));
     }
 
     @Override
-    public PageDetails listPages(final int offset, final int limit) throws HubspotApiException
+    public ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
     {
-        return execute(() -> pagesEntityApiApache.pages(limit, offset));
+        Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();
+
+        return execute(() -> pagesEntityApiApache.listPages(limit, offset, orderBy, safeQueryMap));
     }
 
     @Override
-    public PageDetails listPages(final int offset, final int limit, PageSearchFilter filter) throws HubspotApiException
-    {
-        return execute(() -> pagesEntityApiApache.pages(filter.getArchived(), filter.getDraft(), filter.getName(),
-                                                              filter.getCampaign(), limit, offset));
-    }
-
-    @Override
-    public ResultInfo delete(final long pageId) throws HubspotApiException
+    public ResultInfo delete(long pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.delete(pageId));
     }

@@ -1,98 +1,26 @@
 package com.smartling.connector.hubspot.sdk.page;
 
-import com.smartling.connector.hubspot.sdk.NameAware;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.Map;
 
-public class PageDetail implements NameAware
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PageDetail extends PageDetailShort
 {
-    private long    id;
-    private String  name;
+    public static final String FIELDS = PageDetailShort.FIELDS + ",html_title,subcategory,campaign,campaign_name,url,folder_id,portal_id,translated_content";
+
     private String  htmlTitle;
-    private String  abStatus;
-    private boolean draft;
-    private boolean archived;
-    private Date    updated;
-
-    public long getId()
-    {
-        return id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getHtmlTitle()
-    {
-        return htmlTitle;
-    }
-
-    public void setHtmlTitle(String htmlTitle)
-    {
-        this.htmlTitle = htmlTitle;
-    }
-
-    public String getAbStatus()
-    {
-        return abStatus;
-    }
-
-    public void setAbStatus(String abStatus)
-    {
-        this.abStatus = abStatus;
-    }
-    
-    public boolean isAbTest() {
-        return abStatus != null;
-    }
-
-    public boolean isDraft()
-    {
-        return draft;
-    }
-
-    public void setDraft(boolean draft)
-    {
-        this.draft = draft;
-    }
-
-    public boolean isArchived()
-    {
-        return archived;
-    }
-
-    public void setArchived(boolean archived)
-    {
-        this.archived = archived;
-    }
-
-    public Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated(Date updated)
-    {
-        this.updated = updated;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "PageDetail [id=" + id + ", name=" + name + ", htmlTitle=" + htmlTitle + ", abStatus=" + abStatus
-                + ", draft=" + draft + ", archived=" + archived + ", updated=" + updated + "]";
-    }
+    private Subcategory  subcategory; // This is set to empty or to "landing_page" for landing pages, or to "site_page" for site pages
+    private String  campaign; // The guid of the marketing campaign this page is associated with
+    private String  campaignName; // The name of the marketing campaign this page is associated with
+    private String  url; // The full URL with domain and scheme to the page. Will return a 404 if the page is not yet published.
+    private String  folderId; // ?????
+    private String  portalId; // ?????
+    private Map<String, PageDetailShort> translatedContent; // "uk-ua" -> "<shortened page json>"
 }

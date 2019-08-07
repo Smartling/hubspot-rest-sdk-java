@@ -47,6 +47,9 @@ dependencies {
     testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
     testCompile 'com.github.tomakehurst:wiremock:1.56'
     testCompile 'org.mockito:mockito-core:2.0.31-beta'
+
+    testCompileOnly "org.projectlombok:lombok:1.18.8"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.8"
 }
 
 test {

@@ -50,6 +50,7 @@ public abstract class AbstractHubspotRestClient
     {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
     }

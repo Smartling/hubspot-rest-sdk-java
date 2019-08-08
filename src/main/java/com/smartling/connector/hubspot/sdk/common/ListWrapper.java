@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ListWrapper<T>
 {
-    @SerializedName("total_count")
+    @SerializedName("total")
     private int totalCount;
 
     @SerializedName("objects")

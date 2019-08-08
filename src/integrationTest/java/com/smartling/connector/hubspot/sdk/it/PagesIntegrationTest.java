@@ -8,6 +8,8 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageState;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
@@ -56,7 +58,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     public void init()
     {
         final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
-        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPageClient();
+        hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getPagesClient();
         notLivePageCampaignId = System.getProperty("hubspot.notLivePageCampaignId");
         basicPageId = Long.parseLong(System.getProperty("hubspot.basicPageId"));
         archivedPageId = Long.parseLong(System.getProperty("hubspot.archivedPageId"));
@@ -75,6 +77,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
             catch (HubspotApiException e)
             {
                 System.err.printf("Fail to clean up page '%1$d', cause '%2$s'", pageId, e);
+                e.printStackTrace();
             }
         }
     }
@@ -111,7 +114,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     {
         ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1, null, null);
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
 
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
@@ -125,7 +128,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         ListWrapper<PageDetail> pageDetails = hubspotClient.listPages(0, 1, null, createSearchFilter(null, BASIC_PAGE_NAME, null, null));
         
         assertThat(pageDetails).overridingErrorMessage("Page details object should not be null").isNotNull();
-        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should not be positive").isPositive();
+        assertThat(pageDetails.getTotalCount()).overridingErrorMessage("Total count should be positive").isPositive();
 
         List<PageDetail> detailList = pageDetails.getDetailList();
         assertThat(detailList).overridingErrorMessage("Page details should not be empty and have particular size").hasSize(1);
@@ -223,6 +226,15 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldCreateLanguageVariation() throws Exception
+    {
+        PageDetail detail = hubspotClient.createLanguageVariation(basicPageId, createLanguageVariation());
+        pagesToDelete.add(detail.getId());
+
+        assertPageDetail(detail);
+    }
+
+    @Test
     public void shouldUpdatePage() throws Exception
     {
         // prepare clone for update
@@ -245,6 +257,23 @@ public class PagesIntegrationTest extends BaseIntegrationTest
 
         // Actually endpoint returns 204, can't check it here
         //assertThat(deletePageInfo.isSucceeded()).isTrue();
+    }
+
+    @Test
+    public void shouldGetSupportedLanguages() throws Exception
+    {
+        ListWrapper<Language> languages = hubspotClient.getSupportedLanguages();
+
+        assertThat(languages.getDetailList()).isNotEmpty();
+    }
+
+    private CreateLanguageVariationRequest createLanguageVariation()
+    {
+        CreateLanguageVariationRequest request = new CreateLanguageVariationRequest();
+        request.setName("language variation (fr-fr)");
+        request.setLanguage("fr-fr");
+        request.setMasterLanguage("en-us");
+        return request;
     }
 
     private long getId(final String pageAsJson)

@@ -5,6 +5,7 @@ import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
@@ -12,6 +13,7 @@ import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
 import feign.httpclient.ApacheHttpClient;
 
 import java.util.Collections;
@@ -41,6 +43,7 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
                               .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
                               .decoder(new GsonDecoder(configuredGson()))
+                              .encoder(new GsonEncoder(configuredGson()))
                               .target(PagesEntityApi.class, configuration.getApiUrl());
 
         // ApacheHttpClient has advanced options for request/response processing
@@ -71,9 +74,9 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     }
 
     @Override
-    public String createLanguageVariation(long pageId, CreateLanguageVariationRequest createLanguageVariationRequest) throws HubspotApiException
+    public PageDetail createLanguageVariation(long pageId, CreateLanguageVariationRequest createLanguageVariationRequest) throws HubspotApiException
     {
-        return execute(() -> pagesRawApi.createLanguageVariation(pageId, createLanguageVariationRequest));
+        return execute(() -> pagesEntityApi.createLanguageVariation(pageId, createLanguageVariationRequest));
     }
 
     @Override
@@ -100,5 +103,11 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     public ResultInfo delete(long pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.delete(pageId));
+    }
+
+    @Override
+    public ListWrapper<Language> getSupportedLanguages() throws HubspotApiException
+    {
+        return execute(pagesEntityApi::getSupportedLanguages);
     }
 }

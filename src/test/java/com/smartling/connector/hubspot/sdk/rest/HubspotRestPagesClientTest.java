@@ -5,6 +5,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -137,6 +138,16 @@ public class HubspotRestPagesClientTest
     }
 
     @Test
+    public void shouldCallCreateLanguageVariationUrlForEntityApi() throws HubspotApiException
+    {
+        givenThat(post(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID + "/create-language-variation")).willReturn(HttpMockUtils.aJsonResponse(pageDetail())));
+
+        hubspotClient.createLanguageVariation(PAGE_ID, new CreateLanguageVariationRequest());
+
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/create-language-variation")));
+    }
+
+    @Test
     public void shouldCallUpdatePageUrl() throws HubspotApiException
     {
         givenThat(put(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID)).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
@@ -184,6 +195,16 @@ public class HubspotRestPagesClientTest
                         .withQueryParam("archived", equalTo(archived.toString()))
                         .withQueryParam("is_draft", equalTo("true"))
         );
+    }
+
+    @Test
+    public void shouldCallGetSupportedLanguagesUrl() throws HubspotApiException
+    {
+        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/supported-languages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
+
+        hubspotClient.getSupportedLanguages();
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/supported-languages")));
     }
 
     @Test
@@ -261,7 +282,7 @@ public class HubspotRestPagesClientTest
     private String pageDetails()
     {
         return "{\n"
-                + "  \"total_count\": 6,\n"
+                + "  \"total\": 6,\n"
                 + "  \"objects\": [\n"
                 + "    {\n"
                 + "      \"id\": 127,\n"

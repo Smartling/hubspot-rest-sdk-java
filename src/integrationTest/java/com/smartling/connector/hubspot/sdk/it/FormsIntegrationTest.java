@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
@@ -110,7 +111,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
 
     private Pair<String, String> getClone() throws HubspotApiException
     {
-        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(basicFormId);
+        FormDetail clonedForm = hubspotClient.cloneForm(basicFormId, randomAlphabetic(12));
         String guid = clonedForm.getGuid();
         formsToDelete.add(guid);
         String content = hubspotClient.getFormContentById(guid);
@@ -128,11 +129,12 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldCloneForm() throws Exception
     {
-        FormDetail clonedForm = hubspotClient.cloneFormAsDetail(basicFormId);
+        String clonedFormName = randomAlphabetic(12);
+        FormDetail clonedForm = hubspotClient.cloneForm(basicFormId, clonedFormName);
         formsToDelete.add(clonedForm.getGuid());
 
         assertThat(clonedForm.getGuid()).isNotEqualTo(basicFormId);
-        assertThat(clonedForm.getName()).isNotEqualTo(BASIC_FORM_NAME);
+        assertThat(clonedForm.getName()).isEqualTo(clonedFormName);
         assertFormDetailIsNotEmpty(clonedForm);
     }
 

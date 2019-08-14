@@ -1,7 +1,6 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
@@ -24,10 +23,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -46,6 +43,7 @@ public class HubspotRestFormsClientTest
 
     private static final String BASE_URL      = "http://localhost:" + PORT;
     private static final String FORM_ID       = "5d913ab1-1670-470f-91c8-962eefd8f2ec";
+    private static final String FORM_NAME     = "test form name";
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -105,49 +103,14 @@ public class HubspotRestFormsClientTest
     @Test
     public void shouldCallCloneFormUrlForEntityApi() throws Exception
     {
-        String body = formDetail();
-        String original = new JsonParser().parse(body).toString();
-        String newGuid = UUID.randomUUID().toString();
-        body = body.replaceFirst("My New Form", "My New Form - Clone -");
-        body = body.replaceFirst("6364429e-9c68-4c38-a71c-e1edb98825fc", newGuid);
+        givenThat(post(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID + "/clone"))
+                .willReturn(HttpMockUtils.aJsonResponse(formDetail())));
 
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(HttpMockUtils.aJsonResponse(original)));
-        givenThat(post(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(body)));
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + newGuid)).willReturn(HttpMockUtils.aJsonResponse(body)));
+        hubspotClient.cloneForm(FORM_ID, FORM_NAME);
 
-        hubspotClient.cloneFormAsDetail(FORM_ID);
-
-        int i = original.indexOf("\",\"action\"");
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
                 .withHeader("Content-Type", equalTo("application/json"))
-                .withRequestBody(containing(original.substring(0, i)))
-                .withRequestBody(containing(original.substring(i)))
-        );
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + newGuid)));
-    }
-
-    @Test
-    public void cloneShouldResetDeletableToTrue() throws Exception
-    {
-        final String guid = "6364429e-9c68-4c38-a71c-e1edb98825fc";
-        String body = formDetail();
-        body = body.replaceFirst("\"deletable\": true", "\"deletable\": false");
-
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        givenThat(post(HttpMockUtils.path("/forms/v2/forms"))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        givenThat(get(HttpMockUtils.path("/forms/v2/forms/" + guid))
-                .willReturn(HttpMockUtils.aJsonResponse(body)));
-
-        hubspotClient.cloneFormAsDetail(FORM_ID);
-
-        verify(
-                postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                        .withHeader("Content-Type", equalTo("application/json"))
-                        .withRequestBody(containing("\"deletable\":true"))
+                .withRequestBody(equalToJson("{ \"name\" : \"" + FORM_NAME + "\" }"))
         );
     }
 
@@ -156,10 +119,7 @@ public class HubspotRestFormsClientTest
     {
         givenThat(post(HttpMockUtils.path("/forms/v2/forms/" + FORM_ID)).willReturn(aResponse().withStatus(HttpStatus.SC_OK)));
 
-        String form = formSnippet();
-        form = form.replaceFirst("\"deletable\": true", "\"deletable\": false");
-
-        hubspotClient.updateFormContent(FORM_ID, form);
+        hubspotClient.updateFormContent(FORM_ID, formSnippet());
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms/" + FORM_ID))
                         .withHeader("Content-Type", equalTo("application/json"))

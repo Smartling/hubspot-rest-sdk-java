@@ -4,11 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.form.CloneFormRequest;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
@@ -18,17 +17,12 @@ import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
 public class HubspotRestFormsClient extends AbstractHubspotRestClient implements HubspotFormsClient
 {
-    private static final String GUID_PROPERTY_NAME = "guid";
-    private static final String NAME_PROPERTY_NAME = "name";
-    private static final String DELETABLE_PROPERTY_NAME = "deletable";
-    private static final String CLONED_NAME_TEMPLATE = "%s - Cloned - %d";
-
-    public static final String ALL_FORM_TYPE_FILTER = "ALL";
     public static final String DEFAULT_FORM_TYPE_FILTER = "ALL";
     public static final int DEFAULT_LIMIT_FILTER = 50;
     public static final String DEFAULT_ORDER_BY = "-updatedAt";
@@ -53,6 +47,7 @@ public class HubspotRestFormsClient extends AbstractHubspotRestClient implements
                               .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
                               .decoder(new GsonDecoder(configuredGson()))
+                              .encoder(new GsonEncoder(configuredGson()))
                               .target(FormsEntityApi.class, configuration.getApiUrl());
     }
 
@@ -73,13 +68,11 @@ public class HubspotRestFormsClient extends AbstractHubspotRestClient implements
         ));
     }
 
-
     @Override
     public String getFormContentById(String guid) throws HubspotApiException
     {
         return execute(() -> formsRawApi.form(guid));
     }
-
 
     @Override
     public FormDetail getFormDetailById(String guid) throws HubspotApiException
@@ -88,42 +81,15 @@ public class HubspotRestFormsClient extends AbstractHubspotRestClient implements
     }
 
     @Override
-    public FormDetail cloneFormAsDetail(String guid) throws HubspotApiException
+    public FormDetail cloneForm(String guid, String name) throws HubspotApiException
     {
-        String body = execute(() -> formsRawApi.form(guid));
-        JsonObject srcForm = parseForm(body);
-
-        setupCloneFields(srcForm);
-
-        String newBody = execute(() -> formsRawApi.create(srcForm.toString()));
-        JsonObject newObj = parseForm(newBody);
-        return execute(() -> formsEntityApi.formDetail(newObj.get(GUID_PROPERTY_NAME).getAsString()));
-    }
-
-    private static void setupCloneFields(JsonObject form) {
-        String name = form.get(NAME_PROPERTY_NAME).getAsString();
-        form.addProperty(NAME_PROPERTY_NAME, String.format(CLONED_NAME_TEMPLATE, name, System.currentTimeMillis()));
-        resetDeletableField(form);
+        return execute(() -> formsEntityApi.clone(guid, new CloneFormRequest(name)));
     }
 
     @Override
     public String updateFormContent(String guid, String content) throws HubspotApiException
     {
-        JsonObject form = parseForm(content);
-
-        resetDeletableField(form);
-
-        return execute(() -> formsRawApi.update(guid, form.toString()));
-    }
-
-    private static void resetDeletableField(JsonObject form) {
-        // we can use REST API to create forms with deletable = true only
-        form.addProperty(DELETABLE_PROPERTY_NAME, true);
-    }
-
-    private static JsonObject parseForm(String content) {
-        JsonParser parser = new JsonParser();
-        return parser.parse(content).getAsJsonObject();
+        return execute(() -> formsRawApi.update(guid, content));
     }
 
     @Override

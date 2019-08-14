@@ -15,6 +15,7 @@ import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +32,10 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -175,6 +179,33 @@ public class HubspotRestBlogPostsClientTest
         assertPostDetail(detailList.get(0));
     }
 
+    @Test
+    public void shouldCallCloneBlogPostUrlForEntityApi() throws Exception
+    {
+        String BLOG_POST_NAME = "BLog post name";
+        givenThat(post(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID + "/clone"))
+                .willReturn(HttpMockUtils.aJsonResponse(blogPostDetails())));
+
+        hubspotClient.cloneBlogPost(POST_ID, BLOG_POST_NAME);
+
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts"))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(equalToJson("{ \"name\" : \"" + BLOG_POST_NAME + "\" }"))
+        );
+    }
+
+    @Test
+    public void shouldCallDeleteBlogPostUrl() throws HubspotApiException
+    {
+
+        givenThat(delete(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
+
+        hubspotClient.delete(POST_ID);
+
+        verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts/" + POST_ID)));
+    }
+
     private BlogPostDetail getTranslatedBlogPost(String json)
     {
         Gson gson = new GsonBuilder()
@@ -214,5 +245,10 @@ public class HubspotRestBlogPostsClientTest
         assertThat(blogPostDetail.isPublishImmediately()).isTrue();
         assertThat(blogPostDetail.getSlug()).isEqualTo("tb-es/-temporary-slug-d69558bb-941d-4d3e-8ba9-f5e39d97ab12");
         assertThat(blogPostDetail.getId()).isEqualTo(POST_ID);
+    }
+
+    private String blogPostDetails() throws Exception
+    {
+        return  loadResource("blog_post.json");
     }
 }

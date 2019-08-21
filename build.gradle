@@ -26,7 +26,7 @@ repositories {
 
 description = 'Hubspot SDK'
 group = 'com.smartling.connector'
-version = getSDKVersion()
+version = gitVersion()
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -97,11 +97,3 @@ task setCredentials {
 }
 
 uploadArchives.dependsOn setCredentials
-
-def getSDKVersion()
-{
-    if (versionDetails().commitDistance > 0)
-        return gitVersion() + '-SNAPSHOT'
-    else
-        return gitVersion()
-}

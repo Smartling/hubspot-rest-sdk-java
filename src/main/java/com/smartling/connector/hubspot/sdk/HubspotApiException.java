@@ -1,14 +1,15 @@
 package com.smartling.connector.hubspot.sdk;
 
 import feign.FeignException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 public class HubspotApiException extends Exception
 {
+    private int responseCode;
+
     public HubspotApiException(final String message, final FeignException ex)
     {
-        super(message + "\n" + new Response(ex.status(), ex.content() != null ? ex.contentUTF8() : null), ex);
+        super(String.format("%s, \n responseCode=%s, responseBody=\"%s\"", message, ex.status(), ex.content() != null ? ex.contentUTF8() : null), ex);
+        this.responseCode = ex.status();
     }
 
     public HubspotApiException(final String message, final Exception cause)
@@ -21,9 +22,8 @@ public class HubspotApiException extends Exception
         super(message);
     }
 
-    @Data @AllArgsConstructor
-    public static class Response {
-        private int responseCode;
-        private String responseBody;
+    public int getResponseCode()
+    {
+        return responseCode;
     }
 }

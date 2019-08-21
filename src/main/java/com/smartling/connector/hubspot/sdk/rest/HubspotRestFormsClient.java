@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class HubspotRestFormsClient extends AbstractHubspotRestClient implements HubspotFormsClient
 {
-    public static final String DEFAULT_FORM_TYPE_FILTER = "ALL";
+    public static final String DEFAULT_FORM_TYPE_FILTER = "HUBSPOT";
     public static final int DEFAULT_LIMIT_FILTER = 50;
     public static final String DEFAULT_ORDER_BY = "-updatedAt";
     public static final String NAME_SEARCH_QUERY_PARAMETER_NAME = "name__icontains";

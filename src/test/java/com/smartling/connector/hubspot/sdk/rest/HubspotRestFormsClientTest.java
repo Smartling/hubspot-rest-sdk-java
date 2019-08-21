@@ -134,7 +134,8 @@ public class HubspotRestFormsClientTest
 
         hubspotClient.listForms(0, 50, new FormFilter(), null);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("formTypes", equalTo("HUBSPOT")));
     }
 
     @Test

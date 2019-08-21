@@ -83,8 +83,8 @@ task setCredentials {
         project.ext.set('mavenCredentials', [
             'smartling.repository.source.local-overwritable-releases':
                     [
-                            'username': 'continuous_integration_overwritable_releases',
-                            'password': "$System.env.ci_pass" //uses jenkins keystore, passed through pipeline using 'withCredentials'
+                            'username': 'connectors-ci',
+                            'password': "$System.env.ci_pass_releases" //uses jenkins keystore, passed through pipeline using 'withCredentials'
                     ],
 
             'smartling.repository.target.snapshots':

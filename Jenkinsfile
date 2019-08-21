@@ -13,7 +13,10 @@ pipeline {
             }
             steps {
                 sh "sudo chmod +x gradlew"
-                withCredentials([usernamePassword(credentialsId: 'Artifactory file', passwordVariable: 'ci_pass', usernameVariable: 'continuous_integration')]) {
+                withCredentials([
+                        usernamePassword(credentialsId: 'Artifactory file', passwordVariable: 'ci_pass', usernameVariable: 'continuous_integration'),
+                        usernamePassword(credentialsId: 'artifactory-connectors-ci', passwordVariable: 'ci_pass_releases', usernameVariable: 'ci_user_releases')
+                ]) {
 //                    // parameters for int tests
 //                    // TODO enable int tests when we have long-term working sandbox env
 //                    -Dhubspot.refreshToken=${bamboo.hubspot.refreshToken.secret} -Dhubspot.clientId=${bamboo.hubspot.clientId} -Dhubspot.clientSecret=${bamboo.hubspot.clientSecret} -Dhubspot.redirectUri=${bamboo.hubspot.redirectUri} -Dhubspot.basicFormId=${bamboo.hubspot.basicFormId} -Dhubspot.notLivePageCampaignId=${bamboo.hubspot.notLivePageCampaignId} -Dhubspot.basicPageId=${bamboo.hubspot.basicPageId} -Dhubspot.archivedPageId=${bamboo.hubspot.archivedPageId} -Dhubspot.notLivePageId=${bamboo.hubspot.notLivePageId} -Dhttps.protocols=TLSv1

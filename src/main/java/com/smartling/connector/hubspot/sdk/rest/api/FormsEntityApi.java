@@ -14,9 +14,8 @@ import feign.RequestLine;
 
 public interface FormsEntityApi
 {
-    @RequestLine("GET /forms/v2/forms?formTypes={formType}&order={order}&offset={offset}&limit={limit}")
-    List<FormDetail> forms(@Param("formType") String formType,
-                           @Param("offset") int offset, @Param("limit") int limit,
+    @RequestLine("GET /forms/v2/forms?formTypes=HUBSPOT&order={order}&offset={offset}&limit={limit}")
+    List<FormDetail> forms(@Param("offset") int offset, @Param("limit") int limit,
                            @Param("order") String orderBy,
                            @QueryMap Map<String, Object> queryMap);
 

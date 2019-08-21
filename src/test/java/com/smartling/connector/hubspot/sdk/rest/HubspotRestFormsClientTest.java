@@ -134,7 +134,8 @@ public class HubspotRestFormsClientTest
 
         hubspotClient.listForms(0, 50, new FormFilter(), null);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms")));
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
+                .withQueryParam("formTypes", equalTo("HUBSPOT")));
     }
 
     @Test
@@ -143,12 +144,11 @@ public class HubspotRestFormsClientTest
         givenThat(get(HttpMockUtils.path("/forms/v2/forms")).willReturn(HttpMockUtils.aJsonResponse(formDetails())));
 
         FormFilter filter = new FormFilter();
-        filter.setFormType("FLOW");
         filter.setName("popup");
         hubspotClient.listForms(10, 5, filter, "updatedAt");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("formTypes", equalTo("FLOW"))
+                .withQueryParam("formTypes", equalTo("HUBSPOT"))
                 .withQueryParam(HubspotRestFormsClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))
@@ -165,7 +165,7 @@ public class HubspotRestFormsClientTest
         hubspotClient.listForms(10, 5, filter, "updatedAt");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/forms/v2/forms"))
-                .withQueryParam("formTypes", equalTo(HubspotRestFormsClient.DEFAULT_FORM_TYPE_FILTER))
+                .withQueryParam("formTypes", equalTo("HUBSPOT"))
                 .withQueryParam(HubspotRestFormsClient.NAME_SEARCH_QUERY_PARAMETER_NAME, equalTo("popup"))
                 .withQueryParam("order", equalTo("updatedAt"))
                 .withQueryParam("offset", equalTo("10"))

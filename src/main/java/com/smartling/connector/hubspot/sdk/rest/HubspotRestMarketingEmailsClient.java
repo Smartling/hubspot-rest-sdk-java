@@ -3,7 +3,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailClient;
+import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailsClient;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetail;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetails;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailFilter;
@@ -15,11 +15,11 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import lombok.NonNull;
 
-public class HubspotRestMarketingEmailClient extends AbstractHubspotRestClient implements HubspotMarketingEmailClient
+public class HubspotRestMarketingEmailsClient extends AbstractHubspotRestClient implements HubspotMarketingEmailsClient
 {
     private final MarketingEmailApi marketingEmailApi;
 
-    public HubspotRestMarketingEmailClient(final Configuration configuration, final TokenProvider tokenProvider)
+    public HubspotRestMarketingEmailsClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
         super(tokenProvider);
 

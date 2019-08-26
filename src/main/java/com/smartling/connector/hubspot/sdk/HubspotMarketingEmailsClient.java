@@ -5,7 +5,7 @@ import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetails;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailFilter;
 import lombok.NonNull;
 
-public interface HubspotMarketingEmailClient extends HubspotClient
+public interface HubspotMarketingEmailsClient extends HubspotClient
 {
     MarketingEmailDetails listEmails(int offset, int limit, @NonNull MarketingEmailFilter filter, String orderBy) throws HubspotApiException;
 

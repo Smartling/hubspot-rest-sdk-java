@@ -8,7 +8,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
-import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailClient;
+import com.smartling.connector.hubspot.sdk.HubspotMarketingEmailsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetail;
 import com.smartling.connector.hubspot.sdk.marketingEmail.MarketingEmailDetails;
@@ -43,7 +43,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestMarketingEmailClientTest {
+public class HubspotRestMarketingEmailsClientTest {
 
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
@@ -58,7 +58,7 @@ public class HubspotRestMarketingEmailClientTest {
 
     private TokenProvider tokenProvider;
     private String originalToken;
-    private HubspotMarketingEmailClient emailClient;
+    private HubspotMarketingEmailsClient emailClient;
 
     @Before
     public void setUpMocks() throws Exception
@@ -69,7 +69,7 @@ public class HubspotRestMarketingEmailClientTest {
         final RefreshTokenData refreshTokenData = new RefreshTokenData();
         refreshTokenData.setAccessToken(originalToken);
         tokenProvider = () -> refreshTokenData;
-        this.emailClient = new HubspotRestMarketingEmailClient(configuration, tokenProvider);
+        this.emailClient = new HubspotRestMarketingEmailsClient(configuration, tokenProvider);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class HubspotRestMarketingEmailClientTest {
 
     private String loadResource(String name) throws IOException, URISyntaxException
     {
-        URI uri = HubspotRestMarketingEmailClientTest.class.getClassLoader().getResource(name).toURI();
+        URI uri = HubspotRestMarketingEmailsClientTest.class.getClassLoader().getResource(name).toURI();
         return new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("utf-8"));
     }
 

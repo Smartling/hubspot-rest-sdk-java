@@ -162,6 +162,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
         assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
+        assertThat(emailDetail.getLanguage()).isEqualTo("en");
         assertThat(emailDetail.getName()).isEqualTo("sl-mm-test-email");
         assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
@@ -186,13 +187,15 @@ public class HubspotRestEmailsClientTest
                 "  \"fromName\": \"HubSpot Test\",\n" +
                 "  \"htmlTitle\": \"\",\n" +
                 "  \"id\": 11358385328,\n" +
+                "  \"language\": \"en\",\n" +
                 "  \"name\": \"sl-mm-test-email\",\n" +
                 "  \"publishedByName\": \"HubSpot Test\",\n" +
                 "  \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "  \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "  \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
                 "  \"subject\": \"Subject\",\n" +
-                "  \"subscriptionName\": \"Marketing Information\"\n" +
+                "  \"subscriptionName\": \"Marketing Information\",\n" +
+                "  \"updated\": 1563410535135\n" +
                 "}";
     }
 
@@ -207,13 +210,15 @@ public class HubspotRestEmailsClientTest
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
                 "      \"id\": 11358385328,\n" +
+                "      \"language\": \"en\",\n" +
                 "      \"name\": \"sl-mm-test-email\",\n" +
                 "      \"publishedByName\": \"HubSpot Test\",\n" +
                 "      \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "      \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "      \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
                 "      \"subject\": \"Subject\",\n" +
-                "      \"subscriptionName\": \"Marketing Information\"\n" +
+                "      \"subscriptionName\": \"Marketing Information\",\n" +
+                "      \"updated\": 1563410535135\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"offset\": 0,\n" +

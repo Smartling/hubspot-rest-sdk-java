@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,7 @@ public class EmailDetail implements NameAware
     @SerializedName("htmlTitle")
     private String htmlTitle;
     private String id;
+    private String language;
     private String name;
     @SerializedName("publishedByName")
     private String publishedByName;
@@ -34,5 +37,5 @@ public class EmailDetail implements NameAware
     private String subject;
     @SerializedName("subscriptionName")
     private String subscriptionName;
-
+    private Date updated;
 }

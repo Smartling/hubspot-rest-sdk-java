@@ -1,22 +1,22 @@
-package com.smartling.connector.hubspot.sdk.marketingEmail;
+package com.smartling.connector.hubspot.sdk.email;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketingEmailDetails {
+public class EmailDetails {
     int totalCount;
 
     @SerializedName("objects")
-    List<MarketingEmailDetail> detailList = new ArrayList<>();
+    List<EmailDetail> detailList = new ArrayList<>();
 
-    public List<MarketingEmailDetail> getDetailList()
+    public List<EmailDetail> getDetailList()
     {
         return detailList;
     }
 
-    public void setDetailList(final List<MarketingEmailDetail> detailList)
+    public void setDetailList(final List<EmailDetail> detailList)
     {
         this.detailList = detailList;
     }

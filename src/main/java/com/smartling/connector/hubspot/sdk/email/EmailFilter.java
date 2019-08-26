@@ -1,9 +1,9 @@
-package com.smartling.connector.hubspot.sdk.marketingEmail;
+package com.smartling.connector.hubspot.sdk.email;
 
 import lombok.Data;
 
 @Data
-public class MarketingEmailFilter {
+public class EmailFilter {
     private String emailName;
     private Boolean archived;
     private String campaign;

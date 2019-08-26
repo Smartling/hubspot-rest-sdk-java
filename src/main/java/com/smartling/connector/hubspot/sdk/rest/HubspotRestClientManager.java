@@ -39,7 +39,7 @@ public class HubspotRestClientManager implements HubspotClientManager
     }
 
     @Override
-    public HubspotEmailsClient getMarketingEmailsClient()
+    public HubspotEmailsClient getEmailsClient()
     {
         return new HubspotRestEmailsClient(configuration, tokenProvider);
     }

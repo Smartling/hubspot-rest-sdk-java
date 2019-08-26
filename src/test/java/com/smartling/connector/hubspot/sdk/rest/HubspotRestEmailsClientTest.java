@@ -29,7 +29,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class HubspotRestMarketingEmailsClientTest {
+public class HubspotRestEmailsClientTest
+{
 
     private static final int PORT = 10000 + new Random().nextInt(9999);
 

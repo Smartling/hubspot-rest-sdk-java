@@ -157,9 +157,17 @@ public class HubspotRestEmailsClientTest
 
     private void assertEmailDetail(final EmailDetail emailDetail)
     {
-        assertThat(emailDetail.getName()).isEqualTo("Subject");
-        assertThat(emailDetail.isPublishImmediately()).isTrue();
+        assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
+        assertThat(emailDetail.getCurrentState()).isEqualTo("DRAFT");
+        assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
+        assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
+        assertThat(emailDetail.getName()).isEqualTo("sl-mm-test-email");
+        assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
+        assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
+        assertThat(emailDetail.getRssEmailClickThroughText()).isEqualTo("Read more &raquo;");
+        assertThat(emailDetail.getSubject()).isEqualTo("Subject");
+        assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
     }
 
     private String emailContent() throws Exception {
@@ -172,12 +180,19 @@ public class HubspotRestEmailsClientTest
 
     private String emailDetail() {
         return "{\n" +
+                "  \"authorName\": \"HubSpot Test\",\n" +
+                "  \"currentState\": \"DRAFT\",\n" +
+                "  \"emailType\": \"BATCH_EMAIL\",\n" +
                 "  \"fromName\": \"HubSpot Test\",\n" +
                 "  \"htmlTitle\": \"\",\n" +
                 "  \"id\": 11358385328,\n" +
                 "  \"name\": \"sl-mm-test-email\",\n" +
-                "  \"publishImmediately\": false,\n" +
-                "  \"subject\": \"Subject\"\n" +
+                "  \"publishedByName\": \"HubSpot Test\",\n" +
+                "  \"rssEmailByText\": \"By HubSpot Test\",\n" +
+                "  \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
+                "  \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
+                "  \"subject\": \"Subject\",\n" +
+                "  \"subscriptionName\": \"Marketing Information\"\n" +
                 "}";
     }
 
@@ -186,12 +201,19 @@ public class HubspotRestEmailsClientTest
                 "  \"limit\": 10,\n" +
                 "  \"objects\": [\n" +
                 "    {\n" +
+                "      \"authorName\": \"HubSpot Test\",\n" +
+                "      \"currentState\": \"DRAFT\",\n" +
+                "      \"emailType\": \"BATCH_EMAIL\",\n" +
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
                 "      \"id\": 11358385328,\n" +
-                "      \"name\": \"Subject\",\n" +
-                "      \"publishImmediately\": true,\n" +
-                "      \"subject\": \"Subject\"\n" +
+                "      \"name\": \"sl-mm-test-email\",\n" +
+                "      \"publishedByName\": \"HubSpot Test\",\n" +
+                "      \"rssEmailByText\": \"By HubSpot Test\",\n" +
+                "      \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
+                "      \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
+                "      \"subject\": \"Subject\",\n" +
+                "      \"subscriptionName\": \"Marketing Information\"\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"offset\": 0,\n" +

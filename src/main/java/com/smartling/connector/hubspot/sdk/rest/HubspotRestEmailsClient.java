@@ -1,7 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.email.CloneEmailRequest;
@@ -45,13 +43,6 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
                 .decoder(new GsonDecoder(configuredGson()))
                 .target(EmailsRawApi.class, configuration.getApiUrl());
     }
-
-    @Override
-    protected Gson configuredGson()
-    {
-        return new GsonBuilder().create();
-    }
-
 
     @Override
     public EmailDetails listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException

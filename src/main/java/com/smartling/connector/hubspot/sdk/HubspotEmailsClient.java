@@ -1,14 +1,14 @@
 package com.smartling.connector.hubspot.sdk;
 
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
-import com.smartling.connector.hubspot.sdk.email.EmailDetails;
 import lombok.NonNull;
 
 import java.util.Map;
 
 public interface HubspotEmailsClient extends HubspotClient
 {
-    EmailDetails listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
+    ListWrapper<EmailDetail> listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 
     EmailDetail getDetail(@NonNull String emailId) throws HubspotApiException;
 

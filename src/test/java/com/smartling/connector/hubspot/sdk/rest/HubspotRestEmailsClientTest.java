@@ -6,8 +6,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
-import com.smartling.connector.hubspot.sdk.email.EmailDetails;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -139,7 +139,7 @@ public class HubspotRestEmailsClientTest
     {
         givenThat(get(HttpMockUtils.urlStartingWith("/marketing-emails/v1/emails")).willReturn(HttpMockUtils.aJsonResponse(emailsContent())));
 
-        EmailDetails emailDetails = emailClient.listEmails(5, 15, null, null);
+        ListWrapper<EmailDetail> emailDetails = emailClient.listEmails(5, 15, null, null);
 
         assertThat(emailDetails).isNotNull();
         assertThat(emailDetails.getTotalCount()).isEqualTo(6);
@@ -179,6 +179,7 @@ public class HubspotRestEmailsClientTest
         return minifyJson(emailDetails());
     }
 
+    //language=JSON
     private String emailDetail() {
         return "{\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
@@ -199,6 +200,7 @@ public class HubspotRestEmailsClientTest
                 "}";
     }
 
+    //language=JSON
     private String emailDetails() {
         return "{\n" +
                 "  \"limit\": 10,\n" +

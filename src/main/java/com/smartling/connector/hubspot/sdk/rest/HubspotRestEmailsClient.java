@@ -1,10 +1,12 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.email.CloneEmailRequest;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
-import com.smartling.connector.hubspot.sdk.email.EmailDetails;
 import com.smartling.connector.hubspot.sdk.rest.api.EmailsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.EmailsRawApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -15,6 +17,7 @@ import feign.gson.GsonEncoder;
 import lombok.NonNull;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 public class HubspotRestEmailsClient extends AbstractHubspotRestClient implements HubspotEmailsClient
@@ -45,7 +48,16 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
-    public EmailDetails listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
+    protected Gson configuredGson()
+    {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .create();
+    }
+
+    @Override
+    public ListWrapper<EmailDetail> listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
     {
         Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();
         return execute(() -> emailsEntityApi.emails(offset, limit, orderBy, safeQueryMap));

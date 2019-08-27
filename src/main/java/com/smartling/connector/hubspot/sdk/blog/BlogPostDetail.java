@@ -1,14 +1,11 @@
 package com.smartling.connector.hubspot.sdk.blog;
 
-import com.smartling.connector.hubspot.sdk.NameAware;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 @Data
 @NoArgsConstructor
-public class BlogPostDetail implements NameAware
+public class BlogPostDetail
 {
     Long contentGroupId;
     String id;

@@ -60,7 +60,7 @@ public abstract class AbstractHubspotRestClient
                 .create();
     }
 
-    private static class DateSerializer implements JsonDeserializer<Date>
+    protected static class DateSerializer implements JsonDeserializer<Date>
     {
         @Override
         public Date deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException

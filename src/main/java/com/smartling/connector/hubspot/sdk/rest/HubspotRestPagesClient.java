@@ -96,7 +96,7 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     {
         Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();
 
-            return execute(() -> pagesEntityApiApache.listPages(limit, offset, orderBy, safeQueryMap));
+        return execute(() -> pagesEntityApiApache.listPages(limit, offset, orderBy, safeQueryMap));
     }
 
     @Override

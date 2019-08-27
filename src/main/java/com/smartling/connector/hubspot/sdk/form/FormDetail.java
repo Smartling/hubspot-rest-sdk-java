@@ -1,15 +1,14 @@
 package com.smartling.connector.hubspot.sdk.form;
 
-import java.util.Date;
-
 import com.google.gson.annotations.SerializedName;
-import com.smartling.connector.hubspot.sdk.NameAware;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
-public class FormDetail implements NameAware
+public class FormDetail
 {
     private String guid;
     private String name;

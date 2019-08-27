@@ -42,8 +42,8 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
         pagesEntityApi = Feign.builder()
                               .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
-                              .decoder(new GsonDecoder(configuredGson()))
-                              .encoder(new GsonEncoder(configuredGson()))
+                              .decoder(new GsonDecoder(snakeCaseGson()))
+                              .encoder(new GsonEncoder(snakeCaseGson()))
                               .target(PagesEntityApi.class, configuration.getApiUrl());
 
         // ApacheHttpClient has advanced options for request/response processing
@@ -51,7 +51,7 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
                                     .requestInterceptor(getAuthenticationInterceptor())
                                     .options(connectionConfig)
                                     .client(new ApacheHttpClient())
-                                    .decoder(new GsonDecoder(configuredGson()))
+                                    .decoder(new GsonDecoder(snakeCaseGson()))
                                     .target(PagesEntityApi.class, configuration.getApiUrl());
     }
 

@@ -1,7 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
@@ -17,7 +15,6 @@ import feign.gson.GsonEncoder;
 import lombok.NonNull;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 
 public class HubspotRestEmailsClient extends AbstractHubspotRestClient implements HubspotEmailsClient
@@ -35,25 +32,16 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
         emailsEntityApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .encoder(new GsonEncoder(configuredGson()))
-                .decoder(new GsonDecoder(configuredGson()))
+                .encoder(new GsonEncoder(camelCaseGson()))
+                .decoder(new GsonDecoder(camelCaseGson()))
                 .target(EmailsEntityApi.class, configuration.getApiUrl());
 
         emailsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .encoder(new GsonEncoder(configuredGson()))
-                .decoder(new GsonDecoder(configuredGson()))
+                .encoder(new GsonEncoder(camelCaseGson()))
+                .decoder(new GsonDecoder(camelCaseGson()))
                 .target(EmailsRawApi.class, configuration.getApiUrl());
-    }
-
-    @Override
-    protected Gson configuredGson()
-    {
-        return new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateSerializer())
-                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
-                .create();
     }
 
     @Override

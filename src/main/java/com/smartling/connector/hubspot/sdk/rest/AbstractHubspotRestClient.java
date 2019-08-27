@@ -51,7 +51,15 @@ public abstract class AbstractHubspotRestClient
         }
     }
 
-    protected Gson configuredGson()
+    protected static Gson camelCaseGson()
+    {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .create();
+    }
+
+    protected static Gson snakeCaseGson()
     {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateSerializer())
@@ -60,7 +68,7 @@ public abstract class AbstractHubspotRestClient
                 .create();
     }
 
-    protected static class DateSerializer implements JsonDeserializer<Date>
+    private static class DateSerializer implements JsonDeserializer<Date>
     {
         @Override
         public Date deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException

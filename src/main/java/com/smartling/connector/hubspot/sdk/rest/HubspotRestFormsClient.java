@@ -1,9 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
@@ -12,7 +8,6 @@ import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.form.FormFilter;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsRawApi;
-
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
@@ -20,6 +15,10 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class HubspotRestFormsClient extends AbstractHubspotRestClient implements HubspotFormsClient
 {
@@ -45,8 +44,8 @@ public class HubspotRestFormsClient extends AbstractHubspotRestClient implements
         formsEntityApi = Feign.builder()
                               .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
-                              .decoder(new GsonDecoder(configuredGson()))
-                              .encoder(new GsonEncoder(configuredGson()))
+                              .decoder(new GsonDecoder(snakeCaseGson()))
+                              .encoder(new GsonEncoder(snakeCaseGson()))
                               .target(FormsEntityApi.class, configuration.getApiUrl());
     }
 

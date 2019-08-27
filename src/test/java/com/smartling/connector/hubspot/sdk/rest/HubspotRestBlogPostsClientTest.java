@@ -201,7 +201,7 @@ public class HubspotRestBlogPostsClientTest
         givenThat(delete(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID))
                 .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
-        hubspotClient.delete(POST_ID);
+        hubspotClient.deleteBlogPost(POST_ID);
 
         verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts/" + POST_ID)));
     }

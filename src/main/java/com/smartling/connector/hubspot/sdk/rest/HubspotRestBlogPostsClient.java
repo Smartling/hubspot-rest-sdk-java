@@ -85,11 +85,11 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
 
     @Override
     public BlogPostDetail cloneBlogPost(String blogPostId, String name) throws HubspotApiException {
-        return execute(() -> blogPostsApi.clone(blogPostId, new CloneBlogPostRequest(name)));
+        return execute(() -> blogPostsApi.cloneBlogPost(blogPostId, new CloneBlogPostRequest(name)));
     }
 
     @Override
-    public ResultInfo delete(String blogPostId) throws HubspotApiException
+    public ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException
     {
         execute(() -> blogPostsApi.deleteBlogPost(blogPostId));
         ResultInfo result = new ResultInfo();

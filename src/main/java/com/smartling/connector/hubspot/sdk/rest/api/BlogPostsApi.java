@@ -4,8 +4,6 @@ import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
-import com.smartling.connector.hubspot.sdk.form.CloneFormRequest;
-import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -32,7 +30,7 @@ public interface BlogPostsApi
 
     @RequestLine("POST /content/api/v2/blog-posts/{blog_post_id}/clone")
     @Headers("Content-Type: application/json")
-    BlogPostDetail clone(@Param("blog_post_id") String blogPostId, CloneBlogPostRequest cloneBlogPostRequest);
+    BlogPostDetail cloneBlogPost(@Param("blog_post_id") String blogPostId, CloneBlogPostRequest cloneBlogPostRequest);
 
     @RequestLine("DELETE /content/api/v2/blog-posts/{blog_post_id}")
     ResultInfo deleteBlogPost(@Param("blog_post_id") String blogPostId);

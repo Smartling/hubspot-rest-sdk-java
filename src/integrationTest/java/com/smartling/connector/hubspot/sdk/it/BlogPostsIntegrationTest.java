@@ -9,7 +9,6 @@ import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
-import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 import org.junit.After;
@@ -47,7 +46,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         {
             try
             {
-                hubspotClient.delete(blogPostId);
+                hubspotClient.deleteBlogPost(blogPostId);
             }
             catch (HubspotApiException e)
             {
@@ -189,7 +188,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID, "Cloned");
         blogPostsToDelete.add(blogPostCloneDetail.getId());
 
-        ResultInfo info = hubspotClient.delete(blogPostCloneDetail.getId());
+        ResultInfo info = hubspotClient.deleteBlogPost(blogPostCloneDetail.getId());
         assertThat(info.isSucceeded()).isTrue();
 
         blogPostsToDelete.remove(blogPostCloneDetail.getId());

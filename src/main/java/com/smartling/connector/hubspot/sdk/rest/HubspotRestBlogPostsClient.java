@@ -31,14 +31,14 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
         blogPostsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .encoder(new GsonEncoder(configuredGson()))
-                .decoder(new GsonDecoder(configuredGson()))
+                .encoder(new GsonEncoder(snakeCaseGson()))
+                .decoder(new GsonDecoder(snakeCaseGson()))
                 .target(BlogPostsApi.class, configuration.getApiUrl());
 
         blogsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .decoder(new GsonDecoder(configuredGson()))
+                .decoder(new GsonDecoder(snakeCaseGson()))
                 .target(BlogsApi.class, configuration.getApiUrl());
 
     }

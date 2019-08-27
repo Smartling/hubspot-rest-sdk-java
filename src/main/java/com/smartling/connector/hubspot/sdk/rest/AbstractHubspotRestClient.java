@@ -51,7 +51,15 @@ public abstract class AbstractHubspotRestClient
         }
     }
 
-    protected static Gson configuredGson()
+    protected static Gson camelCaseGson()
+    {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .create();
+    }
+
+    protected static Gson snakeCaseGson()
     {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateSerializer())

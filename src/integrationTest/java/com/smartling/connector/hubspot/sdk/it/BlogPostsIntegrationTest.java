@@ -1,7 +1,9 @@
 package com.smartling.connector.hubspot.sdk.it;
 
+import com.google.common.collect.Lists;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
+import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
@@ -9,6 +11,7 @@ import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,11 +30,29 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
 
     private HubspotBlogPostsClient hubspotClient;
 
+    private List<String>  blogPostsToDelete = Lists.newArrayList();
+
     @Before
     public void init()
     {
         final Configuration configuration = Configuration.build(clientId, clientSecret, redirectUri, refreshToken);
         hubspotClient = new HubspotRestClientManager(configuration, createTokenProvider(configuration)).getBlogPostsClient();
+    }
+
+    @After
+    public void deleteTestBlogPosts()
+    {
+        for (String blogPostId : blogPostsToDelete)
+        {
+            try
+            {
+                hubspotClient.deleteBlogPost(blogPostId);
+            }
+            catch (HubspotApiException e)
+            {
+                System.err.printf("Fail to clean up blog post '%1$s', cause '%2$s'", blogPostId, e);
+            }
+        }
     }
 
     @Test
@@ -149,6 +170,29 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         hubspotClient.updateBlogPost(blogPostById);
     }
 
+    @Test
+    public void shouldCloneBlogPost() throws HubspotApiException {
+        String blogPostId = BLOG_ID;
+        String name = "Cloned";
+        BlogPostDetail blogPostDetail = hubspotClient.getBlogPostById(blogPostId);
+
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(blogPostId, name);
+        blogPostsToDelete.add(blogPostCloneDetail.getId());
+
+        assertThat(blogPostCloneDetail.getName()).isEqualTo("Cloned");
+        assertThat(blogPostDetail.getContentGroupId()).isEqualTo(blogPostCloneDetail.getContentGroupId());
+    }
+
+    @Test
+    public void shouldDeleteBlogPost() throws HubspotApiException {
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID, "Cloned");
+        blogPostsToDelete.add(blogPostCloneDetail.getId());
+
+        ResultInfo info = hubspotClient.deleteBlogPost(blogPostCloneDetail.getId());
+        assertThat(info.isSucceeded()).isTrue();
+
+        blogPostsToDelete.remove(blogPostCloneDetail.getId());
+    }
 
     private BlogPostFilter createBlogFilter(String blogId)
     {

@@ -7,7 +7,7 @@ import feign.RequestLine;
 public interface EmailsRawApi
 {
     @RequestLine("GET /marketing-emails/v1/emails/{email_id}")
-    String email(@Param("email_id") String emailId);
+    String getContent(@Param("email_id") String emailId);
 
     @RequestLine("PUT /marketing-emails/v1/emails/{email_id}")
     @Headers("Content-Type: application/json")

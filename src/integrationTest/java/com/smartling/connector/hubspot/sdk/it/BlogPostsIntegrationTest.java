@@ -1,6 +1,5 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import com.google.common.collect.Lists;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
@@ -15,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
@@ -23,14 +23,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class BlogPostsIntegrationTest extends BaseIntegrationTest
 {
     private static final String BASIC_POST_NAME1 = "Demo Blog Post";
-    private static final String BASIC_POST_NAME2 = "Blog Post 2";
     private static final String BLOG_POST_ID1 = "6728540881";
     private static final String BLOG_POST_ID2 = "6741114424";
     private static final String BLOG_ID = "6724977225";
 
     private HubspotBlogPostsClient hubspotClient;
 
-    private List<String>  blogPostsToDelete = Lists.newArrayList();
+    private List<String>  blogPostsToDelete = new ArrayList<>();
 
     @Before
     public void init()

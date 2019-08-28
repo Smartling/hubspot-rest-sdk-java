@@ -12,9 +12,9 @@ import java.util.Map;
 
 public interface EmailsEntityApi
 {
-    @RequestLine("GET /marketing-emails/v1/emails?offset={offset}&limit={limit}&order_by={order_by}&property=" + EmailDetail.FIELDS)
+    @RequestLine("GET /marketing-emails/v1/emails?offset={offset}&limit={limit}&order={order}&property=" + EmailDetail.FIELDS)
     ListWrapper<EmailDetail> list(@Param("offset") int offset, @Param("limit") int limit,
-                                    @Param("order_by") String orderBy, @QueryMap Map<String, Object> queryMap);
+                                    @Param("order") String orderBy, @QueryMap Map<String, Object> queryMap);
 
     @RequestLine("GET /marketing-emails/v1/emails/{email_id}?property=" + EmailDetail.FIELDS)
     EmailDetail getDetail(@Param("email_id") String emailId);

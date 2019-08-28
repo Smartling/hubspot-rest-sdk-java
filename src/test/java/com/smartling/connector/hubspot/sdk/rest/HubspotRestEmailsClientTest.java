@@ -71,7 +71,7 @@ public class HubspotRestEmailsClientTest
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/marketing-emails/v1/emails"))
                 .withQueryParam("limit", equalTo("15"))
                 .withQueryParam("offset", equalTo("5"))
-                .withQueryParam("order_by", equalTo("updated")));
+                .withQueryParam("order", equalTo("updated")));
     }
 
     @Test

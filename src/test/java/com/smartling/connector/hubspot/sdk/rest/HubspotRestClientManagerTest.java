@@ -1,6 +1,5 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.google.common.collect.Maps;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
@@ -11,6 +10,7 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager.createTokenProvider;
@@ -73,7 +73,7 @@ public class HubspotRestClientManagerTest
     private Configuration createConfiguration(boolean decorate, boolean init, String token)
     {
         Configuration configuration = Configuration.build(RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(STR_LENGHT), RandomStringUtils.random(STR_LENGHT));
-        Map<String, String> extProperties = Maps.newHashMap();
+        Map<String, String> extProperties = new HashMap<>();
         if (decorate)
         {
             if (init)

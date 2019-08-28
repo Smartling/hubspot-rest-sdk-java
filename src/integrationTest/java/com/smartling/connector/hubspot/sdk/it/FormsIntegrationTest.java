@@ -1,6 +1,5 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
@@ -16,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
@@ -43,7 +43,7 @@ public class FormsIntegrationTest extends BaseIntegrationTest
     private static final String ID_PATH                = "$.guid";
 
     private HubspotFormsClient hubspotClient;
-    private List<String>  formsToDelete          = Lists.newArrayList();
+    private List<String>  formsToDelete          = new ArrayList<>();
 
     private String basicFormId;
 

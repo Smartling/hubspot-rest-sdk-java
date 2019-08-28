@@ -2,13 +2,15 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
+import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
-import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
+import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsApi;
+import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
 import feign.Request.Options;
@@ -79,5 +81,20 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
     public BlogPostDetail updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
     {
         return execute(() -> blogPostsApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
+    }
+
+    @Override
+    public BlogPostDetail cloneBlogPost(String blogPostId, String name) throws HubspotApiException
+    {
+        return execute(() -> blogPostsApi.cloneBlogPost(blogPostId, new CloneBlogPostRequest(name)));
+    }
+
+    @Override
+    public ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException
+    {
+        execute(() -> blogPostsApi.deleteBlogPost(blogPostId));
+        ResultInfo result = new ResultInfo();
+        result.setSucceeded(true);
+        return result;
     }
 }

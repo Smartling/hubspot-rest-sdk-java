@@ -1,6 +1,5 @@
 package com.smartling.connector.hubspot.sdk.it;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     private LocalDateTime now                    = LocalDateTime.now();
     private String        updatedMetaDescription = "Meta description, created at " + now;
     private String        updatedMetaKeywords    = "Meta keywords, created at " + now + ". Added some metacharacters: % (it is percent).";
-    private List<Long>    pagesToDelete          = Lists.newArrayList();
+    private List<Long>    pagesToDelete          = new ArrayList<>();
 
     private long basicPageId;
     private long archivedPageId;

@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmailDetail extends EmailDetailShort
 {
-    public static final String FIELDS = EmailDetailShort.FIELDS + ",authorName,currentState,fromName,htmlTitle,language," +
-            "publishedByName,rssEmailByText,rssEmailClickThroughText,rssEmailCommentText,subject,subscriptionName";
+    public static final String FIELDS = EmailDetailShort.FIELDS + ",authorName,fromName,htmlTitle,language," +
+            "publishedByName,rssEmailByText,rssEmailClickThroughText,rssEmailCommentText,state,subject,subscriptionName";
 
     private String authorName;
-    private String currentState;
     private String fromName;
     private String htmlTitle;
     private String language;
@@ -19,6 +18,7 @@ public class EmailDetail extends EmailDetailShort
     private String rssEmailByText;
     private String rssEmailClickThroughText;
     private String rssEmailCommentText;
+    private String state;
     private String subject;
     private String subscriptionName;
 

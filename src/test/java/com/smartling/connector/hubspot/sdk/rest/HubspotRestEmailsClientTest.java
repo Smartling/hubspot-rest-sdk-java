@@ -158,7 +158,6 @@ public class HubspotRestEmailsClientTest
     private void assertEmailDetail(final EmailDetail emailDetail)
     {
         assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
-        assertThat(emailDetail.getCurrentState()).isEqualTo("DRAFT");
         assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
         assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
@@ -167,6 +166,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
         assertThat(emailDetail.getRssEmailClickThroughText()).isEqualTo("Read more &raquo;");
+        assertThat(emailDetail.getState()).isEqualTo("DRAFT");
         assertThat(emailDetail.getSubject()).isEqualTo("Subject");
         assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
     }
@@ -183,7 +183,6 @@ public class HubspotRestEmailsClientTest
     private String emailDetail() {
         return "{\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
-                "  \"currentState\": \"DRAFT\",\n" +
                 "  \"emailType\": \"BATCH_EMAIL\",\n" +
                 "  \"fromName\": \"HubSpot Test\",\n" +
                 "  \"htmlTitle\": \"\",\n" +
@@ -194,6 +193,7 @@ public class HubspotRestEmailsClientTest
                 "  \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "  \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "  \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
+                "  \"state\": \"DRAFT\",\n" +
                 "  \"subject\": \"Subject\",\n" +
                 "  \"subscriptionName\": \"Marketing Information\",\n" +
                 "  \"updated\": 1563410535135\n" +
@@ -207,7 +207,6 @@ public class HubspotRestEmailsClientTest
                 "  \"objects\": [\n" +
                 "    {\n" +
                 "      \"authorName\": \"HubSpot Test\",\n" +
-                "      \"currentState\": \"DRAFT\",\n" +
                 "      \"emailType\": \"BATCH_EMAIL\",\n" +
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
@@ -218,6 +217,7 @@ public class HubspotRestEmailsClientTest
                 "      \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "      \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "      \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
+                "      \"state\": \"DRAFT\",\n" +
                 "      \"subject\": \"Subject\",\n" +
                 "      \"subscriptionName\": \"Marketing Information\",\n" +
                 "      \"updated\": 1563410535135\n" +

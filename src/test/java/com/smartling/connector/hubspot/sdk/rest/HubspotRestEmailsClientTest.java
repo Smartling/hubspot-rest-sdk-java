@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -113,7 +114,8 @@ public class HubspotRestEmailsClientTest
         emailClient.clone(EMAIL_ID, "new name");
 
         verify(postRequestedFor(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID+ "/clone"))
-                .withHeader("Content-Type", equalTo("application/json")));
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(equalToJson("{\"name\":\"new name\"}")));
     }
 
     @Test

@@ -29,19 +29,17 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
         Request.Options connectionConfig = new Request.Options(
                 configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
 
+        emailsRawApi = Feign.builder()
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .target(EmailsRawApi.class, configuration.getApiUrl());
+
         emailsEntityApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .encoder(new GsonEncoder(camelCaseGson()))
                 .decoder(new GsonDecoder(camelCaseGson()))
                 .target(EmailsEntityApi.class, configuration.getApiUrl());
-
-        emailsRawApi = Feign.builder()
-                .requestInterceptor(getAuthenticationInterceptor())
-                .options(connectionConfig)
-                .encoder(new GsonEncoder(camelCaseGson()))
-                .decoder(new GsonDecoder(camelCaseGson()))
-                .target(EmailsRawApi.class, configuration.getApiUrl());
     }
 
     @Override

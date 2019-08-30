@@ -32,7 +32,6 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
         emailsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .encoder(new GsonEncoder(camelCaseGson()))
                 .target(EmailsRawApi.class, configuration.getApiUrl());
 
         emailsEntityApi = Feign.builder()
@@ -69,8 +68,8 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
-    public String clone(@NonNull String emailId, @NonNull String name) throws HubspotApiException
+    public EmailDetail clone(@NonNull String emailId, @NonNull String name) throws HubspotApiException
     {
-        return execute(() -> emailsRawApi.clone(emailId, new CloneEmailRequest(name)));
+        return execute(() -> emailsEntityApi.clone(emailId, new CloneEmailRequest(name)));
     }
 }

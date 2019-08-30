@@ -109,7 +109,7 @@ public class HubspotRestEmailsClientTest
     @Test
     public void shouldCallCloneEmail() throws Exception
     {
-        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));
+        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
 
         emailClient.clone(EMAIL_ID, "new name");
 
@@ -130,10 +130,10 @@ public class HubspotRestEmailsClientTest
     @Test
     public void shouldThrowNativeExceptionForBrokenJson() throws Exception
     {
-        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse("not JSON")));
+        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID)).willReturn(HttpMockUtils.aJsonResponse("not JSON")));
         expectedException.expect(HubspotApiException.class);
 
-        emailClient.clone(EMAIL_ID, emailContent());
+        emailClient.getDetail(EMAIL_ID);
     }
 
     @Test

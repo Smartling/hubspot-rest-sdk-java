@@ -7,6 +7,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.email.EmailAbStatus;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -159,7 +160,14 @@ public class HubspotRestEmailsClientTest
 
     private void assertEmailDetail(final EmailDetail emailDetail)
     {
+        assertThat(emailDetail.isAb()).isEqualTo(true);
+        assertThat(emailDetail.getAbHoursToWait()).isEqualTo(15);
+        assertThat(emailDetail.getAbStatus()).isEqualTo(EmailAbStatus.master);
+        assertThat(emailDetail.getAbTestId()).isEqualTo(12561803622L);
+        assertThat(emailDetail.getAbTestPercentage()).isEqualTo(60);
+
         assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
+        assertThat(emailDetail.getCurrentState()).isEqualTo("DRAFT_AB");
         assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
         assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
@@ -168,7 +176,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
         assertThat(emailDetail.getRssEmailClickThroughText()).isEqualTo("Read more &raquo;");
-        assertThat(emailDetail.getState()).isEqualTo("DRAFT");
+        assertThat(emailDetail.getState()).isEqualTo("DRAFT_AB");
         assertThat(emailDetail.getSubject()).isEqualTo("Subject");
         assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
     }
@@ -184,7 +192,13 @@ public class HubspotRestEmailsClientTest
     //language=JSON
     private String emailDetail() {
         return "{\n" +
+                "  \"ab\": true,\n" +
+                "  \"abHoursToWait\": 15,\n" +
+                "  \"abStatus\": \"master\",\n" +
+                "  \"abTestId\": 12561803622,\n" +
+                "  \"abTestPercentage\": 60,\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
+                "  \"currentState\": \"DRAFT_AB\",\n" +
                 "  \"emailType\": \"BATCH_EMAIL\",\n" +
                 "  \"fromName\": \"HubSpot Test\",\n" +
                 "  \"htmlTitle\": \"\",\n" +
@@ -195,7 +209,7 @@ public class HubspotRestEmailsClientTest
                 "  \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "  \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "  \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
-                "  \"state\": \"DRAFT\",\n" +
+                "  \"state\": \"DRAFT_AB\",\n" +
                 "  \"subject\": \"Subject\",\n" +
                 "  \"subscriptionName\": \"Marketing Information\",\n" +
                 "  \"updated\": 1563410535135\n" +
@@ -208,7 +222,13 @@ public class HubspotRestEmailsClientTest
                 "  \"limit\": 10,\n" +
                 "  \"objects\": [\n" +
                 "    {\n" +
+                "      \"ab\": true,\n" +
+                "      \"abHoursToWait\": 15,\n" +
+                "      \"abStatus\": \"master\",\n" +
+                "      \"abTestId\": 12561803622,\n" +
+                "      \"abTestPercentage\": 60,\n" +
                 "      \"authorName\": \"HubSpot Test\",\n" +
+                "      \"currentState\": \"DRAFT_AB\",\n" +
                 "      \"emailType\": \"BATCH_EMAIL\",\n" +
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
@@ -219,7 +239,7 @@ public class HubspotRestEmailsClientTest
                 "      \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "      \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "      \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
-                "      \"state\": \"DRAFT\",\n" +
+                "      \"state\": \"DRAFT_AB\",\n" +
                 "      \"subject\": \"Subject\",\n" +
                 "      \"subscriptionName\": \"Marketing Information\",\n" +
                 "      \"updated\": 1563410535135\n" +

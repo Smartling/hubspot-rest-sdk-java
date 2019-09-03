@@ -4,6 +4,7 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.email.CloneEmailRequest;
+import com.smartling.connector.hubspot.sdk.email.CreateVariationRequest;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
 import com.smartling.connector.hubspot.sdk.rest.api.EmailsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.EmailsRawApi;
@@ -71,5 +72,17 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     public EmailDetail clone(@NonNull String emailId, @NonNull String name) throws HubspotApiException
     {
         return execute(() -> emailsEntityApi.clone(emailId, new CloneEmailRequest(name)));
+    }
+
+    @Override
+    public String createVariation(@NonNull String emailId, @NonNull String variationName) throws HubspotApiException
+    {
+        return execute(() -> emailsRawApi.createVariation(emailId, new CreateVariationRequest(variationName)));
+    }
+
+    @Override
+    public String getBufferedContent(@NonNull String emailId) throws HubspotApiException
+    {
+        return execute(() -> emailsRawApi.getBufferedContent(emailId));
     }
 }

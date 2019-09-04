@@ -163,8 +163,10 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.isAb()).isEqualTo(true);
         assertThat(emailDetail.getAbHoursToWait()).isEqualTo(15);
         assertThat(emailDetail.getAbStatus()).isEqualTo(EmailAbStatus.master);
+        assertThat(emailDetail.getAbSuccessMetric()).isEqualTo("OPENS_BY_DELIVERED");
         assertThat(emailDetail.getAbTestId()).isEqualTo(12561803622L);
         assertThat(emailDetail.getAbTestPercentage()).isEqualTo(60);
+        assertThat(emailDetail.isAbVariation()).isEqualTo(false);
 
         assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getCurrentState()).isEqualTo("DRAFT_AB");
@@ -195,8 +197,10 @@ public class HubspotRestEmailsClientTest
                 "  \"ab\": true,\n" +
                 "  \"abHoursToWait\": 15,\n" +
                 "  \"abStatus\": \"master\",\n" +
+                "  \"abSuccessMetric\": \"OPENS_BY_DELIVERED\",\n" +
                 "  \"abTestId\": 12561803622,\n" +
                 "  \"abTestPercentage\": 60,\n" +
+                "  \"abVariation\": false,\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
                 "  \"currentState\": \"DRAFT_AB\",\n" +
                 "  \"emailType\": \"BATCH_EMAIL\",\n" +
@@ -225,8 +229,10 @@ public class HubspotRestEmailsClientTest
                 "      \"ab\": true,\n" +
                 "      \"abHoursToWait\": 15,\n" +
                 "      \"abStatus\": \"master\",\n" +
+                "      \"abSuccessMetric\": \"OPENS_BY_DELIVERED\",\n" +
                 "      \"abTestId\": 12561803622,\n" +
                 "      \"abTestPercentage\": 60,\n" +
+                "      \"abVariation\": false,\n" +
                 "      \"authorName\": \"HubSpot Test\",\n" +
                 "      \"currentState\": \"DRAFT_AB\",\n" +
                 "      \"emailType\": \"BATCH_EMAIL\",\n" +

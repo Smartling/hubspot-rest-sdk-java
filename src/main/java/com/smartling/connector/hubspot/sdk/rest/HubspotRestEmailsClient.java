@@ -33,6 +33,7 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
         emailsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
+                .encoder(new GsonEncoder(camelCaseGson()))
                 .target(EmailsRawApi.class, configuration.getApiUrl());
 
         emailsEntityApi = Feign.builder()

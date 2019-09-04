@@ -120,6 +120,18 @@ public class HubspotRestEmailsClientTest
     }
 
     @Test
+    public void shouldCallCreateVariation() throws Exception
+    {
+        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/create-variation")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));
+
+        emailClient.createVariation(EMAIL_ID, "new variation name");
+
+        verify(postRequestedFor(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID+ "/create-variation"))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(equalToJson("{\"variantName\":\"new variation name\"}")));
+    }
+
+    @Test
     public void shouldThrowNativeExceptionForBadResponse() throws Exception
     {
         givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse("any").withStatus(400)));

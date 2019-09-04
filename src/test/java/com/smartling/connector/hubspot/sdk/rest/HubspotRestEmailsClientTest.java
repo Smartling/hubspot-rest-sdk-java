@@ -87,6 +87,16 @@ public class HubspotRestEmailsClientTest
     }
 
     @Test
+    public void shouldCallGetEmailByIdBuffered() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/buffer")).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
+
+        emailClient.getBufferedContent(EMAIL_ID);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/marketing-emails/v1/emails/" + EMAIL_ID + "/buffer")));
+    }
+
+    @Test
     public void shouldCallGetEmailContent() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID)).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));

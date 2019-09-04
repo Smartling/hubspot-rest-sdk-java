@@ -33,7 +33,6 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
         emailsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
-                .encoder(new GsonEncoder(camelCaseGson()))
                 .target(EmailsRawApi.class, configuration.getApiUrl());
 
         emailsEntityApi = Feign.builder()
@@ -76,9 +75,9 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
-    public String createVariation(@NonNull String emailId, @NonNull String variationName) throws HubspotApiException
+    public EmailDetail createVariation(@NonNull String emailId, @NonNull String variationName) throws HubspotApiException
     {
-        return execute(() -> emailsRawApi.createVariation(emailId, new CreateVariationRequest(variationName)));
+        return execute(() -> emailsEntityApi.createVariation(emailId, new CreateVariationRequest(variationName)));
     }
 
     @Override

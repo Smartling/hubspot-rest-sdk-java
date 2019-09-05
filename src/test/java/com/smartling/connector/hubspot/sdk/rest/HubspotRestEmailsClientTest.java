@@ -9,6 +9,7 @@ import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.email.EmailAbStatus;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
+import com.smartling.connector.hubspot.sdk.email.EmailState;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -191,7 +192,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.isAbVariation()).isEqualTo(false);
 
         assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
-        assertThat(emailDetail.getCurrentState()).isEqualTo("DRAFT_AB");
+        assertThat(emailDetail.getCurrentState()).isEqualTo(EmailState.DRAFT_AB);
         assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
         assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
@@ -200,7 +201,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
         assertThat(emailDetail.getRssEmailClickThroughText()).isEqualTo("Read more &raquo;");
-        assertThat(emailDetail.getState()).isEqualTo("DRAFT_AB");
+        assertThat(emailDetail.getState()).isEqualTo(EmailState.DRAFT_AB);
         assertThat(emailDetail.getSubject()).isEqualTo("Subject");
         assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
     }

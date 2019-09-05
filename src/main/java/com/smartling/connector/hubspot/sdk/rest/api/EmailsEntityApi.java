@@ -20,6 +20,9 @@ public interface EmailsEntityApi
     @RequestLine("GET /marketing-emails/v1/emails/{email_id}?property=" + EmailDetail.FIELDS)
     EmailDetail getDetail(@Param("email_id") String emailId);
 
+    @RequestLine("GET /marketing-emails/v1/emails/{email_id}/buffer?property=" + EmailDetail.FIELDS)
+    EmailDetail getBufferedDetail(@Param("email_id") String emailId);
+
     @RequestLine("POST /marketing-emails/v1/emails/{email_id}/clone")
     @Headers("Content-Type: application/json")
     EmailDetail clone(@Param("email_id") String email_id, CloneEmailRequest cloneFormRequest);

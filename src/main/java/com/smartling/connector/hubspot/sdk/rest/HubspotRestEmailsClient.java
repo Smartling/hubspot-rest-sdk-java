@@ -81,8 +81,8 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
-    public String getBufferedContent(@NonNull String emailId) throws HubspotApiException
+    public EmailDetail getBufferedDetail(@NonNull String emailId) throws HubspotApiException
     {
-        return execute(() -> emailsRawApi.getBufferedContent(emailId));
+        return execute(() -> emailsEntityApi.getBufferedDetail(emailId));
     }
 }

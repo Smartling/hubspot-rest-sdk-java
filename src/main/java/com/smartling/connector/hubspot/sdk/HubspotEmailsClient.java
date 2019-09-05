@@ -20,5 +20,5 @@ public interface HubspotEmailsClient extends HubspotClient
 
     EmailDetail createVariation(@NonNull String emailId, @NonNull String variationName) throws HubspotApiException;
 
-    String getBufferedContent(@NonNull String emailId) throws HubspotApiException;
+    EmailDetail getBufferedDetail(@NonNull String emailId) throws HubspotApiException;
 }

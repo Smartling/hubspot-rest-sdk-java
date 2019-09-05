@@ -12,7 +12,4 @@ public interface EmailsRawApi
     @RequestLine("PUT /marketing-emails/v1/emails/{email_id}")
     @Headers("Content-Type: application/json")
     String update(@Param("email_id") String emailId, String emailAsJson);
-
-    @RequestLine("GET /marketing-emails/v1/emails/{email_id}/buffer")
-    String getBufferedContent(@Param("email_id") String emailId);
 }

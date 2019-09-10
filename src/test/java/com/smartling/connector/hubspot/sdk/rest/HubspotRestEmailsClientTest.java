@@ -7,7 +7,9 @@ import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.email.EmailAbStatus;
 import com.smartling.connector.hubspot.sdk.email.EmailDetail;
+import com.smartling.connector.hubspot.sdk.email.EmailState;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -86,6 +88,16 @@ public class HubspotRestEmailsClientTest
     }
 
     @Test
+    public void shouldCallGetEmailByIdBuffered() throws Exception
+    {
+        givenThat(get(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/buffer")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));
+
+        emailClient.getBufferedDetail(EMAIL_ID);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/marketing-emails/v1/emails/" + EMAIL_ID + "/buffer")));
+    }
+
+    @Test
     public void shouldCallGetEmailContent() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID)).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
@@ -116,6 +128,18 @@ public class HubspotRestEmailsClientTest
         verify(postRequestedFor(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID+ "/clone"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .withRequestBody(equalToJson("{\"name\":\"new name\"}")));
+    }
+
+    @Test
+    public void shouldCallCreateVariation() throws Exception
+    {
+        givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/create-variation")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));
+
+        emailClient.createVariation(EMAIL_ID, "new variation name");
+
+        verify(postRequestedFor(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID+ "/create-variation"))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(equalToJson("{\"variantName\":\"new variation name\"}")));
     }
 
     @Test
@@ -159,7 +183,16 @@ public class HubspotRestEmailsClientTest
 
     private void assertEmailDetail(final EmailDetail emailDetail)
     {
+        assertThat(emailDetail.isAb()).isEqualTo(true);
+        assertThat(emailDetail.getAbHoursToWait()).isEqualTo(15);
+        assertThat(emailDetail.getAbStatus()).isEqualTo(EmailAbStatus.master);
+        assertThat(emailDetail.getAbSuccessMetric()).isEqualTo("OPENS_BY_DELIVERED");
+        assertThat(emailDetail.getAbTestId()).isEqualTo(12561803622L);
+        assertThat(emailDetail.getAbTestPercentage()).isEqualTo(60);
+        assertThat(emailDetail.isAbVariation()).isEqualTo(false);
+
         assertThat(emailDetail.getAuthorName()).isEqualTo("HubSpot Test");
+        assertThat(emailDetail.getCurrentState()).isEqualTo(EmailState.DRAFT_AB);
         assertThat(emailDetail.getEmailType()).isEqualTo("BATCH_EMAIL");
         assertThat(emailDetail.getFromName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getId()).isEqualTo(EMAIL_ID);
@@ -168,7 +201,7 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getPublishedByName()).isEqualTo("HubSpot Test");
         assertThat(emailDetail.getRssEmailByText()).isEqualTo("By HubSpot Test");
         assertThat(emailDetail.getRssEmailClickThroughText()).isEqualTo("Read more &raquo;");
-        assertThat(emailDetail.getState()).isEqualTo("DRAFT");
+        assertThat(emailDetail.getState()).isEqualTo(EmailState.DRAFT_AB);
         assertThat(emailDetail.getSubject()).isEqualTo("Subject");
         assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
     }
@@ -184,7 +217,15 @@ public class HubspotRestEmailsClientTest
     //language=JSON
     private String emailDetail() {
         return "{\n" +
+                "  \"ab\": true,\n" +
+                "  \"abHoursToWait\": 15,\n" +
+                "  \"abStatus\": \"master\",\n" +
+                "  \"abSuccessMetric\": \"OPENS_BY_DELIVERED\",\n" +
+                "  \"abTestId\": 12561803622,\n" +
+                "  \"abTestPercentage\": 60,\n" +
+                "  \"abVariation\": false,\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
+                "  \"currentState\": \"DRAFT_AB\",\n" +
                 "  \"emailType\": \"BATCH_EMAIL\",\n" +
                 "  \"fromName\": \"HubSpot Test\",\n" +
                 "  \"htmlTitle\": \"\",\n" +
@@ -195,7 +236,7 @@ public class HubspotRestEmailsClientTest
                 "  \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "  \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "  \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
-                "  \"state\": \"DRAFT\",\n" +
+                "  \"state\": \"DRAFT_AB\",\n" +
                 "  \"subject\": \"Subject\",\n" +
                 "  \"subscriptionName\": \"Marketing Information\",\n" +
                 "  \"updated\": 1563410535135\n" +
@@ -208,7 +249,15 @@ public class HubspotRestEmailsClientTest
                 "  \"limit\": 10,\n" +
                 "  \"objects\": [\n" +
                 "    {\n" +
+                "      \"ab\": true,\n" +
+                "      \"abHoursToWait\": 15,\n" +
+                "      \"abStatus\": \"master\",\n" +
+                "      \"abSuccessMetric\": \"OPENS_BY_DELIVERED\",\n" +
+                "      \"abTestId\": 12561803622,\n" +
+                "      \"abTestPercentage\": 60,\n" +
+                "      \"abVariation\": false,\n" +
                 "      \"authorName\": \"HubSpot Test\",\n" +
+                "      \"currentState\": \"DRAFT_AB\",\n" +
                 "      \"emailType\": \"BATCH_EMAIL\",\n" +
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
@@ -219,7 +268,7 @@ public class HubspotRestEmailsClientTest
                 "      \"rssEmailByText\": \"By HubSpot Test\",\n" +
                 "      \"rssEmailClickThroughText\": \"Read more &raquo;\",\n" +
                 "      \"rssEmailCommentText\": \"Comment &raquo;\",\n" +
-                "      \"state\": \"DRAFT\",\n" +
+                "      \"state\": \"DRAFT_AB\",\n" +
                 "      \"subject\": \"Subject\",\n" +
                 "      \"subscriptionName\": \"Marketing Information\",\n" +
                 "      \"updated\": 1563410535135\n" +

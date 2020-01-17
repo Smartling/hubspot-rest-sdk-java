@@ -6,6 +6,7 @@ import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -200,11 +201,17 @@ public class HubspotRestPagesClientTest
     @Test
     public void shouldCallGetSupportedLanguagesUrl() throws HubspotApiException
     {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/supported-languages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
+        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/supported-languages")).willReturn(HttpMockUtils.aJsonResponse(supportedLanguages())));
 
-        hubspotClient.getSupportedLanguages();
+        ListWrapper<Language> languages = hubspotClient.getSupportedLanguages();
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/supported-languages")));
+
+        assertThat(languages.getDetailList()).hasSize(2);
+        assertThat(languages.getDetailList().get(0).getTag()).isEqualTo("af");
+        assertThat(languages.getDetailList().get(0).getDisplayName()).isEqualTo("Afrikaans");
+        assertThat(languages.getDetailList().get(1).getTag()).isEqualTo("zh-hant");
+        assertThat(languages.getDetailList().get(1).getDisplayName()).isEqualTo("Chinese (Traditional Han)");
     }
 
     @Test
@@ -251,6 +258,7 @@ public class HubspotRestPagesClientTest
 
     private String pageSnippet()
     {
+        // language=JSON
         return "{"
                 + "  \"flex_areas\": {},\n"
                 + "  \"page_expiry_redirect_url\": \"Some symbols % (\",\n"
@@ -263,6 +271,7 @@ public class HubspotRestPagesClientTest
 
     private String deleteInfo()
     {
+        // language=JSON
         return "{\n"
                 + "  \"succeeded\": true,\n"
                 + "  \"message\": \"Action succeeded\"\n"
@@ -271,6 +280,7 @@ public class HubspotRestPagesClientTest
 
     private String pageDetail()
     {
+        // language=JSON
         return "{\n"
                 + "  \"id\": 127,\n"
                 + "  \"html_title\": \"Page 1 title\",\n"
@@ -281,6 +291,7 @@ public class HubspotRestPagesClientTest
 
     private String pageDetails()
     {
+        // language=JSON
         return "{\n"
                 + "  \"total\": 6,\n"
                 + "  \"objects\": [\n"
@@ -298,6 +309,27 @@ public class HubspotRestPagesClientTest
                 + "    }\n"
                 + "  ]\n"
                 + "}";
+    }
+
+    private String supportedLanguages()
+    {
+        // language=JSON
+        return "{\n" +
+                "  \"limit\": 0,\n" +
+                "  \"objects\": [\n" +
+                "    {\n" +
+                "      \"displayName\": \"Afrikaans\",\n" +
+                "      \"tag\": \"af\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"displayName\": \"Chinese (Traditional Han)\",\n" +
+                "      \"tag\": \"zh-hant\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"offset\": 0,\n" +
+                "  \"total\": 0,\n" +
+                "  \"totalCount\": 0\n" +
+                "}";
     }
 
     private void assertPageDetail(final PageDetail pageDetail)

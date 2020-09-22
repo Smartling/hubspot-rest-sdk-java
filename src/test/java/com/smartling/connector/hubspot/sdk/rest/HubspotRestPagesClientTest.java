@@ -77,6 +77,18 @@ public class HubspotRestPagesClientTest
     }
 
     @Test
+    public void shouldCallGetPageBufferUrl() throws HubspotApiException
+    {
+
+        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID + "/buffer")).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
+
+        hubspotClient.getPageBufferById(PAGE_ID);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/buffer")));
+
+    }
+
+    @Test
     public void shouldCallGetPageUrlForPageDetail() throws HubspotApiException
     {
 
@@ -85,6 +97,18 @@ public class HubspotRestPagesClientTest
         hubspotClient.getPageDetailById(PAGE_ID);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID)));
+
+    }
+
+    @Test
+    public void shouldCallGetPageUrlForPageDetailBuffer() throws HubspotApiException
+    {
+
+        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID+ "/buffer")).willReturn(HttpMockUtils.aJsonResponse(pageDetail())));
+
+        hubspotClient.getPageDetailBufferById(PAGE_ID);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID+ "/buffer")));
 
     }
 
@@ -158,6 +182,19 @@ public class HubspotRestPagesClientTest
         verify(putRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID))
                         .withHeader("Content-Type", equalTo("application/json"))
                         .withRequestBody(equalTo(pageSnippet()))
+        );
+    }
+
+    @Test
+    public void shouldCallUpdatePageBufferUrl() throws HubspotApiException
+    {
+        givenThat(put(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID + "/buffer")).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
+
+        hubspotClient.updatePageBuffer(pageSnippet(), PAGE_ID);
+
+        verify(putRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/buffer"))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(equalTo(pageSnippet()))
         );
     }
 

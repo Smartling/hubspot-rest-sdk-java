@@ -24,6 +24,9 @@ public interface PagesEntityApi
     @RequestLine("GET /content/api/v2/pages/{page_id}?property=" + PageDetail.FIELDS)
     PageDetail pageDetail(@Param("page_id") long pageId);
 
+    @RequestLine("GET /content/api/v2/pages/{page_id}/buffer?property=" + PageDetail.FIELDS)
+    PageDetail pageDetailBuffer(@Param("page_id") long pageId);
+
     @RequestLine("POST /content/api/v2/pages/{page_id}/clone?property=" + PageDetail.FIELDS)
     @Headers("Content-Type: application/json")
     PageDetail clone(@Param("page_id") long pageId, String pageAsJson);

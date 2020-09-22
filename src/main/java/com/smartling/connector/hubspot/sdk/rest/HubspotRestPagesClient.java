@@ -62,9 +62,21 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     }
 
     @Override
+    public String getPageBufferById(long pageId) throws HubspotApiException
+    {
+        return execute(() -> pagesRawApi.pageBuffer(pageId));
+    }
+
+    @Override
     public PageDetail getPageDetailById(long pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.pageDetail(pageId));
+    }
+
+    @Override
+    public PageDetail getPageDetailBufferById(long pageId) throws HubspotApiException
+    {
+        return execute(() -> pagesEntityApi.pageDetailBuffer(pageId));
     }
 
     @Override
@@ -89,6 +101,12 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     public String updatePage(String page, long updatePageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.update(updatePageId, page));
+    }
+
+    @Override
+    public String updatePageBuffer(String page, long updatePageId) throws HubspotApiException
+    {
+        return execute(() -> pagesRawApi.updateBuffer(updatePageId, page));
     }
 
     @Override

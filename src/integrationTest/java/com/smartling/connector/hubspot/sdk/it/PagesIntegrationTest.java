@@ -94,9 +94,29 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldReturnPageBuffer() throws Exception
+    {
+        String pageAsJson = hubspotClient.getPageBufferById(basicPageId);
+        with(pageAsJson)
+                .assertThat(META_DESCRIPTION_PATH, equalTo("meta description"), "Meta description should have particular text")
+                //don't know where to set meta keywords
+                .assertThat(META_KEYWORDS_PATH, empty(), "Meta keywords should not be filled")
+                .assertThat("$.id", equalTo(basicPageId), "Page id should have particular value");
+    }
+
+    @Test
     public void shouldReturnPageDetail() throws Exception
     {
         PageDetail pageDetailById = hubspotClient.getPageDetailById(basicPageId);
+
+        assertThat(pageDetailById.getId()).isEqualTo(basicPageId);
+        assertPageDetail(pageDetailById);
+    }
+
+    @Test
+    public void shouldReturnPageDetailBuffer() throws Exception
+    {
+        PageDetail pageDetailById = hubspotClient.getPageDetailBufferById(basicPageId);
 
         assertThat(pageDetailById.getId()).isEqualTo(basicPageId);
         assertPageDetail(pageDetailById);
@@ -242,6 +262,18 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         long clonedPageId = getId(changeBeforeUpdate);
 
         String updatedPage = hubspotClient.updatePage(changeBeforeUpdate, clonedPageId);
+
+        assertUpdatedMessage(updatedPage);
+    }
+
+    @Test
+    public void shouldUpdatePageBuffer() throws Exception
+    {
+        // prepare clone for update
+        String changeBeforeUpdate = getCloneAndChangeIt();
+        long clonedPageId = getId(changeBeforeUpdate);
+
+        String updatedPage = hubspotClient.updatePageBuffer(changeBeforeUpdate, clonedPageId);
 
         assertUpdatedMessage(updatedPage);
     }

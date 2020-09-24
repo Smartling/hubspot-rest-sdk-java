@@ -11,7 +11,11 @@ public interface HubspotPagesClient extends HubspotClient
 {
     String getPageById(long pageId) throws HubspotApiException;
 
+    String getPageBufferById(long pageId) throws HubspotApiException;
+
     PageDetail getPageDetailById(long pageId) throws HubspotApiException;
+
+    PageDetail getPageDetailBufferById(long pageId) throws HubspotApiException;
 
     String clonePage(long originalPageId) throws HubspotApiException;
 
@@ -20,6 +24,8 @@ public interface HubspotPagesClient extends HubspotClient
     PageDetail clonePageAsDetail(long originalPageId) throws HubspotApiException;
 
     String updatePage(final String page, final long updatePageId) throws HubspotApiException;
+
+    String updatePageBuffer(String page, long updatePageId) throws HubspotApiException;
 
     ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 

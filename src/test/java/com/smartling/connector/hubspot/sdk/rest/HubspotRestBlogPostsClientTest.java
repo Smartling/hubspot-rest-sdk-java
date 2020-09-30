@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -61,7 +62,8 @@ public class HubspotRestBlogPostsClientTest
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
             .configure(SerializationFeature.INDENT_OUTPUT, true)
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -219,6 +221,7 @@ public class HubspotRestBlogPostsClientTest
                 .withRequestBody(valueMatchingStrategy));
 
         assertThat(blogPost.getId()).isEqualTo(POST_ID);
+        assertThat(blogPost.getMetaDescription()).isEqualTo("metadata description");
     }
 
     @Test

@@ -106,6 +106,7 @@
 	"last_edit_update_id": null,
 	"html_title": "My Blog Post - ES2"
   },
+  "meta_description" : "metadata description",
   "name": "My Blog Post - ES2",
   "page_redirected": false,
   "page_title": "My Blog Post - ES2",

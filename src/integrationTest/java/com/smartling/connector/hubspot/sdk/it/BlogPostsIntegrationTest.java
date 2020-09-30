@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.it;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
@@ -34,7 +35,8 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
             .configure(SerializationFeature.INDENT_OUTPUT, true)
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
     private HubspotBlogPostsClient hubspotClient;
 
@@ -189,6 +191,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         String blogPostJsonUpdated = hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
         BlogPostDetail updatedBlogPost = OBJECT_MAPPER.readValue(blogPostJsonUpdated, BlogPostDetail.class);
         assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
+        assertThat(updatedBlogPost.getMetaDescription()).isEqualTo("new meta");
     }
 
     @Test(expected = HubspotApiException.class)

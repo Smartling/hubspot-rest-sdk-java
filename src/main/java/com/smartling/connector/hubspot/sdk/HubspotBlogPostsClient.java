@@ -24,4 +24,10 @@ public interface HubspotBlogPostsClient extends HubspotClient
     BlogPostDetail cloneBlogPost(String blogPostId, String name) throws HubspotApiException;
 
     ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException;
+
+    String getBlogPost(String id) throws HubspotApiException;
+
+    String createBlogPost(String blogPostAsJson) throws HubspotApiException;
+
+    String updateBlogPost(String id, String blogPostAsJson) throws HubspotApiException;
 }

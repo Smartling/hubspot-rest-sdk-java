@@ -8,6 +8,7 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -282,6 +284,16 @@ public class HubspotRestPagesClientTest
         assertThat(detailList).isNotEmpty();
 
         assertPageDetail(detailList.get(0));
+    }
+
+    @Test
+    public void shouldCallPublishForEntityApi() throws HubspotApiException
+    {
+        givenThat(post(HttpMockUtils.path("/content/api/v2/pages/" + PAGE_ID + "/publish-action")).willReturn(aResponse().withStatus(204)));
+
+        hubspotClient.publish(PAGE_ID, new PublishActionRequest());
+
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/" + PAGE_ID + "/publish-action")));
     }
 
     private Map<String, Object> createSearchFilter(String campaign, String name, Boolean archived, Boolean isDraft) {

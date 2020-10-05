@@ -5,7 +5,7 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-
+import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -37,4 +37,8 @@ public interface PagesEntityApi
 
     @RequestLine("GET /content/api/v2/pages/supported-languages")
     ListWrapper<Language> getSupportedLanguages();
+
+    @RequestLine("POST /content/api/v2/pages/{page_id}/publish-action")
+    @Headers("Content-Type: application/json")
+    void publish(@Param("page_id") long pageId, PublishActionRequest publishActionRequest);
 }

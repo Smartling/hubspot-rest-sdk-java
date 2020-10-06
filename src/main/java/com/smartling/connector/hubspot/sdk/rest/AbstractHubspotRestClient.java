@@ -51,6 +51,24 @@ public abstract class AbstractHubspotRestClient
         }
     }
 
+    protected void execute(Runnable apiCall) throws HubspotApiException
+    {
+        refreshTokenData = tokenProvider.getTokenData();
+
+        try
+        {
+            apiCall.run();
+        }
+        catch (FeignException.NotFound e)
+        {
+            throw new HubspotApiNotFoundException("Hubspot asset not found", e);
+        }
+        catch (FeignException e)
+        {
+            throw new HubspotApiException("Call to Hubspot API failed!", e);
+        }
+    }
+
     protected static Gson camelCaseGson()
     {
         return new GsonBuilder()

@@ -11,6 +11,8 @@ import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.page.PageState;
+import com.smartling.connector.hubspot.sdk.page.PublishAction;
+import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 import org.fest.assertions.core.Condition;
@@ -255,6 +257,20 @@ public class PagesIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldPublish() throws Exception
+    {
+        // prepare clone for update
+        String changeBeforeUpdate = getCloneAndChangeIt();
+        long clonedPageId = getId(changeBeforeUpdate);
+
+        hubspotClient.publish(clonedPageId, publishAction());
+        pagesToDelete.add(clonedPageId);
+
+        PageDetail detail = hubspotClient.getPageDetailById(clonedPageId);
+        assertThat(detail.getCurrentState()).isEqualTo(PageState.PUBLISHED);
+    }
+
+    @Test
     public void shouldUpdatePage() throws Exception
     {
         // prepare clone for update
@@ -305,6 +321,13 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         request.setName("language variation (fr-fr)");
         request.setLanguage("fr-fr");
         request.setMasterLanguage("en-us");
+        return request;
+    }
+
+    private PublishActionRequest publishAction()
+    {
+        PublishActionRequest request = new PublishActionRequest();
+        request.setAction(PublishAction.SCHEDULE_PUBLISH);
         return request;
     }
 

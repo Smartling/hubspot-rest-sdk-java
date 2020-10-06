@@ -7,6 +7,7 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -127,5 +128,11 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
     public ListWrapper<Language> getSupportedLanguages() throws HubspotApiException
     {
         return execute(pagesEntityApi::getSupportedLanguages);
+    }
+
+    @Override
+    public void publish(long pageId, PublishActionRequest publishActionRequest) throws HubspotApiException
+    {
+        execute(() -> pagesEntityApi.publish(pageId, publishActionRequest));
     }
 }

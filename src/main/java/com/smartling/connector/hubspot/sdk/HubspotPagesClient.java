@@ -4,6 +4,7 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 
 import java.util.Map;
 
@@ -32,4 +33,6 @@ public interface HubspotPagesClient extends HubspotClient
     ResultInfo delete(long pageId) throws HubspotApiException;
 
     ListWrapper<Language> getSupportedLanguages() throws HubspotApiException;
+
+    void publish(long pageId, PublishActionRequest publishActionRequest) throws HubspotApiException;
 }

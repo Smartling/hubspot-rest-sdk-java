@@ -1,9 +1,7 @@
 package com.smartling.connector.hubspot.sdk.page;
 
 import com.google.gson.annotations.SerializedName;
-import com.smartling.connector.hubspot.sdk.rest.IgnoreCaseInsensitiveEnumSerialization;
 
-@IgnoreCaseInsensitiveEnumSerialization
 public enum PublishAction
 {
     @SerializedName("push-buffer-live")

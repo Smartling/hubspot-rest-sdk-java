@@ -18,7 +18,7 @@ public class CaseInsensitiveEnumTypeAdapterFactory implements TypeAdapterFactory
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type)
     {
         Class<T> rawType = (Class<T>) type.getRawType();
-        if (!rawType.isEnum())
+        if (!rawType.isEnum() || rawType.isAnnotationPresent(IgnoreCaseInsensitiveEnumSerialization.class))
         {
             return null;
         }

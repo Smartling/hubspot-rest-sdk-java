@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public enum PublishAction
 {
-    @SerializedName(value = "push-buffer-live")
+    @SerializedName("push-buffer-live")
     PUSH_BUFFER_LIVE,
 
-    @SerializedName(value = "schedule-publish")
+    @SerializedName("schedule-publish")
     SCHEDULE_PUBLISH,
 
-    @SerializedName(value = "cancel-publish")
+    @SerializedName("cancel-publish")
     CANCEL_PUBLISH
 }

@@ -17,5 +17,6 @@ public class BlogPostDetail
     String slug;
     String htmlTitle;
     String rssSummary;
+    String featuredImage;
     String featuredImageAltText;
 }

@@ -248,6 +248,7 @@ public class HubspotRestBlogPostsClientTest
         assertThat(blogPostDetail.getHtmlTitle()).isEqualTo("[Í~ñsp~íríñ~g Íñd~ústr~íés t~ó Shá~pé th~é Fút~úré] updated html_title");
         assertThat(blogPostDetail.getRssSummary()).startsWith("<p><span style=\"color: #3f3f3f; font-family: Muli; font-size: 16px;");
         assertThat(blogPostDetail.getFeaturedImageAltText()).isEqualTo("updated featured_image_alt_text twice");
+        assertThat(blogPostDetail.getFeaturedImage()).isEqualTo("https://cdn2.hubspot.net/hubfs/6272924/aveva-squarelogo-1555419459375.png");
     }
 
     private String blogPostDetails() throws Exception

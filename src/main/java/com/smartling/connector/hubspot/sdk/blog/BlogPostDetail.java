@@ -15,4 +15,7 @@ public class BlogPostDetail
     String postSummary;
     boolean publishImmediately = true;
     String slug;
+    String htmlTitle;
+    String rssSummary;
+    String featuredImageAltText;
 }

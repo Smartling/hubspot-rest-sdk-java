@@ -238,13 +238,16 @@ public class HubspotRestBlogPostsClientTest
 
     private void assertPostDetail(final BlogPostDetail blogPostDetail)
     {
-        assertThat(blogPostDetail.getName()).isEqualTo("My Blog Post - ES2");
-        assertThat(blogPostDetail.getMetaDescription()).isEqualTo("meta");
-        assertThat(blogPostDetail.getPostBody()).startsWith("<p><span");
-        assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span");
+        assertThat(blogPostDetail.getName()).isEqualTo("Inspiring Industries to Shape the Future");
+        assertThat(blogPostDetail.getMetaDescription()).isEqualTo("Aveva Demo");
+        assertThat(blogPostDetail.getPostBody()).startsWith("<p><span style=\"color: #3f3f3f; font-family:");
+        assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span style=\"color: #3f3f3f; font-family: Muli;");
         assertThat(blogPostDetail.isPublishImmediately()).isTrue();
-        assertThat(blogPostDetail.getSlug()).isEqualTo("tb-es/-temporary-slug-d69558bb-941d-4d3e-8ba9-f5e39d97ab12");
-        assertThat(blogPostDetail.getId()).isEqualTo(POST_ID);
+        assertThat(blogPostDetail.getSlug()).isEqualTo("fr/inspiring-industries-to-shape-the-future-1");
+        assertThat(blogPostDetail.getId()).isEqualTo("35584866573");
+        assertThat(blogPostDetail.getHtmlTitle()).isEqualTo("[Í~ñsp~íríñ~g Íñd~ústr~íés t~ó Shá~pé th~é Fút~úré] updated html_title");
+        assertThat(blogPostDetail.getRssSummary()).startsWith("<p><span style=\"color: #3f3f3f; font-family: Muli; font-size: 16px;");
+        assertThat(blogPostDetail.getFeaturedImageAltText()).isEqualTo("updated featured_image_alt_text twice");
     }
 
     private String blogPostDetails() throws Exception

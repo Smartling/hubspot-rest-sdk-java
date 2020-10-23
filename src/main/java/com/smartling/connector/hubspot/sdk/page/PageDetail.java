@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class PageDetail extends PageDetailShort
 {
-    public static final String FIELDS = PageDetailShort.FIELDS + ",html_title,subcategory,campaign,campaign_name,url,folder_id,portal_id,translated_content";
+    public static final String FIELDS = PageDetailShort.FIELDS + ",html_title,subcategory,campaign,campaign_name,url,folder_id,portal_id,translated_content,translated_from_id,cloned_from";
 
     private String  htmlTitle;
     private Subcategory  subcategory; // This is set to empty or to "landing_page" for landing pages, or to "site_page" for site pages
@@ -22,5 +22,7 @@ public class PageDetail extends PageDetailShort
     private String  url; // The full URL with domain and scheme to the page. Will return a 404 if the page is not yet published.
     private String  folderId; // ?????
     private String  portalId; // ?????
+    private Long translatedFromId;
+    private Long clonedFrom;
     private Map<String, PageDetailShort> translatedContent; // "uk-ua" -> "<shortened page json>"
 }

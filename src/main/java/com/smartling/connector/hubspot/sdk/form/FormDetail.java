@@ -20,4 +20,6 @@ public class FormDetail
     private String formType;
     @SerializedName("isPublished")
     private boolean isPublished;
+    @SerializedName("tmsId")
+    private String tmsId;
 }

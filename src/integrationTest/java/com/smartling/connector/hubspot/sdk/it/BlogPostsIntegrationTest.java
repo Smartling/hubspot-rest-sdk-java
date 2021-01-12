@@ -1,5 +1,9 @@
 package com.smartling.connector.hubspot.sdk.it;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
@@ -14,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,12 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     private static final String BLOG_POST_ID1 = "6728540881";
     private static final String BLOG_POST_ID2 = "6741114424";
     private static final String BLOG_ID = "6724977225";
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+            .configure(SerializationFeature.INDENT_OUTPUT, true)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
     private HubspotBlogPostsClient hubspotClient;
 
@@ -83,6 +94,17 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     public void shouldReturnBlogPost() throws Exception
     {
         BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID1);
+
+        assertThat(blogPost).isNotNull();
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME1);
+    }
+
+    @Test
+    public void shouldReturnRawBlogPost() throws Exception
+    {
+        String blogPostJson = hubspotClient.getBlogPost(BLOG_POST_ID1);
+        BlogPostDetail blogPost = OBJECT_MAPPER.readValue(blogPostJson, BlogPostDetail.class);
 
         assertThat(blogPost).isNotNull();
         assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
@@ -155,6 +177,21 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
 
         BlogPostDetail updatedBlogPost = hubspotClient.updateBlogPost(blogPostDetail);
         assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
+    }
+
+    @Test
+    public void shouldUpdateRawBlogPost() throws HubspotApiException, IOException
+    {
+        BlogPostDetail blogPostDetail = new BlogPostDetail();
+        blogPostDetail.setId(BLOG_POST_ID2);
+        blogPostDetail.setMetaDescription("new meta");
+
+        String blogPostJson = OBJECT_MAPPER.writeValueAsString(blogPostDetail);
+
+        String blogPostJsonUpdated = hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
+        BlogPostDetail updatedBlogPost = OBJECT_MAPPER.readValue(blogPostJsonUpdated, BlogPostDetail.class);
+        assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
+        assertThat(updatedBlogPost.getMetaDescription()).isEqualTo("new meta");
     }
 
     @Test(expected = HubspotApiException.class)

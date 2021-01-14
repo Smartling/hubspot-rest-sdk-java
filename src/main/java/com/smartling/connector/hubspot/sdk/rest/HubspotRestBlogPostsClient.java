@@ -8,7 +8,6 @@ import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
-import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsRawApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
@@ -76,12 +75,6 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
     public BlogPostDetail getBlogPostById(String id) throws HubspotApiException
     {
         return execute(() -> blogPostsApi.blogPostDetail(id));
-    }
-
-    @Override
-    public BlogPostDetail cloneBlogPost(String blogPostId, String name) throws HubspotApiException
-    {
-        return execute(() -> blogPostsApi.cloneBlogPost(blogPostId, new CloneBlogPostRequest(name)));
     }
 
     @Override

@@ -196,30 +196,6 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
     }
 
-    @Test
-    public void shouldCloneBlogPost() throws HubspotApiException {
-        String blogPostId = BLOG_ID;
-        String name = "Cloned";
-        BlogPostDetail blogPostDetail = hubspotClient.getBlogPostById(blogPostId);
-
-        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(blogPostId, name);
-        blogPostsToDelete.add(blogPostCloneDetail.getId());
-
-        assertThat(blogPostCloneDetail.getName()).isEqualTo("Cloned");
-        assertThat(blogPostDetail.getContentGroupId()).isEqualTo(blogPostCloneDetail.getContentGroupId());
-    }
-
-    @Test
-    public void shouldDeleteBlogPost() throws HubspotApiException {
-        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID, "Cloned");
-        blogPostsToDelete.add(blogPostCloneDetail.getId());
-
-        ResultInfo info = hubspotClient.deleteBlogPost(blogPostCloneDetail.getId());
-        assertThat(info.isSucceeded()).isTrue();
-
-        blogPostsToDelete.remove(blogPostCloneDetail.getId());
-    }
-
     private BlogPostFilter createBlogFilter(String blogId)
     {
         BlogPostFilter filter = new BlogPostFilter();

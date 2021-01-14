@@ -20,18 +20,6 @@ public interface BlogPostsApi
     @RequestLine("GET /content/api/v2/blog-posts/{blog_post_id}")
     BlogPostDetail blogPostDetail(@Param("blog_post_id") String blogPostId);
 
-    @RequestLine("POST /content/api/v2/blog-posts")
-    @Headers("Content-Type: application/json")
-    BlogPostDetail createBlogPost(BlogPostDetail postDetail);
-
-    @RequestLine("PUT /content/api/v2/blog-posts/{blog_post_id}")
-    @Headers("Content-Type: application/json")
-    BlogPostDetail updateBlogPost(@Param("blog_post_id") String blogPostId, BlogPostDetail postDetail);
-
-    @RequestLine("POST /content/api/v2/blog-posts/{blog_post_id}/clone")
-    @Headers("Content-Type: application/json")
-    BlogPostDetail cloneBlogPost(@Param("blog_post_id") String blogPostId, CloneBlogPostRequest cloneBlogPostRequest);
-
     @RequestLine("DELETE /content/api/v2/blog-posts/{blog_post_id}")
     ResultInfo deleteBlogPost(@Param("blog_post_id") String blogPostId);
 }

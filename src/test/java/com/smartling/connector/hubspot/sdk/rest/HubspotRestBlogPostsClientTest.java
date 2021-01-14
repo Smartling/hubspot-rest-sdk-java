@@ -204,21 +204,6 @@ public class HubspotRestBlogPostsClientTest
     }
 
     @Test
-    public void shouldCallCloneBlogPostUrlForEntityApi() throws Exception
-    {
-        String BLOG_POST_NAME = "BLog post name";
-        givenThat(post(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID + "/clone"))
-                .willReturn(HttpMockUtils.aJsonResponse(blogPostDetails())));
-
-        hubspotClient.cloneBlogPost(POST_ID, BLOG_POST_NAME);
-
-        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts"))
-                .withHeader("Content-Type", equalTo("application/json"))
-                .withRequestBody(equalToJson("{ \"name\" : \"" + BLOG_POST_NAME + "\" }"))
-        );
-    }
-
-    @Test
     public void shouldCallDeleteBlogPostUrl() throws HubspotApiException
     {
 

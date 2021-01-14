@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk.it;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -169,17 +170,6 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
-    public void shouldUpdateBlogPost() throws HubspotApiException
-    {
-        BlogPostDetail blogPostDetail = new BlogPostDetail();
-        blogPostDetail.setId(BLOG_POST_ID2);
-        blogPostDetail.setMetaDescription("new meta");
-
-        BlogPostDetail updatedBlogPost = hubspotClient.updateBlogPost(blogPostDetail);
-        assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
-    }
-
-    @Test
     public void shouldUpdateRawBlogPost() throws HubspotApiException, IOException
     {
         BlogPostDetail blogPostDetail = new BlogPostDetail();
@@ -195,15 +185,15 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     }
 
     @Test(expected = HubspotApiException.class)
-    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException
-    {
+    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException, JsonProcessingException {
         String otherBlogPostId = "6729041952";
 
         BlogPostDetail blogPostById = hubspotClient.getBlogPostById(BLOG_POST_ID2);
 
         blogPostById.setId(otherBlogPostId);
+        String blogPostJson = OBJECT_MAPPER.writeValueAsString(blogPostById);
 
-        hubspotClient.updateBlogPost(blogPostById);
+        hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
     }
 
     @Test

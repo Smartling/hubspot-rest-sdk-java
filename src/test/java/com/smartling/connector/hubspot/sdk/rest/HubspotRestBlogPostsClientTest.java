@@ -149,24 +149,6 @@ public class HubspotRestBlogPostsClientTest
     }
 
     @Test
-    public void shouldCallCreateBlogPost() throws Exception
-    {
-        withPostHttpResponseData("/content/api/v2/blog-posts", loadResource("blog_post.json"));
-
-        String json = loadResource("translated_blog_post.json");
-        BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
-
-        BlogPostDetail blogPost = hubspotClient.createBlogPost(blogPostDetail);
-
-        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
-        valueMatchingStrategy.setEqualToJson(json);
-        verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
-                .withRequestBody(valueMatchingStrategy));
-
-        assertThat(blogPost.getId()).isEqualTo(POST_ID);
-    }
-
-    @Test
     public void shouldCallCreateRawBlogPost() throws Exception
     {
         withPostHttpResponseData("/content/api/v2/blog-posts", loadResource("blog_post.json"));
@@ -179,25 +161,6 @@ public class HubspotRestBlogPostsClientTest
         ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
         valueMatchingStrategy.setEqualToJson(json);
         verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
-                .withRequestBody(valueMatchingStrategy));
-
-        assertThat(blogPost.getId()).isEqualTo(POST_ID);
-    }
-
-    @Test
-    public void shouldCallUpdateBlogPost() throws Exception
-    {
-        withPutHttpResponseData("/content/api/v2/blog-posts/1", loadResource("blog_post.json"));
-
-        String json = loadResource("translated_blog_post.json");
-        BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
-        blogPostDetail.setId("1");
-
-        BlogPostDetail blogPost = hubspotClient.updateBlogPost(blogPostDetail);
-
-        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
-        valueMatchingStrategy.setEqualToJson(json);
-        verify(putRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts/1"))
                 .withRequestBody(valueMatchingStrategy));
 
         assertThat(blogPost.getId()).isEqualTo(POST_ID);

@@ -22,4 +22,9 @@ public interface BlogPostsApi
 
     @RequestLine("DELETE /content/api/v2/blog-posts/{blog_post_id}")
     ResultInfo deleteBlogPost(@Param("blog_post_id") String blogPostId);
+
+    @RequestLine("POST /content/api/v2/blog-posts/{blog_post_id}/clone")
+    @Headers("Content-Type: application/json")
+    BlogPostDetail cloneBlogPost(@Param("blog_post_id") String blogPostId, CloneBlogPostRequest cloneBlogPostRequest);
+
 }

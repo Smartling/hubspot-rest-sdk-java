@@ -1,6 +1,10 @@
 package com.smartling.connector.hubspot.sdk;
 
-import com.smartling.connector.hubspot.sdk.blog.*;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import lombok.NonNull;
 
 public interface HubspotBlogPostsClient extends HubspotClient

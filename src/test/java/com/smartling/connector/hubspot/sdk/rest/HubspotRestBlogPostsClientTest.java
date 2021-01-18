@@ -56,7 +56,7 @@ public class HubspotRestBlogPostsClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
-    private static final String BASE_URL      = "http://localhost:" + PORT;
+    private static final String BASE_URL = "http://localhost:" + PORT;
     private static final String POST_ID = "6514475261";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
@@ -146,24 +146,6 @@ public class HubspotRestBlogPostsClientTest
                         .withQueryParam("limit", equalTo("15"))
                         .withQueryParam("offset", equalTo("5"))
         );
-    }
-
-    @Test
-    public void shouldCallCreateRawBlogPost() throws Exception
-    {
-        withPostHttpResponseData("/content/api/v2/blog-posts", loadResource("blog_post.json"));
-
-        String json = loadResource("translated_blog_post.json");
-
-        String blogPostJson = hubspotClient.createBlogPost(json);
-        BlogPostDetail blogPost = OBJECT_MAPPER.readValue(blogPostJson, BlogPostDetail.class);
-
-        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
-        valueMatchingStrategy.setEqualToJson(json);
-        verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
-                .withRequestBody(valueMatchingStrategy));
-
-        assertThat(blogPost.getId()).isEqualTo(POST_ID);
     }
 
     @Test
@@ -275,6 +257,6 @@ public class HubspotRestBlogPostsClientTest
 
     private String blogPostDetails() throws Exception
     {
-        return  loadResource("blog_post.json");
+        return loadResource("blog_post.json");
     }
 }

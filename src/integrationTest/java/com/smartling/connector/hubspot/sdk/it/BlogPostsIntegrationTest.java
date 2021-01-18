@@ -8,11 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
-import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
-import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
+import com.smartling.connector.hubspot.sdk.blog.*;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HubspotRestClientManager;
 import org.junit.After;
@@ -41,7 +37,7 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
 
     private HubspotBlogPostsClient hubspotClient;
 
-    private List<String>  blogPostsToDelete = new ArrayList<>();
+    private List<String> blogPostsToDelete = new ArrayList<>();
 
     @Before
     public void init()
@@ -185,7 +181,8 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     }
 
     @Test(expected = HubspotApiException.class)
-    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException, JsonProcessingException {
+    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException, JsonProcessingException
+    {
         String otherBlogPostId = "6729041952";
 
         BlogPostDetail blogPostById = hubspotClient.getBlogPostById(BLOG_POST_ID2);
@@ -194,6 +191,30 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
         String blogPostJson = OBJECT_MAPPER.writeValueAsString(blogPostById);
 
         hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
+    }
+
+    @Test
+    public void shouldCloneBlogPost() throws HubspotApiException
+    {
+        String blogPostId = BLOG_ID;
+        BlogPostDetail blogPostDetail = hubspotClient.getBlogPostById(blogPostId);
+
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(blogPostId);
+        blogPostsToDelete.add(blogPostCloneDetail.getId());
+
+        assertThat(blogPostDetail.getContentGroupId()).isEqualTo(blogPostCloneDetail.getContentGroupId());
+    }
+
+    @Test
+    public void shouldDeleteBlogPost() throws HubspotApiException
+    {
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID);
+        blogPostsToDelete.add(blogPostCloneDetail.getId());
+
+        ResultInfo info = hubspotClient.deleteBlogPost(blogPostCloneDetail.getId());
+        assertThat(info.isSucceeded()).isTrue();
+
+        blogPostsToDelete.remove(blogPostCloneDetail.getId());
     }
 
     private BlogPostFilter createBlogFilter(String blogId)

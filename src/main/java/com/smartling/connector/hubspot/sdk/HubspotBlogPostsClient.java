@@ -1,10 +1,6 @@
 package com.smartling.connector.hubspot.sdk;
 
-import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
-import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
-import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
+import com.smartling.connector.hubspot.sdk.blog.*;
 import lombok.NonNull;
 
 public interface HubspotBlogPostsClient extends HubspotClient
@@ -20,8 +16,6 @@ public interface HubspotBlogPostsClient extends HubspotClient
     ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException;
 
     String getBlogPost(String id) throws HubspotApiException;
-
-    String createBlogPost(String blogPostAsJson) throws HubspotApiException;
 
     String updateBlogPost(String id, String blogPostAsJson) throws HubspotApiException;
 

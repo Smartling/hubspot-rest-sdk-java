@@ -89,12 +89,6 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
     }
 
     @Override
-    public String createBlogPost(String blogPostAsJson) throws HubspotApiException
-    {
-        return execute(() -> blogPostsRawApi.create(blogPostAsJson));
-    }
-
-    @Override
     public String updateBlogPost(String id, String blogPostAsJson) throws HubspotApiException
     {
         return execute(() -> blogPostsRawApi.update(id, blogPostAsJson));

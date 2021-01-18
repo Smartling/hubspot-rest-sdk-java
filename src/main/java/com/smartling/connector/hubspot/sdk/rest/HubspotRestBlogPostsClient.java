@@ -10,6 +10,7 @@ import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsApi;
+import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsRawApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
@@ -22,6 +23,7 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
 {
     private final BlogPostsApi blogPostsApi;
     private final BlogsApi blogsApi;
+    private final BlogPostsRawApi blogPostsRawApi;
 
     public HubspotRestBlogPostsClient(final Configuration configuration, final TokenProvider tokenProvider)
     {
@@ -42,6 +44,11 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
                 .options(connectionConfig)
                 .decoder(new GsonDecoder(snakeCaseGson()))
                 .target(BlogsApi.class, configuration.getApiUrl());
+
+        blogPostsRawApi = Feign.builder()
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .target(BlogPostsRawApi.class, configuration.getApiUrl());
 
     }
 
@@ -72,29 +79,29 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
     }
 
     @Override
-    public BlogPostDetail createBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
-    {
-       return execute(() -> blogPostsApi.createBlogPost(blogPostDetail));
-    }
-
-    @Override
-    public BlogPostDetail updateBlogPost(BlogPostDetail blogPostDetail) throws HubspotApiException
-    {
-        return execute(() -> blogPostsApi.updateBlogPost(blogPostDetail.getId(), blogPostDetail));
-    }
-
-    @Override
-    public BlogPostDetail cloneBlogPost(String blogPostId, String name) throws HubspotApiException
-    {
-        return execute(() -> blogPostsApi.cloneBlogPost(blogPostId, new CloneBlogPostRequest(name)));
-    }
-
-    @Override
     public ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException
     {
         execute(() -> blogPostsApi.deleteBlogPost(blogPostId));
         ResultInfo result = new ResultInfo();
         result.setSucceeded(true);
         return result;
+    }
+
+    @Override
+    public String getBlogPost(String id) throws HubspotApiException
+    {
+        return execute(() -> blogPostsRawApi.blogPost(id));
+    }
+
+    @Override
+    public String updateBlogPost(String id, String blogPostAsJson) throws HubspotApiException
+    {
+        return execute(() -> blogPostsRawApi.update(id, blogPostAsJson));
+    }
+
+    @Override
+    public BlogPostDetail cloneBlogPost(String blogPostId) throws HubspotApiException
+    {
+        return execute(() -> blogPostsApi.cloneBlogPost(blogPostId, new CloneBlogPostRequest()));
     }
 }

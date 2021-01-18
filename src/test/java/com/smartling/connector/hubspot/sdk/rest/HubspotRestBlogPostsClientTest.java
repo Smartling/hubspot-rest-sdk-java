@@ -1,5 +1,9 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gson.FieldNamingPolicy;
@@ -52,8 +56,14 @@ public class HubspotRestBlogPostsClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
-    private static final String BASE_URL      = "http://localhost:" + PORT;
+    private static final String BASE_URL = "http://localhost:" + PORT;
     private static final String POST_ID = "6514475261";
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+            .configure(SerializationFeature.INDENT_OUTPUT, true)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -114,6 +124,18 @@ public class HubspotRestBlogPostsClientTest
     }
 
     @Test
+    public void shouldCallGetRawBlogPost() throws HubspotApiException, IOException, URISyntaxException
+    {
+
+        givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID)).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_post.json"))));
+
+        hubspotClient.getBlogPost(POST_ID);
+
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts/" + POST_ID)));
+
+    }
+
+    @Test
     public void shouldCallListBlogPosts() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(loadResource("blog_posts.json"))));
@@ -127,25 +149,7 @@ public class HubspotRestBlogPostsClientTest
     }
 
     @Test
-    public void shouldCallCreateBlogPost() throws Exception
-    {
-        withPostHttpResponseData("/content/api/v2/blog-posts", loadResource("blog_post.json"));
-
-        String json = loadResource("translated_blog_post.json");
-        BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
-
-        BlogPostDetail blogPost = hubspotClient.createBlogPost(blogPostDetail);
-
-        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
-        valueMatchingStrategy.setEqualToJson(json);
-        verify(postRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts"))
-                .withRequestBody(valueMatchingStrategy));
-
-        assertThat(blogPost.getId()).isEqualTo(POST_ID);
-    }
-
-    @Test
-    public void shouldCallUpdateBlogPost() throws Exception
+    public void shouldCallUpdateRawBlogPost() throws Exception
     {
         withPutHttpResponseData("/content/api/v2/blog-posts/1", loadResource("blog_post.json"));
 
@@ -153,7 +157,8 @@ public class HubspotRestBlogPostsClientTest
         BlogPostDetail blogPostDetail = getTranslatedBlogPost(json);
         blogPostDetail.setId("1");
 
-        BlogPostDetail blogPost = hubspotClient.updateBlogPost(blogPostDetail);
+        String blogPostJson = hubspotClient.updateBlogPost(blogPostDetail.getId(), json);
+        BlogPostDetail blogPost = OBJECT_MAPPER.readValue(blogPostJson, BlogPostDetail.class);
 
         ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
         valueMatchingStrategy.setEqualToJson(json);
@@ -161,6 +166,7 @@ public class HubspotRestBlogPostsClientTest
                 .withRequestBody(valueMatchingStrategy));
 
         assertThat(blogPost.getId()).isEqualTo(POST_ID);
+        assertThat(blogPost.getMetaDescription()).isEqualTo("metadata description");
     }
 
     @Test
@@ -182,15 +188,14 @@ public class HubspotRestBlogPostsClientTest
     @Test
     public void shouldCallCloneBlogPostUrlForEntityApi() throws Exception
     {
-        String BLOG_POST_NAME = "BLog post name";
         givenThat(post(HttpMockUtils.path("/content/api/v2/blog-posts/" + POST_ID + "/clone"))
                 .willReturn(HttpMockUtils.aJsonResponse(blogPostDetails())));
 
-        hubspotClient.cloneBlogPost(POST_ID, BLOG_POST_NAME);
+        hubspotClient.cloneBlogPost(POST_ID);
 
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blog-posts"))
                 .withHeader("Content-Type", equalTo("application/json"))
-                .withRequestBody(equalToJson("{ \"name\" : \"" + BLOG_POST_NAME + "\" }"))
+                .withRequestBody(equalToJson("{}"))
         );
     }
 
@@ -252,6 +257,6 @@ public class HubspotRestBlogPostsClientTest
 
     private String blogPostDetails() throws Exception
     {
-        return  loadResource("blog_post.json");
+        return loadResource("blog_post.json");
     }
 }

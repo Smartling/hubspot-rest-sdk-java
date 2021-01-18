@@ -1,5 +1,10 @@
 package com.smartling.connector.hubspot.sdk.it;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
@@ -14,6 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +33,15 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     private static final String BLOG_POST_ID2 = "6741114424";
     private static final String BLOG_ID = "6724977225";
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+            .configure(SerializationFeature.INDENT_OUTPUT, true)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+
     private HubspotBlogPostsClient hubspotClient;
 
-    private List<String>  blogPostsToDelete = new ArrayList<>();
+    private List<String> blogPostsToDelete = new ArrayList<>();
 
     @Before
     public void init()
@@ -83,6 +95,17 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     public void shouldReturnBlogPost() throws Exception
     {
         BlogPostDetail blogPost = hubspotClient.getBlogPostById(BLOG_POST_ID1);
+
+        assertThat(blogPost).isNotNull();
+        assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
+        assertThat(blogPost.getName()).isEqualTo(BASIC_POST_NAME1);
+    }
+
+    @Test
+    public void shouldReturnRawBlogPost() throws Exception
+    {
+        String blogPostJson = hubspotClient.getBlogPost(BLOG_POST_ID1);
+        BlogPostDetail blogPost = OBJECT_MAPPER.readValue(blogPostJson, BlogPostDetail.class);
 
         assertThat(blogPost).isNotNull();
         assertThat(blogPost.getId()).isEqualTo(BLOG_POST_ID1);
@@ -147,44 +170,49 @@ public class BlogPostsIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
-    public void shouldUpdateBlogPost() throws HubspotApiException
+    public void shouldUpdateRawBlogPost() throws HubspotApiException, IOException
     {
         BlogPostDetail blogPostDetail = new BlogPostDetail();
         blogPostDetail.setId(BLOG_POST_ID2);
         blogPostDetail.setMetaDescription("new meta");
 
-        BlogPostDetail updatedBlogPost = hubspotClient.updateBlogPost(blogPostDetail);
+        String blogPostJson = OBJECT_MAPPER.writeValueAsString(blogPostDetail);
+
+        String blogPostJsonUpdated = hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
+        BlogPostDetail updatedBlogPost = OBJECT_MAPPER.readValue(blogPostJsonUpdated, BlogPostDetail.class);
         assertThat(updatedBlogPost.getId()).isEqualTo(BLOG_POST_ID2);
+        assertThat(updatedBlogPost.getMetaDescription()).isEqualTo("new meta");
     }
 
     @Test(expected = HubspotApiException.class)
-    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException
+    public void shouldFailToUpdateBecauseOfConflict() throws HubspotApiException, JsonProcessingException
     {
         String otherBlogPostId = "6729041952";
 
         BlogPostDetail blogPostById = hubspotClient.getBlogPostById(BLOG_POST_ID2);
 
         blogPostById.setId(otherBlogPostId);
+        String blogPostJson = OBJECT_MAPPER.writeValueAsString(blogPostById);
 
-        hubspotClient.updateBlogPost(blogPostById);
+        hubspotClient.updateBlogPost(BLOG_POST_ID2, blogPostJson);
     }
 
     @Test
-    public void shouldCloneBlogPost() throws HubspotApiException {
+    public void shouldCloneBlogPost() throws HubspotApiException
+    {
         String blogPostId = BLOG_ID;
-        String name = "Cloned";
         BlogPostDetail blogPostDetail = hubspotClient.getBlogPostById(blogPostId);
 
-        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(blogPostId, name);
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(blogPostId);
         blogPostsToDelete.add(blogPostCloneDetail.getId());
 
-        assertThat(blogPostCloneDetail.getName()).isEqualTo("Cloned");
         assertThat(blogPostDetail.getContentGroupId()).isEqualTo(blogPostCloneDetail.getContentGroupId());
     }
 
     @Test
-    public void shouldDeleteBlogPost() throws HubspotApiException {
-        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID, "Cloned");
+    public void shouldDeleteBlogPost() throws HubspotApiException
+    {
+        BlogPostDetail blogPostCloneDetail = hubspotClient.cloneBlogPost(BLOG_ID);
         blogPostsToDelete.add(blogPostCloneDetail.getId());
 
         ResultInfo info = hubspotClient.deleteBlogPost(blogPostCloneDetail.getId());

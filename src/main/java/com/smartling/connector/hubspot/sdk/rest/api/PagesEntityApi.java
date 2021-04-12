@@ -1,11 +1,11 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.common.Language;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
+import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
-import com.smartling.connector.hubspot.sdk.page.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;

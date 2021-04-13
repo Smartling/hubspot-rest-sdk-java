@@ -2,9 +2,9 @@ package com.smartling.connector.hubspot.sdk;
 
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
-import com.smartling.connector.hubspot.sdk.page.Language;
+import com.smartling.connector.hubspot.sdk.common.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PublishActionRequest;
+import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
 
 import java.util.Map;
 

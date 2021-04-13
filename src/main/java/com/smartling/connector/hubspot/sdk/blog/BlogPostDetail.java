@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BlogPostDetail
 {
+    public static final String FIELDS = "contentGroupId,id,metaDescription,name,postBody,postSummary,publishImmediately,slug,htmlTitle,rssSummary,featuredImageAltText";
+
     Long contentGroupId;
     String id;
     String metaDescription;

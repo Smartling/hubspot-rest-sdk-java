@@ -7,6 +7,7 @@ import java.util.List;
 
 public class BlogDetails
 {
+    @SerializedName("total")
     int totalCount;
 
     @SerializedName("objects")

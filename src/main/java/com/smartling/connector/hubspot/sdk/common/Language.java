@@ -1,4 +1,4 @@
-package com.smartling.connector.hubspot.sdk.page;
+package com.smartling.connector.hubspot.sdk.common;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

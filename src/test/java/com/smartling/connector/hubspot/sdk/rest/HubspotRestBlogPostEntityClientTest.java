@@ -12,7 +12,6 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -142,16 +141,6 @@ public class HubspotRestBlogPostEntityClientTest
         target.getBlogPost(POST_ID);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID)));
-    }
-
-    @Test
-    public void shouldCallDeleteBlogPostUrl() throws Exception
-    {
-        givenThat(delete(HttpMockUtils.path("/blogs/v3/blog-posts/" + POST_ID)).willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
-
-        target.deleteBlogPost(POST_ID);
-
-        verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID)));
     }
 
     @Test

@@ -92,12 +92,6 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
     }
 
     @Override
-    public ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException
-    {
-        return execute(() -> entityApi.delete(blogPostId));
-    }
-
-    @Override
     public String getBlogPost(String id) throws HubspotApiException
     {
         return execute(() -> entityRawApi.blogPost(id));

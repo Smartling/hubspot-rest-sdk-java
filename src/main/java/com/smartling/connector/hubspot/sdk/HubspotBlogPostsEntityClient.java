@@ -25,8 +25,6 @@ public interface HubspotBlogPostsEntityClient extends HubspotClient
 
     String getBlogPostBuffer(String id) throws HubspotApiException;
 
-    ResultInfo deleteBlogPost(String blogPostId) throws HubspotApiException;
-
     String updateBlogPost(String id, String blogPostAsJson) throws HubspotApiException;
 
     String updateBlogPostBuffer(String blogPostAsJson, String updateBlogPostId) throws HubspotApiException;

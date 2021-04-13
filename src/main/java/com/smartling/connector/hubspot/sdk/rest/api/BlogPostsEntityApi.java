@@ -1,10 +1,9 @@
 package com.smartling.connector.hubspot.sdk.rest.api;
 
-import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
-import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.blog.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.common.Language;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
 import feign.Headers;
 import feign.Param;
@@ -18,9 +17,6 @@ public interface BlogPostsEntityApi
                                               @Param("slug") String slug, @Param("state") String state,
                                               @Param("offset") int offset, @Param("limit") int limit,
                                               @Param("order_by") String orderBy);
-
-    @RequestLine("DELETE /blogs/v3/blog-posts/{blog_post_id}")
-    ResultInfo delete(@Param("blog_post_id") String blogPostId);
 
     @RequestLine("GET /blogs/v3/blog-posts/{blog_post_id}?property=" + BlogPostDetail.FIELDS)
     BlogPostDetail blogPostDetail(@Param("blog_post_id") String blogPostId);

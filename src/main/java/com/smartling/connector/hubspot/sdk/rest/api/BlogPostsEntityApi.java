@@ -28,6 +28,7 @@ public interface BlogPostsEntityApi
     @Headers("Content-Type: application/json")
     BlogPostDetail createLanguageVariation(CreateLanguageVariationRequest createLanguageVariationRequest);
 
+    @Headers({"x-hubspot-csrf-hubspotapi:smartling","Cookie: hubspotapi-csrf=smartling"})
     @RequestLine("GET /cos-domains/v1/domain-setup-tasks/supported-languages?portalId={portal_id}")
     ListWrapper<Language> getSupportedLanguages(@Param("portal_id") String portalId);
 

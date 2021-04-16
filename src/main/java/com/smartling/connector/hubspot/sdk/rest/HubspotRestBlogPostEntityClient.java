@@ -2,7 +2,6 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsEntityClient;
-import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.blog.*;
 import com.smartling.connector.hubspot.sdk.common.Language;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
@@ -118,13 +117,7 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
     @Override
     public ListWrapper<Language> getSupportedLanguages() throws HubspotApiException
     {
-        BlogDetails blogDetails = listBlogs(0, 1);
-        if (blogDetails.getDetailList().size() != 1)
-        {
-            throw new HubspotApiException("Can't load languages as no blogs created");
-        }
-        String portalId = blogDetails.getDetailList().get(0).getPortalId();
-        return execute(() -> entityApi.getSupportedLanguages(portalId));
+        return execute(entityApi::getSupportedLanguages);
     }
 
     @Override

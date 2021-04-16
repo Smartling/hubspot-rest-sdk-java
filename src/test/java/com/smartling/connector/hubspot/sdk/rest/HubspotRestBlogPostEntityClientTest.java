@@ -174,18 +174,11 @@ public class HubspotRestBlogPostEntityClientTest
     @Test
     public void shouldCallGetSupportedLanguagesUrl() throws Exception
     {
-        givenThat(get(HttpMockUtils.path("/content/api/v2/blogs")).willReturn(HttpMockUtils.aJsonResponse(blogs())));
-        givenThat(get(HttpMockUtils.path("/cos-domains/v1/domain-setup-tasks/supported-languages")).willReturn(HttpMockUtils.aJsonResponse(supportedLanguages())));
+        givenThat(get(HttpMockUtils.path("/content/api/v2/pages/supported-languages")).willReturn(HttpMockUtils.aJsonResponse(supportedLanguages())));
 
         ListWrapper<Language> languages = target.getSupportedLanguages();
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blogs"))
-                .withQueryParam("offset", equalTo("0"))
-                .withQueryParam("limit", equalTo("1"))
-        );
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/cos-domains/v1/domain-setup-tasks/supported-languages"))
-                .withQueryParam("portalId", equalTo(PORTAL_ID))
-        );
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/pages/supported-languages")));
 
         assertThat(languages.getDetailList()).hasSize(2);
         assertThat(languages.getDetailList().get(0).getTag()).isEqualTo("af");

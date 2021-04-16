@@ -3,6 +3,9 @@ package com.smartling.connector.hubspot.sdk.blog;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 public class BlogPostDetail
@@ -20,4 +23,5 @@ public class BlogPostDetail
     String htmlTitle;
     String rssSummary;
     String featuredImageAltText;
+    Map<String, BlogPostDetail> translatedContent = new HashMap<>();
 }

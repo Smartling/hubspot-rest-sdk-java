@@ -1,5 +1,6 @@
 package com.smartling.connector.hubspot.sdk.page;
 
+import com.smartling.connector.hubspot.sdk.common.CurrentState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class PageDetailShort
 
     private long    id;
     private String  name;
-    private PageState  currentState;
+    private CurrentState currentState;
     private boolean archived;
     private Date    created;
     private Date    updated;

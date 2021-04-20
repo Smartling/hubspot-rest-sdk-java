@@ -10,7 +10,7 @@ import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.common.Language;
 import com.smartling.connector.hubspot.sdk.page.PageDetail;
-import com.smartling.connector.hubspot.sdk.page.PageState;
+import com.smartling.connector.hubspot.sdk.common.CurrentState;
 import com.smartling.connector.hubspot.sdk.common.PublishAction;
 import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
@@ -176,7 +176,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(notLivePageId, pageDetails);
-        assertThat(pageDetails.getDetailList()).are(suchThat("Not a draft", item -> item.getCurrentState() == PageState.DRAFT));
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a draft", item -> item.getCurrentState() == CurrentState.DRAFT));
     }
     
     @Test
@@ -186,7 +186,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         
         assertPageDetailsNotEmpty(pageDetails);
         assertHasPageWithId(basicPageId, pageDetails);
-        assertThat(pageDetails.getDetailList()).are(suchThat("Not a live", item -> item.getCurrentState() != PageState.DRAFT));
+        assertThat(pageDetails.getDetailList()).are(suchThat("Not a live", item -> item.getCurrentState() != CurrentState.DRAFT));
     }
     
     @Test
@@ -267,7 +267,7 @@ public class PagesIntegrationTest extends BaseIntegrationTest
         pagesToDelete.add(clonedPageId);
 
         PageDetail detail = hubspotClient.getPageDetailById(clonedPageId);
-        assertThat(detail.getCurrentState()).isEqualTo(PageState.PUBLISHED);
+        assertThat(detail.getCurrentState()).isEqualTo(CurrentState.PUBLISHED);
     }
 
     @Test

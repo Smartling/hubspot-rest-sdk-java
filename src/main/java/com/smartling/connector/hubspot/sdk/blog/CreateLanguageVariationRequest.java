@@ -14,4 +14,5 @@ public class CreateLanguageVariationRequest
     private String language;
     private String contentGroupId;
     private String translatedFromId;
+    private String slug;
 }

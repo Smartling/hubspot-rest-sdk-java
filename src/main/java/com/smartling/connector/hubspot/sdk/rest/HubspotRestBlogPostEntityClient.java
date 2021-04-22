@@ -15,6 +15,7 @@ import feign.Request;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 import static java.lang.String.format;
 
@@ -137,6 +138,12 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
             throw new HubspotApiException(format("Language %s not supported for blog with id %s", language, blog.getId()));
         }
 
-        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(name, language, blog.getTranslations().get(language).getId(), blogPostId)));
+        BlogDetail translatedBlogDetail = blog.getTranslations().get(language);
+
+        String targetSlug = StringUtils.removeEnd(translatedBlogDetail.getSlug(), "/")
+                + "/"
+                + blogPostDetails.getSlug().substring(blog.getSlug().length() + 1);
+
+        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(name, language, translatedBlogDetail.getId(), blogPostId, targetSlug)));
     }
 }

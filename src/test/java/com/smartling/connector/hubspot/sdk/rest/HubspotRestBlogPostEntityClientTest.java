@@ -252,7 +252,7 @@ public class HubspotRestBlogPostEntityClientTest
                 "      \"postBody\": \"Inspiring Industries to Shape the Future post body\",\n" +
                 "      \"postSummary\": \"Inspiring Industries to Shape the Future post summary\",\n" +
                 "      \"publishImmediately\": false,\n" +
-                "      \"slug\": \"en\",\n" +
+                "      \"slug\": \"en/blog/en-master-page-slug\",\n" +
                 "      \"htmlTitle\": \"html title\",\n" +
                 "      \"rssSummary\": \"rss summary\",\n" +
                 "      \"featuredImageAltText\": \"alt text\"\n" +
@@ -272,12 +272,12 @@ public class HubspotRestBlogPostEntityClientTest
         return "{" +
                 "\"id\": " + BLOG_ID + "\n," +
                 "\"name\": \"Default HubSpot Blog\"\n," +
-                "\"slug\": \"blog\"\n," +
+                "\"slug\": \"en/blog\"\n," +
                 "\"language\": \"en\"\n," +
                 "\"portal_id\": " + PORTAL_ID + "\n," +
                 "\"updated\": 1542204825175\n," +
                 "\"translations\": {" +
-                      "\"fr\":{ \"id\": " + FR_POST_ID +"}" +
+                      "\"fr\":{ \"id\": " + FR_POST_ID +",\"slug\":\"fr/blog\"}" +
                 "}\n" +
                 "}";
     }
@@ -286,7 +286,7 @@ public class HubspotRestBlogPostEntityClientTest
     private void assertBlogDetail(BlogDetail blogDetail)
     {
         assertThat(blogDetail.getId()).isEqualTo(BLOG_ID);
-        assertThat(blogDetail.getSlug()).isEqualTo("blog");
+        assertThat(blogDetail.getSlug()).isEqualTo("en/blog");
         assertThat(blogDetail.getTitle()).isEqualTo("Default HubSpot Blog");
         assertThat(blogDetail.getUpdated()).isAfter(new Date(0));
     }

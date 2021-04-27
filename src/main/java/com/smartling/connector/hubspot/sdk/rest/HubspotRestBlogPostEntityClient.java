@@ -73,6 +73,7 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
                 filter.getPostName(),
                 filter.getSlug(),
                 filter.getState() != null ? filter.getState().name() : null,
+                filter.getLanguage(),
                 offset,
                 limit,
                 orderBy)

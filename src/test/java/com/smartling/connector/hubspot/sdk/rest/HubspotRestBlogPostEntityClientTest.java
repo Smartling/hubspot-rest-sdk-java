@@ -89,12 +89,15 @@ public class HubspotRestBlogPostEntityClientTest
     {
         givenThat(get(HttpMockUtils.path("/blogs/v3/blog-posts")).willReturn(HttpMockUtils.aJsonResponse(blogPosts())));
 
-        target.listBlogPosts(0, 10, new BlogPostFilter(), null);
+        BlogPostFilter filter = new BlogPostFilter();
+        filter.setLanguage("en");
+        target.listBlogPosts(0, 10, filter, null);
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts"))
                 .withQueryParam("limit", equalTo("10"))
                 .withQueryParam("offset", equalTo("0"))
                 .withQueryParam("property", equalTo(BlogPostDetail.FIELDS))
+                .withQueryParam("language", equalTo("en"))
 
         );
     }

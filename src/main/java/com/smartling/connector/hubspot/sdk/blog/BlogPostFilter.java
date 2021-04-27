@@ -11,6 +11,7 @@ public class BlogPostFilter
     private String campaign;
     private String slug;
     private State state;
+    private String language;
 
     public enum State {
         DRAFT, PUBLISHED, SCHEDULED

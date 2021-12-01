@@ -33,5 +33,5 @@ public interface HubspotBlogPostsEntityClient extends HubspotClient
 
     void publish(String blogPostId, PublishActionRequest publishActionRequest) throws HubspotApiException;
 
-    BlogPostDetail createLanguageVariation(String blogPostId, String name, String language) throws HubspotApiException;
+    BlogPostDetail createLanguageVariation(String blogPostId, String language) throws HubspotApiException;
 }

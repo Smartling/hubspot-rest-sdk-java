@@ -24,7 +24,7 @@ public interface BlogPostsEntityApi
     @RequestLine("GET /blogs/v3/blog-posts/{blog_post_id}/buffer?property=" + BlogPostDetail.FIELDS)
     BlogPostDetail blogPostDetailBuffer(@Param("blog_post_id") String blogPostId);
 
-    @RequestLine("POST /cms/v3/blogs/posts")
+    @RequestLine("POST /multi-language/create-language-variant")
     @Headers("Content-Type: application/json")
     BlogPostDetail createLanguageVariation(CreateLanguageVariationRequest createLanguageVariationRequest);
 

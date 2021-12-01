@@ -128,7 +128,7 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
     }
 
     @Override
-    public BlogPostDetail createLanguageVariation(String blogPostId, String name, String language) throws HubspotApiException
+    public BlogPostDetail createLanguageVariation(String blogPostId, String language) throws HubspotApiException
     {
         BlogPostDetail blogPostDetails = getBlogPostDetailById(blogPostId);
         BlogDetail blog = getBlogById(Long.toString(blogPostDetails.getContentGroupId()));
@@ -138,12 +138,6 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
             throw new HubspotApiException(format("Language %s not supported for blog with id %s", language, blog.getId()));
         }
 
-        BlogDetail translatedBlogDetail = blog.getTranslations().get(language);
-
-        String targetSlug = StringUtils.removeEnd(translatedBlogDetail.getSlug(), "/")
-                + "/"
-                + blogPostDetails.getSlug().substring(blog.getSlug().length() + 1);
-
-        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(name, language, translatedBlogDetail.getId(), blogPostId, targetSlug)));
+        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(blogPostId, language)));
     }
 }

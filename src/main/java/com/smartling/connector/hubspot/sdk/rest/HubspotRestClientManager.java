@@ -45,7 +45,6 @@ public class HubspotRestClientManager implements HubspotClientManager
         return new HubspotRestBlogPostEntityClient(configuration, tokenProvider);
     }
 
-    @SuppressWarnings("unchecked")
     public static TokenProvider createTokenProvider(final Configuration configuration)
     {
         return new HubspotTokenProvider(configuration);

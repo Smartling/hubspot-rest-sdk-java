@@ -12,4 +12,5 @@ public class CreateLanguageVariationRequest
 {
     private String id;
     private String language;
+    private String contentGroupId;
 }

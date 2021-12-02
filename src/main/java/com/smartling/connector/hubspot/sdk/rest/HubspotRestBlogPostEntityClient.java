@@ -138,6 +138,7 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
             throw new HubspotApiException(format("Language %s not supported for blog with id %s", language, blog.getId()));
         }
 
-        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(blogPostId, language)));
+        BlogDetail translatedBlogDetail = blog.getTranslations().get(language);
+        return execute(() -> entityApi.createLanguageVariation(new CreateLanguageVariationRequest(blogPostId, language, translatedBlogDetail.getId())));
     }
 }

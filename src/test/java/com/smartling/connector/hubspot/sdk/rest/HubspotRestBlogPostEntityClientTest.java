@@ -203,13 +203,13 @@ public class HubspotRestBlogPostEntityClientTest
     {
         givenThat(get(HttpMockUtils.path("/blogs/v3/blog-posts/" + POST_ID)).willReturn(HttpMockUtils.aJsonResponse(blogPost())));
         givenThat(get(HttpMockUtils.path("/content/api/v2/blogs/" + BLOG_ID)).willReturn(HttpMockUtils.aJsonResponse(blog())));
-        givenThat(post(HttpMockUtils.path("/cms/v3/blogs/posts")).willReturn(HttpMockUtils.aJsonResponse(blogPost())));
+        givenThat(post(HttpMockUtils.path("/cms/v3/blogs/posts/multi-language/create-language-variation")).willReturn(HttpMockUtils.aJsonResponse(blogPost())));
 
-        target.createLanguageVariation(POST_ID, "new name", "fr");
+        target.createLanguageVariation(POST_ID, "fr");
 
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/"+ POST_ID)));
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blogs/" + BLOG_ID)));
-        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/blogs/posts")));
+        verify(postRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/blogs/posts/multi-language/create-language-variation")));
     }
 
     private String supportedLanguages()

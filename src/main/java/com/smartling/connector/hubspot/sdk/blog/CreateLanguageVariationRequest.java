@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateLanguageVariationRequest
 {
-    private String name;
+    private String id;
     private String language;
     private String contentGroupId;
-    private String translatedFromId;
-    private String slug;
 }

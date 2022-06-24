@@ -3,10 +3,12 @@ package com.smartling.connector.hubspot.sdk.email;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper=true)
 @Data
 @NoArgsConstructor
+@SuperBuilder
 public class EmailDetail extends EmailDetailShort
 {
     public static final String FIELDS = EmailDetailShort.FIELDS +

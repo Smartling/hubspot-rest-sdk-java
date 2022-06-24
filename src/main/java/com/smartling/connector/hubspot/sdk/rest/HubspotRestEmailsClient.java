@@ -80,6 +80,11 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
+    public String rawClone(@NonNull String emailId, @NonNull String name) throws HubspotApiException {
+        return execute(() -> emailsRawApi.clone(emailId, new CloneEmailRequest(name)));
+    }
+
+    @Override
     public EmailDetail createVariation(@NonNull String emailId, @NonNull String variationName) throws HubspotApiException
     {
         return execute(() -> emailsEntityApi.createVariation(emailId, new CreateVariationRequest(variationName)));

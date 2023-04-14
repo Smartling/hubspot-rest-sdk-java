@@ -14,4 +14,5 @@ public class EmailDetailShort
     private String id;
     private String name;
     private Date updated;
+    private Date created;
 }

@@ -120,6 +120,17 @@ public class HubspotRestEmailsClientTest
     }
 
     @Test
+    public void shouldCallUpdateAbEmail() throws Exception
+    {
+        givenThat(put(HttpMockUtils.path("/cosemail/v1/emails/" + EMAIL_ID)).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
+
+        emailClient.updateAbContent(EMAIL_ID, emailContent());
+
+        verify(putRequestedFor(HttpMockUtils.path("/cosemail/v1/emails/" + EMAIL_ID))
+                .withHeader("Content-Type", equalTo("application/json")));
+    }
+
+    @Test
     public void shouldCallCloneEmail() throws Exception
     {
         givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));

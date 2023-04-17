@@ -12,4 +12,8 @@ public interface EmailsRawApi
     @RequestLine("PUT /marketing-emails/v1/emails/{email_id}")
     @Headers("Content-Type: application/json")
     String update(@Param("email_id") String emailId, String emailAsJson);
+
+    @RequestLine("PUT /cosemail/v1/emails/{email_id}")
+    @Headers("Content-Type: application/json")
+    String updateAb(@Param("email_id") String emailId, String emailAsJson);
 }

@@ -69,6 +69,12 @@ public class HubspotRestEmailsClient extends AbstractHubspotRestClient implement
     }
 
     @Override
+    public String updateAbContent(@NonNull String emailId, @NonNull String emailContent) throws HubspotApiException
+    {
+        return execute(() -> emailsRawApi.updateAb(emailId, emailContent));
+    }
+
+    @Override
     public EmailDetail clone(@NonNull String emailId, @NonNull String name) throws HubspotApiException
     {
         return execute(() -> emailsEntityApi.clone(emailId, new CloneEmailRequest(name)));

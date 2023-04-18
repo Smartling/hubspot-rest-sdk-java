@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -119,6 +120,17 @@ public class HubspotRestEmailsClientTest
     }
 
     @Test
+    public void shouldCallUpdateAbEmail() throws Exception
+    {
+        givenThat(put(HttpMockUtils.path("/cosemail/v1/emails/" + EMAIL_ID)).willReturn(HttpMockUtils.aJsonResponse("anyResponse")));
+
+        emailClient.updateAbContent(EMAIL_ID, emailContent());
+
+        verify(putRequestedFor(HttpMockUtils.path("/cosemail/v1/emails/" + EMAIL_ID))
+                .withHeader("Content-Type", equalTo("application/json")));
+    }
+
+    @Test
     public void shouldCallCloneEmail() throws Exception
     {
         givenThat(post(HttpMockUtils.path("/marketing-emails/v1/emails/" + EMAIL_ID + "/clone")).willReturn(HttpMockUtils.aJsonResponse(emailContent())));
@@ -204,6 +216,9 @@ public class HubspotRestEmailsClientTest
         assertThat(emailDetail.getState()).isEqualTo(EmailState.DRAFT_AB);
         assertThat(emailDetail.getSubject()).isEqualTo("Subject");
         assertThat(emailDetail.getSubscriptionName()).isEqualTo("Marketing Information");
+
+        assertThat(emailDetail.getUpdated()).isEqualTo(new Date(1563410545135L));
+        assertThat(emailDetail.getCreated()).isEqualTo(new Date(1563410535135L));
     }
 
     private String emailContent() throws Exception {
@@ -225,6 +240,7 @@ public class HubspotRestEmailsClientTest
                 "  \"abTestPercentage\": 60,\n" +
                 "  \"abVariation\": false,\n" +
                 "  \"authorName\": \"HubSpot Test\",\n" +
+                "  \"created\": 1563410535135,\n" +
                 "  \"currentState\": \"DRAFT_AB\",\n" +
                 "  \"emailType\": \"BATCH_EMAIL\",\n" +
                 "  \"fromName\": \"HubSpot Test\",\n" +
@@ -239,7 +255,7 @@ public class HubspotRestEmailsClientTest
                 "  \"state\": \"DRAFT_AB\",\n" +
                 "  \"subject\": \"Subject\",\n" +
                 "  \"subscriptionName\": \"Marketing Information\",\n" +
-                "  \"updated\": 1563410535135\n" +
+                "  \"updated\": 1563410545135\n" +
                 "}";
     }
 
@@ -258,6 +274,7 @@ public class HubspotRestEmailsClientTest
                 "      \"abVariation\": false,\n" +
                 "      \"authorName\": \"HubSpot Test\",\n" +
                 "      \"currentState\": \"DRAFT_AB\",\n" +
+                "      \"created\": 1563410535135,\n" +
                 "      \"emailType\": \"BATCH_EMAIL\",\n" +
                 "      \"fromName\": \"HubSpot Test\",\n" +
                 "      \"htmlTitle\": \"\",\n" +
@@ -271,7 +288,7 @@ public class HubspotRestEmailsClientTest
                 "      \"state\": \"DRAFT_AB\",\n" +
                 "      \"subject\": \"Subject\",\n" +
                 "      \"subscriptionName\": \"Marketing Information\",\n" +
-                "      \"updated\": 1563410535135\n" +
+                "      \"updated\": 1563410545135\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"offset\": 0,\n" +

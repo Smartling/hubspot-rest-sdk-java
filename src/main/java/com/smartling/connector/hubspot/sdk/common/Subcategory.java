@@ -1,4 +1,4 @@
-package com.smartling.connector.hubspot.sdk.page;
+package com.smartling.connector.hubspot.sdk.common;
 
 public enum Subcategory
 {

@@ -3,6 +3,9 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.smartling.connector.hubspot.sdk.*;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import com.smartling.connector.hubspot.sdk.v3.HubspotPagesV3Client;
+import com.smartling.connector.hubspot.sdk.v3.page.PageType;
+import com.smartling.connector.hubspot.sdk.v3.rest.HubspotRestPagesV3Client;
 
 public class HubspotRestClientManager implements HubspotClientManager
 {
@@ -20,6 +23,12 @@ public class HubspotRestClientManager implements HubspotClientManager
     public HubspotPagesClient getPagesClient()
     {
         return new HubspotRestPagesClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotPagesV3Client getPagesV3Client(PageType pageType)
+    {
+        return new HubspotRestPagesV3Client(pageType, configuration, tokenProvider);
     }
 
     @Override

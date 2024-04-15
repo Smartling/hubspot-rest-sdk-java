@@ -41,8 +41,8 @@ public class HubspotRestPagesClientTest
 {
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
-    private static final String BASE_URL      = "http://localhost:" + PORT;
-    private static final long   PAGE_ID       = 127L;
+    private static final String BASE_URL = "http://localhost:" + PORT;
+    private static final long   PAGE_ID  = 127L;
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);

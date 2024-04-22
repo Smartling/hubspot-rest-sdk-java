@@ -77,6 +77,14 @@ public abstract class AbstractHubspotRestClient
                 .create();
     }
 
+    protected static Gson camelCaseGsonWithISODate()
+    {
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .create();
+    }
+
     protected static Gson snakeCaseGson()
     {
         return new GsonBuilder()

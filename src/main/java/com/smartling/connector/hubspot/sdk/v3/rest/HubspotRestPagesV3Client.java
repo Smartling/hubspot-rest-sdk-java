@@ -2,12 +2,12 @@ package com.smartling.connector.hubspot.sdk.v3.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
-import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import com.smartling.connector.hubspot.sdk.v3.HubspotPagesV3Client;
 import com.smartling.connector.hubspot.sdk.v3.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.v3.page.ListWrapper;
 import com.smartling.connector.hubspot.sdk.v3.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.v3.page.PageType;
 import com.smartling.connector.hubspot.sdk.v3.page.SchedulePublishRequest;
@@ -48,31 +48,31 @@ public class HubspotRestPagesV3Client extends AbstractHubspotRestClient implemen
                               .requestInterceptor(getAuthenticationInterceptor())
                               .options(connectionConfig)
                               .client(new ApacheHttpClient())
-                              .decoder(new GsonDecoder(camelCaseGson()))
-                              .encoder(new GsonEncoder(camelCaseGson()))
+                              .decoder(new GsonDecoder(camelCaseGsonWithISODate()))
+                              .encoder(new GsonEncoder(camelCaseGsonWithISODate()))
                               .target(PagesEntityApi.class, configuration.getApiUrl());
     }
 
     @Override
-    public String getPageById(long pageId) throws HubspotApiException
+    public String getPageById(String pageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.page(pageType.getPathParam(), pageId));
     }
 
     @Override
-    public String getPageDraftById(long pageId) throws HubspotApiException
+    public String getPageDraftById(String pageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.pageDraft(pageType.getPathParam(), pageId));
     }
 
     @Override
-    public PageDetail getPageDetailById(long pageId) throws HubspotApiException
+    public PageDetail getPageDetailById(String pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.pageDetail(pageType.getPathParam(), pageId));
     }
 
     @Override
-    public PageDetail getPageDetailDraftById(long pageId) throws HubspotApiException
+    public PageDetail getPageDetailDraftById(String pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.pageDetailDraft(pageType.getPathParam(), pageId));
     }
@@ -84,23 +84,23 @@ public class HubspotRestPagesV3Client extends AbstractHubspotRestClient implemen
     }
 
     @Override
-    public String updatePage(String page, long updatePageId) throws HubspotApiException
+    public String updatePage(String page, String updatePageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.update(pageType.getPathParam(), updatePageId, page));
     }
 
     @Override
-    public String updatePageDraft(String page, long updatePageId) throws HubspotApiException
+    public String updatePageDraft(String page, String updatePageId) throws HubspotApiException
     {
         return execute(() -> pagesRawApi.updateDraft(pageType.getPathParam(), updatePageId, page));
     }
 
     @Override
-    public ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
+    public ListWrapper<PageDetail> listPages(int offset, int limit, String sortBy, Map<String, Object> queryMap) throws HubspotApiException
     {
         Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();
 
-        return execute(() -> pagesEntityApi.listPages(pageType.getPathParam(), limit, offset, orderBy, safeQueryMap));
+        return execute(() -> pagesEntityApi.listPages(pageType.getPathParam(), limit, offset, sortBy, safeQueryMap));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class HubspotRestPagesV3Client extends AbstractHubspotRestClient implemen
     }
 
     @Override
-    public ResultInfo delete(long pageId) throws HubspotApiException
+    public ResultInfo delete(String pageId) throws HubspotApiException
     {
         return execute(() -> pagesEntityApi.delete(pageType.getPathParam(), pageId));
     }

@@ -3,12 +3,12 @@ package com.smartling.connector.hubspot.sdk.v3.rest;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.HttpMockUtils;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import com.smartling.connector.hubspot.sdk.v3.HubspotPagesV3Client;
 import com.smartling.connector.hubspot.sdk.v3.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.v3.page.ListWrapper;
 import com.smartling.connector.hubspot.sdk.v3.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.v3.page.PageType;
 import com.smartling.connector.hubspot.sdk.v3.page.SchedulePublishRequest;
@@ -44,7 +44,7 @@ public class HubspotRestPagesV3ClientTest
     private static final int PORT = 10000 + new Random().nextInt(9999);
 
     private static final String BASE_URL = "http://localhost:" + PORT;
-    private static final long   PAGE_ID = 127L;
+    private static final String PAGE_ID = "127";
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -276,7 +276,7 @@ public class HubspotRestPagesV3ClientTest
                 + "  \"authorUserId\": 1027715,\n"
                 + "  \"performableGuid\": \"\",\n"
                 + "  \"includeDefaultCustomCss\": false,\n"
-                + "  \"id\": 127"
+                + "  \"id\": \"127\""
                 + "}";
     }
 
@@ -284,10 +284,11 @@ public class HubspotRestPagesV3ClientTest
     {
         // language=JSON
         return "{\n"
-                + "  \"id\": 127,\n"
+                + "  \"id\": \"127\",\n"
                 + "  \"htmlTitle\": \"Page 1 title\",\n"
                 + "  \"name\": \"page1\",\n"
-                + "  \"updatedAt\": 1434452129000\n"
+                + "  \"updatedAt\": \"2024-04-15T16:10:54.590Z\",\n"
+                + "  \"archivedAt\": \"1970-01-01T00:00:00Z\"\n"
                 + "}";
     }
 
@@ -296,18 +297,18 @@ public class HubspotRestPagesV3ClientTest
         // language=JSON
         return "{\n"
                 + "  \"total\": 6,\n"
-                + "  \"objects\": [\n"
+                + "  \"results\": [\n"
                 + "    {\n"
-                + "      \"id\": 127,\n"
+                + "      \"id\": \"127\",\n"
                 + "      \"htmlTitle\": \"Page 1 title\",\n"
                 + "      \"name\": \"page1\",\n"
-                + "      \"updatedAt\": 1434452129000\n"
+                + "      \"updatedAt\": \"2024-04-15T16:10:54.590Z\"\n"
                 + "    },\n"
                 + "    {\n"
-                + "      \"id\": 129,\n"
+                + "      \"id\": \"129\",\n"
                 + "      \"htmlTitle\": \"Page 2 title\",\n"
                 + "      \"name\": \"page2\",\n"
-                + "      \"updatedAt\": 1434452129990\n"
+                + "      \"updatedAt\": \"2024-04-15T16:10:54.590Z\"\n"
                 + "    }\n"
                 + "  ]\n"
                 + "}";
@@ -326,7 +327,7 @@ public class HubspotRestPagesV3ClientTest
     {
         assertThat(pageDetail.getHtmlTitle()).isEqualTo("Page 1 title");
         assertThat(pageDetail.getName()).isEqualTo("page1");
-        assertThat(pageDetail.getId()).isEqualTo(127);
-        assertThat(pageDetail.getUpdatedAt()).hasTime(1434452129000L);
+        assertThat(pageDetail.getId()).isEqualTo("127");
+        assertThat(pageDetail.getUpdatedAt()).hasTime(1713197454590L);
     }
 }

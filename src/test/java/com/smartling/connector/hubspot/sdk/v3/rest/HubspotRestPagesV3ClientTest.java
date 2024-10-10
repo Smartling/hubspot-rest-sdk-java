@@ -188,9 +188,10 @@ public class HubspotRestPagesV3ClientTest
         int limit = 15;
         String campaign = "some-hash-id";
         String name = "Page_name";
+        String domain = "test_domain";
         Boolean archived = FALSE;
         Boolean isDraft = TRUE;
-        Map<String, Object> filter = createSearchFilter(campaign, name, archived, isDraft);
+        Map<String, Object> filter = createSearchFilter(campaign, name, archived, isDraft, domain);
         givenThat(get(HttpMockUtils.path("/cms/v3/pages/site-pages")).willReturn(HttpMockUtils.aJsonResponse(pageDetails())));
 
         hubspotClient.listPages(offset, limit, null, filter);
@@ -202,6 +203,7 @@ public class HubspotRestPagesV3ClientTest
                 .withQueryParam("name__icontains", equalTo(name))
                 .withQueryParam("archived", equalTo(archived.toString()))
                 .withQueryParam("isDraft", equalTo("true"))
+                .withQueryParam("domain", equalTo("test_domain"))
         );
     }
 
@@ -258,12 +260,13 @@ public class HubspotRestPagesV3ClientTest
         verify(deleteRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/pages/site-pages/" + PAGE_ID)));
     }
 
-    private Map<String, Object> createSearchFilter(String campaign, String name, Boolean archived, Boolean isDraft) {
+    private Map<String, Object> createSearchFilter(String campaign, String name, Boolean archived, Boolean isDraft, String domain) {
         Map<String, Object> filter = new HashMap<>();
         filter.put("campaign", campaign);
         filter.put("name__icontains", name);
         filter.put("archived", archived);
         filter.put("isDraft", isDraft);
+        filter.put("domain", domain);
         return filter;
     }
 

@@ -1,6 +1,12 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
-import com.smartling.connector.hubspot.sdk.*;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
+import com.smartling.connector.hubspot.sdk.HubspotBlogPostsEntityClient;
+import com.smartling.connector.hubspot.sdk.HubspotClientManager;
+import com.smartling.connector.hubspot.sdk.HubspotDomainClient;
+import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
+import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
+import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import com.smartling.connector.hubspot.sdk.v3.HubspotPagesV3Client;
@@ -52,6 +58,11 @@ public class HubspotRestClientManager implements HubspotClientManager
     @Override
     public HubspotBlogPostsEntityClient getBlogPostsEntityClient() {
         return new HubspotRestBlogPostEntityClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotDomainClient getDomainClient() {
+        return new HubspotRestDomainClient(configuration, tokenProvider);
     }
 
     public static TokenProvider createTokenProvider(final Configuration configuration)

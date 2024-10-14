@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsClient;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsEntityClient;
+import com.smartling.connector.hubspot.sdk.HubspotBlogTagsClient;
 import com.smartling.connector.hubspot.sdk.HubspotClientManager;
 import com.smartling.connector.hubspot.sdk.HubspotDomainClient;
 import com.smartling.connector.hubspot.sdk.HubspotEmailsClient;
@@ -58,6 +59,11 @@ public class HubspotRestClientManager implements HubspotClientManager
     @Override
     public HubspotBlogPostsEntityClient getBlogPostsEntityClient() {
         return new HubspotRestBlogPostEntityClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotBlogTagsClient getBlogTagsClient() {
+        return new HubspotRestBlogPostTagsClient(configuration, tokenProvider);
     }
 
     @Override

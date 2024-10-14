@@ -11,5 +11,6 @@ public interface HubspotClientManager
     HubspotBlogPostsClient getBlogPostsClient();
     HubspotEmailsClient getEmailsClient();
     HubspotBlogPostsEntityClient getBlogPostsEntityClient();
+    HubspotBlogTagsClient getBlogTagsClient();
     HubspotDomainClient getDomainClient();
 }

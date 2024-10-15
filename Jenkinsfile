@@ -6,6 +6,10 @@ pipeline {
         buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '5'))
     }
 
+    tools {
+        jdk 'JDK8'
+    }
+
     stages {
         stage('Build and upload snapshot') {
             agent {

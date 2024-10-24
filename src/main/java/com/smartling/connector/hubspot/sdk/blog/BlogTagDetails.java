@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.blog;
 
 import com.google.gson.annotations.SerializedName;
+import com.smartling.connector.hubspot.sdk.common.Paging;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BlogTagDetails {
     private int totalCount;
-
     @SerializedName("results")
     private List<BlogTagDetail> detailList = new ArrayList<>();
+    private Paging paging;
 }

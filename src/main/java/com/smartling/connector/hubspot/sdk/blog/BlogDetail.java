@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -21,5 +22,6 @@ public class BlogDetail
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Date updated;
     private String portalId;
+    private List<Long> tagIds;
     private Map<String, BlogDetail> translations = new HashMap<>();
 }

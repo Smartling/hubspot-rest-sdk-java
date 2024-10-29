@@ -247,6 +247,8 @@ public class HubspotRestBlogPostsClientTest
         assertThat(blogPostDetail.getMetaDescription()).isEqualTo("Aveva Demo");
         assertThat(blogPostDetail.getPostBody()).startsWith("<p><span style=\"color: #3f3f3f; font-family:");
         assertThat(blogPostDetail.getPostSummary()).startsWith("<p><span style=\"color: #3f3f3f; font-family: Muli;");
+        assertThat(blogPostDetail.getLanguage()).isEqualTo("fr");
+        assertThat(blogPostDetail.getTagIds().size()).isEqualTo(0);
         assertThat(blogPostDetail.isPublishImmediately()).isTrue();
         assertThat(blogPostDetail.getSlug()).isEqualTo("fr/inspiring-industries-to-shape-the-future-1");
         assertThat(blogPostDetail.getId()).isEqualTo("35584866573");

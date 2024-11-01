@@ -96,6 +96,12 @@ public class HubspotRestPagesV3Client extends AbstractHubspotRestClient implemen
     }
 
     @Override
+    public String pushLive(String updatePageId) throws HubspotApiException
+    {
+        return execute(() -> pagesRawApi.pushLive(pageType.getPathParam(), updatePageId));
+    }
+
+    @Override
     public ListWrapper<PageDetail> listPages(int offset, int limit, String sortBy, Map<String, Object> queryMap) throws HubspotApiException
     {
         Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();

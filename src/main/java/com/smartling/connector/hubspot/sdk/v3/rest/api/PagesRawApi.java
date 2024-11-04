@@ -19,4 +19,8 @@ public interface PagesRawApi
     @RequestLine("PATCH /cms/v3/pages/{pageType}/{pageId}/draft")
     @Headers("Content-Type: application/json")
     String updateDraft(@Param("pageType") String pageType, @Param("pageId") String pageId, String pageAsJson);
+
+    @RequestLine("POST /cms/v3/pages/{pageType}/{pageId}/draft/push-live")
+    @Headers("Content-Type: application/json")
+    String pushLive(@Param("pageType") String pageType, @Param("pageId") String pageId);
 }

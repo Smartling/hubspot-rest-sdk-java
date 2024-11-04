@@ -26,6 +26,8 @@ public interface HubspotPagesV3Client extends HubspotClient
 
     String updatePageDraft(String page, String updatePageId) throws HubspotApiException;
 
+    String pushLive(String updatePageId) throws HubspotApiException;
+
     ListWrapper<PageDetail> listPages(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 
     void publish(SchedulePublishRequest publishActionRequest) throws HubspotApiException;

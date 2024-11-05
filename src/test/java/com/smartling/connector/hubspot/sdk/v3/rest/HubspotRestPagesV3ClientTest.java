@@ -96,8 +96,24 @@ public class HubspotRestPagesV3ClientTest
 
         givenThat(get(HttpMockUtils.path("/cms/v3/pages/site-pages/" + PAGE_ID)).willReturn(HttpMockUtils.aJsonResponse(pageDetail())));
 
-        hubspotClient.getPageDetailById(PAGE_ID);
+        PageDetail page = hubspotClient.getPageDetailById(PAGE_ID);
 
+        assertThat(page.getTranslations()).isNull();
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/pages/site-pages/" + PAGE_ID)));
+
+    }
+
+    @Test
+    public void shouldTakeTranslations() throws HubspotApiException
+    {
+
+        givenThat(get(HttpMockUtils.path("/cms/v3/pages/site-pages/" + PAGE_ID)).willReturn(HttpMockUtils.aJsonResponse(pageDetailWithTranslations())));
+
+        PageDetail page = hubspotClient.getPageDetailById(PAGE_ID);
+
+        assertThat(page.getTranslations()).isNotNull();
+        assertThat(page.getTranslations()).isNotEmpty();
+        assertThat(page.getTranslations().get("de-de").getId()).isEqualTo("177329249297");
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/pages/site-pages/" + PAGE_ID)));
 
     }
@@ -292,6 +308,140 @@ public class HubspotRestPagesV3ClientTest
                 + "  \"name\": \"page1\",\n"
                 + "  \"updatedAt\": \"2024-04-15T16:10:54.590Z\",\n"
                 + "  \"archivedAt\": \"1970-01-01T00:00:00Z\"\n"
+                + "}";
+    }
+
+    private String pageDetailWithTranslations()
+    {
+        // language=JSON
+        return "{\n"
+                + "  \"id\": \"127\",\n"
+                + "  \"htmlTitle\": \"Page 1 title\",\n"
+                + "  \"name\": \"page1\",\n"
+                + "  \"updatedAt\": \"2024-04-15T16:10:54.590Z\",\n"
+                + "  \"archivedAt\": \"1970-01-01T00:00:00Z\",\n" +
+                "  \"translations\": {\n" +
+                "    \"de-de\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-02T10:51:15.656Z\",\n" +
+                "      \"id\": 177329249297,\n" +
+                "      \"name\": \"Creator Terms - DE-DE\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-02T11:21:10Z\",\n" +
+                "      \"slug\": \"de-de/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-10T02:37:11.097Z\"\n" +
+                "    },\n" +
+                "    \"es-es\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-03T05:10:04.704Z\",\n" +
+                "      \"id\": 177388492985,\n" +
+                "      \"name\": \"Creator Terms - ES-ES\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-03T05:23:16Z\",\n" +
+                "      \"slug\": \"es-es/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-08T22:38:19.062Z\"\n" +
+                "    },\n" +
+                "    \"es-mx\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-03T11:13:17.294Z\",\n" +
+                "      \"id\": 177409465752,\n" +
+                "      \"name\": \"Creator Terms - ES-MX\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-03T11:31:01Z\",\n" +
+                "      \"slug\": \"es-mx/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-09-27T20:11:41.480Z\"\n" +
+                "    },\n" +
+                "    \"fr-fr\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-04T06:40:33.940Z\",\n" +
+                "      \"id\": 177491585358,\n" +
+                "      \"name\": \"Creator Terms - FR-FR\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-04T06:54:34Z\",\n" +
+                "      \"slug\": \"fr-fr/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-08T22:37:22.640Z\"\n" +
+                "    },\n" +
+                "    \"it-it\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-03T10:41:56.614Z\",\n" +
+                "      \"id\": 177409196932,\n" +
+                "      \"name\": \"Creator Terms - IT-IT\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-03T11:31:17Z\",\n" +
+                "      \"slug\": \"it-it/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-10T21:10:23.691Z\"\n" +
+                "    },\n" +
+                "    \"nl-nl\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-05T11:01:49.931Z\",\n" +
+                "      \"id\": 177596753746,\n" +
+                "      \"name\": \"Creator Terms - NL-NL\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-05T11:02:46Z\",\n" +
+                "      \"slug\": \"nl-nl/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-09-27T20:10:27.076Z\"\n" +
+                "    },\n" +
+                "    \"pt-br\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-05T11:45:11.280Z\",\n" +
+                "      \"id\": 177597299725,\n" +
+                "      \"name\": \"Creator Terms - PT-BR\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-05T11:45:58Z\",\n" +
+                "      \"slug\": \"pt-br/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-09T23:48:26.907Z\"\n" +
+                "    },\n" +
+                "    \"pt-pt\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-04T07:23:54.405Z\",\n" +
+                "      \"id\": 177492719495,\n" +
+                "      \"name\": \"Creator Terms - PT-PT\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-04T07:24:50Z\",\n" +
+                "      \"slug\": \"pt-pt/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-10-10T00:20:08.345Z\"\n" +
+                "    },\n" +
+                "    \"sv-se\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-09-04T10:35:19.985Z\",\n" +
+                "      \"id\": 177503286110,\n" +
+                "      \"name\": \"Creator Terms - SV-SE\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"2024-09-04T10:58:45Z\",\n" +
+                "      \"slug\": \"sv-se/policies/creator-terms\",\n" +
+                "      \"state\": \"PUBLISHED_OR_SCHEDULED\",\n" +
+                "      \"updatedAt\": \"2024-09-27T20:12:04.675Z\"\n" +
+                "    },\n" +
+                "    \"tl\": {\n" +
+                "      \"archivedInDashboard\": false,\n" +
+                "      \"createdAt\": \"2024-10-09T09:47:35.027Z\",\n" +
+                "      \"id\": 180583641348,\n" +
+                "      \"name\": \"Creator Terms - FIL-PH\",\n" +
+                "      \"publicAccessRules\": [],\n" +
+                "      \"publicAccessRulesEnabled\": false,\n" +
+                "      \"publishDate\": \"1970-01-01T00:00:00Z\",\n" +
+                "      \"slug\": \"tl/policies/creator-terms\",\n" +
+                "      \"state\": \"DRAFT\",\n" +
+                "      \"updatedAt\": \"2024-10-23T22:50:54.223Z\"\n" +
+                "    }\n" +
+                "  }\n"
                 + "}";
     }
 

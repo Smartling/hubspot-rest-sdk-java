@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PageTranslationDetail
 {
-    private long id;
+    private String id;
     private String name;
     private TranslationState state;
     private Date createdAt;

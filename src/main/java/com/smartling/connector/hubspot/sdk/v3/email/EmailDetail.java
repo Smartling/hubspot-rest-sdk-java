@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EmailDetail
 {
-    public static final String INCLUDED_PROPERTIES = "includedProperties=state&includedProperties=updatedAte";
+    public static final String INCLUDED_PROPERTIES = "includedProperties=state&includedProperties=updatedAt";
 
     private String id;
 

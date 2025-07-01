@@ -10,8 +10,10 @@ import com.smartling.connector.hubspot.sdk.HubspotFormsClient;
 import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.rest.token.HubspotTokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
+import com.smartling.connector.hubspot.sdk.v3.HubspotEmailsV3Client;
 import com.smartling.connector.hubspot.sdk.v3.HubspotPagesV3Client;
 import com.smartling.connector.hubspot.sdk.v3.page.PageType;
+import com.smartling.connector.hubspot.sdk.v3.rest.HubspotRestEmailsV3Client;
 import com.smartling.connector.hubspot.sdk.v3.rest.HubspotRestPagesV3Client;
 
 public class HubspotRestClientManager implements HubspotClientManager
@@ -54,6 +56,12 @@ public class HubspotRestClientManager implements HubspotClientManager
     public HubspotEmailsClient getEmailsClient()
     {
         return new HubspotRestEmailsClient(configuration, tokenProvider);
+    }
+
+    @Override
+    public HubspotEmailsV3Client getEmailsV3Client()
+    {
+        return new HubspotRestEmailsV3Client(configuration, tokenProvider);
     }
 
     @Override

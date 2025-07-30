@@ -6,10 +6,12 @@ import com.smartling.connector.hubspot.sdk.ResultInfo;
 import com.smartling.connector.hubspot.sdk.form.CloneFormRequest;
 import com.smartling.connector.hubspot.sdk.form.FormDetail;
 import com.smartling.connector.hubspot.sdk.form.FormFilter;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.FormsRawApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
+import feign.Logger;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -39,14 +41,18 @@ public class HubspotRestFormsClient extends AbstractHubspotRestClient implements
         formsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
+                .logger(new FeignLogger(FormsRawApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(FormsRawApi.class, configuration.getApiUrl());
 
         formsEntityApi = Feign.builder()
-                              .requestInterceptor(getAuthenticationInterceptor())
-                              .options(connectionConfig)
-                              .decoder(new GsonDecoder(snakeCaseGson()))
-                              .encoder(new GsonEncoder(snakeCaseGson()))
-                              .target(FormsEntityApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .decoder(new GsonDecoder(snakeCaseGson()))
+                .encoder(new GsonEncoder(snakeCaseGson()))
+                .logger(new FeignLogger(FormsEntityApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(FormsEntityApi.class, configuration.getApiUrl());
     }
 
 

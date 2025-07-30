@@ -32,9 +32,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile 'io.github.openfeign:feign-core:10.2.3'
-    compile 'io.github.openfeign:feign-gson:10.2.3'
-    compile 'io.github.openfeign:feign-httpclient:10.2.3'
+    compile 'io.github.openfeign:feign-core:10.7.4'
+    compile 'io.github.openfeign:feign-gson:10.7.4'
+    compile 'io.github.openfeign:feign-httpclient:10.7.4'
     compile 'org.apache.commons:commons-lang3:3.9'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 
@@ -45,7 +45,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.jayway.jsonpath:json-path:2.0.0'
     testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
-    testCompile 'com.github.tomakehurst:wiremock:1.56'
+    testCompile 'com.github.tomakehurst:wiremock-jre8:2.27.2'
     testCompile 'org.mockito:mockito-core:2.0.31-beta'
 
     testCompileOnly "org.projectlombok:lombok:1.18.8"

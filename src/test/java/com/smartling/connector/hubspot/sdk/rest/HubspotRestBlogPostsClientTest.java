@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.tomakehurst.wiremock.client.ValueMatchingStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -160,10 +159,8 @@ public class HubspotRestBlogPostsClientTest
         String blogPostJson = hubspotClient.updateBlogPost(blogPostDetail.getId(), json);
         BlogPostDetail blogPost = OBJECT_MAPPER.readValue(blogPostJson, BlogPostDetail.class);
 
-        ValueMatchingStrategy valueMatchingStrategy = new ValueMatchingStrategy();
-        valueMatchingStrategy.setEqualToJson(json);
         verify(putRequestedFor(HttpMockUtils.path("/content/api/v2/blog-posts/1"))
-                .withRequestBody(valueMatchingStrategy));
+                .withRequestBody(equalToJson(json)));
 
         assertThat(blogPost.getId()).isEqualTo(POST_ID);
         assertThat(blogPost.getMetaDescription()).isEqualTo("metadata description");

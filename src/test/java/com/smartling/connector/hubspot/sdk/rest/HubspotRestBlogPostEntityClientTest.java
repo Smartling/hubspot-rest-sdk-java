@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.rest;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsEntityClient;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
@@ -15,12 +16,21 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HubspotRestBlogPostEntityClientTest
@@ -35,9 +45,6 @@ public class HubspotRestBlogPostEntityClientTest
 
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(PORT);
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private TokenProvider tokenProvider;
     private String originalToken;
@@ -72,7 +79,7 @@ public class HubspotRestBlogPostEntityClientTest
     }
 
     @Test
-    public void shouldCallGetBlogById()  throws Exception
+    public void shouldCallGetBlogById() throws Exception
     {
         givenThat(get(HttpMockUtils.path("/content/api/v2/blogs/" + BLOG_ID)).willReturn(HttpMockUtils.aJsonResponse(blog())));
 
@@ -91,12 +98,11 @@ public class HubspotRestBlogPostEntityClientTest
 
         target.listBlogPosts(0, 10, new BlogPostFilter(), null);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts"))
+        RequestPatternBuilder requestPatternBuilder = getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts"))
                 .withQueryParam("limit", equalTo("10"))
-                .withQueryParam("offset", equalTo("0"))
-                .withQueryParam("property", equalTo(BlogPostDetail.FIELDS))
+                .withQueryParam("offset", equalTo("0"));
 
-        );
+        verifyPropertyParameters(requestPatternBuilder, BlogPostDetail.FIELDS);
     }
 
     @Test
@@ -106,9 +112,9 @@ public class HubspotRestBlogPostEntityClientTest
 
         target.getBlogPostDetailById(POST_ID);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID))
-                .withQueryParam("property", equalTo(BlogPostDetail.FIELDS))
-        );
+        RequestPatternBuilder requestPatternBuilder = getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID));
+
+        verifyPropertyParameters(requestPatternBuilder, BlogPostDetail.FIELDS);
     }
 
     @Test
@@ -118,9 +124,9 @@ public class HubspotRestBlogPostEntityClientTest
 
         target.getBlogPostDetailBufferById(POST_ID);
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID + "/buffer"))
-                .withQueryParam("property", equalTo(BlogPostDetail.FIELDS))
-        );
+        RequestPatternBuilder requestPatternBuilder = getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID + "/buffer"));
+
+        verifyPropertyParameters(requestPatternBuilder, BlogPostDetail.FIELDS);
     }
 
     @Test
@@ -207,7 +213,7 @@ public class HubspotRestBlogPostEntityClientTest
 
         target.createLanguageVariation(POST_ID, "fr");
 
-        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/"+ POST_ID)));
+        verify(getRequestedFor(HttpMockUtils.urlStartingWith("/blogs/v3/blog-posts/" + POST_ID)));
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/content/api/v2/blogs/" + BLOG_ID)));
         verify(postRequestedFor(HttpMockUtils.urlStartingWith("/cms/v3/blogs/posts/multi-language/create-language-variation")));
     }
@@ -234,7 +240,7 @@ public class HubspotRestBlogPostEntityClientTest
 
     private String blogPosts()
     {
-        return      "{\n" +
+        return "{\n" +
                 "  \"total\": 1,\n" +
                 "  \"objects\": [\n" +
                         blogPost() +
@@ -244,7 +250,7 @@ public class HubspotRestBlogPostEntityClientTest
 
     private String blogPost()
     {
-        return  "    {\n" +
+        return "    {\n" +
                 "      \"contentGroupId\": 6522540979,\n" +
                 "      \"id\": 6514475261,\n" +
                 "      \"metaDescription\": \"Aveva Demo\",\n" +
@@ -277,11 +283,20 @@ public class HubspotRestBlogPostEntityClientTest
                 "\"portal_id\": " + PORTAL_ID + "\n," +
                 "\"updated\": 1542204825175\n," +
                 "\"translations\": {" +
-                      "\"fr\":{ \"id\": " + FR_POST_ID +",\"slug\":\"fr/blog\"}" +
+                "\"fr\":{ \"id\": " + FR_POST_ID + ",\"slug\":\"fr/blog\"}" +
                 "}\n" +
                 "}";
     }
 
+
+    private void verifyPropertyParameters(RequestPatternBuilder requestPatternBuilder, String properties)
+    {
+        Arrays.asList(properties.split(",")).forEach(field ->
+        {
+            requestPatternBuilder.withQueryParam("property", equalTo(field.trim()));
+        });
+        verify(requestPatternBuilder);
+    }
 
     private void assertBlogDetail(BlogDetail blogDetail)
     {

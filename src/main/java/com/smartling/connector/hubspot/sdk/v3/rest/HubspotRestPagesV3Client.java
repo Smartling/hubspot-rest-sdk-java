@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.v3.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -14,6 +15,7 @@ import com.smartling.connector.hubspot.sdk.v3.page.SchedulePublishRequest;
 import com.smartling.connector.hubspot.sdk.v3.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.v3.rest.api.PagesRawApi;
 import feign.Feign;
+import feign.Logger;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -39,18 +41,22 @@ public class HubspotRestPagesV3Client extends AbstractHubspotRestClient implemen
         this.pageType = pageType;
 
         pagesRawApi = Feign.builder()
-                           .requestInterceptor(getAuthenticationInterceptor())
-                           .options(connectionConfig)
-                           .client(new ApacheHttpClient())
-                           .target(PagesRawApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .client(new ApacheHttpClient())
+                .logger(new FeignLogger(PagesRawApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(PagesRawApi.class, configuration.getApiUrl());
 
         pagesEntityApi = Feign.builder()
-                              .requestInterceptor(getAuthenticationInterceptor())
-                              .options(connectionConfig)
-                              .client(new ApacheHttpClient())
-                              .decoder(new GsonDecoder(camelCaseGsonWithISODate()))
-                              .encoder(new GsonEncoder(camelCaseGsonWithISODate()))
-                              .target(PagesEntityApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .client(new ApacheHttpClient())
+                .decoder(new GsonDecoder(camelCaseGsonWithISODate()))
+                .encoder(new GsonEncoder(camelCaseGsonWithISODate()))
+                .logger(new FeignLogger(PagesEntityApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(PagesEntityApi.class, configuration.getApiUrl());
     }
 
     @Override

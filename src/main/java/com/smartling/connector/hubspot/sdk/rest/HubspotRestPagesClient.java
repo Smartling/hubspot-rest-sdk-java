@@ -3,15 +3,17 @@ package com.smartling.connector.hubspot.sdk.rest;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotPagesClient;
 import com.smartling.connector.hubspot.sdk.ResultInfo;
-import com.smartling.connector.hubspot.sdk.common.ListWrapper;
-import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.common.Language;
-import com.smartling.connector.hubspot.sdk.page.PageDetail;
+import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
+import com.smartling.connector.hubspot.sdk.page.CreateLanguageVariationRequest;
+import com.smartling.connector.hubspot.sdk.page.PageDetail;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.PagesRawApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
+import feign.Logger;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -36,24 +38,30 @@ public class HubspotRestPagesClient extends AbstractHubspotRestClient implements
                 configuration.getConnectTimeoutMillis(), configuration.getReadTimeoutMillis());
 
         pagesRawApi = Feign.builder()
-                           .requestInterceptor(getAuthenticationInterceptor())
-                           .options(connectionConfig)
-                           .target(PagesRawApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .logger(new FeignLogger(PagesRawApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(PagesRawApi.class, configuration.getApiUrl());
 
         pagesEntityApi = Feign.builder()
-                              .requestInterceptor(getAuthenticationInterceptor())
-                              .options(connectionConfig)
-                              .decoder(new GsonDecoder(snakeCaseGson()))
-                              .encoder(new GsonEncoder(snakeCaseGson()))
-                              .target(PagesEntityApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .decoder(new GsonDecoder(snakeCaseGson()))
+                .encoder(new GsonEncoder(snakeCaseGson()))
+                .logger(new FeignLogger(PagesEntityApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(PagesEntityApi.class, configuration.getApiUrl());
 
         // ApacheHttpClient has advanced options for request/response processing
         pagesEntityApiApache = Feign.builder()
-                                    .requestInterceptor(getAuthenticationInterceptor())
-                                    .options(connectionConfig)
-                                    .client(new ApacheHttpClient())
-                                    .decoder(new GsonDecoder(snakeCaseGson()))
-                                    .target(PagesEntityApi.class, configuration.getApiUrl());
+                .requestInterceptor(getAuthenticationInterceptor())
+                .options(connectionConfig)
+                .client(new ApacheHttpClient())
+                .decoder(new GsonDecoder(snakeCaseGson()))
+                .logger(new FeignLogger(PagesEntityApi.class))
+                .logLevel(Logger.Level.FULL)
+                .target(PagesEntityApi.class, configuration.getApiUrl());
     }
 
     @Override

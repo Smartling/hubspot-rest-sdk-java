@@ -1,6 +1,7 @@
 package com.smartling.connector.hubspot.sdk.v3.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.AbstractHubspotRestClient;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
@@ -11,6 +12,7 @@ import com.smartling.connector.hubspot.sdk.v3.email.ListWrapper;
 import com.smartling.connector.hubspot.sdk.v3.rest.api.EmailsEntityApi;
 import com.smartling.connector.hubspot.sdk.v3.rest.api.EmailsRawApi;
 import feign.Feign;
+import feign.Logger;
 import feign.Request;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -36,6 +38,8 @@ public class HubspotRestEmailsV3Client extends AbstractHubspotRestClient impleme
                 .client(new ApacheHttpClient())
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
+                .logger(new FeignLogger(EmailsRawApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(EmailsRawApi.class, configuration.getApiUrl());
 
         emailsEntityApi = Feign.builder()
@@ -44,6 +48,8 @@ public class HubspotRestEmailsV3Client extends AbstractHubspotRestClient impleme
                 .options(connectionConfig)
                 .encoder(new GsonEncoder(camelCaseGsonWithISODate()))
                 .decoder(new GsonDecoder(camelCaseGsonWithISODate()))
+                .logger(new FeignLogger(EmailsEntityApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(EmailsEntityApi.class, configuration.getApiUrl());
     }
 

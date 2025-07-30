@@ -2,20 +2,25 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotBlogPostsEntityClient;
-import com.smartling.connector.hubspot.sdk.blog.*;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogDetails;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
+import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
+import com.smartling.connector.hubspot.sdk.blog.CreateLanguageVariationRequest;
 import com.smartling.connector.hubspot.sdk.common.Language;
 import com.smartling.connector.hubspot.sdk.common.ListWrapper;
 import com.smartling.connector.hubspot.sdk.common.PublishActionRequest;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsEntityApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsEntityRawApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
+import feign.Logger;
 import feign.Request;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
 
 import static java.lang.String.format;
 
@@ -37,17 +42,23 @@ public class HubspotRestBlogPostEntityClient extends AbstractHubspotRestClient i
                 .options(connectionConfig)
                 .decoder(new GsonDecoder(camelCaseGson()))
                 .encoder(new GsonEncoder(camelCaseGson()))
+                .logger(new FeignLogger(BlogPostsEntityApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogPostsEntityApi.class, configuration.getApiUrl());
 
         entityRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
+                .logger(new FeignLogger(BlogPostsEntityRawApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogPostsEntityRawApi.class, configuration.getApiUrl());
 
         blogsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .decoder(new GsonDecoder(snakeCaseGson()))
+                .logger(new FeignLogger(BlogsApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogsApi.class, configuration.getApiUrl());
     }
 

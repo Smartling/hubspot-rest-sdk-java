@@ -9,11 +9,13 @@ import com.smartling.connector.hubspot.sdk.blog.BlogPostDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostDetails;
 import com.smartling.connector.hubspot.sdk.blog.BlogPostFilter;
 import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostRequest;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogPostsRawApi;
 import com.smartling.connector.hubspot.sdk.rest.api.BlogsApi;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.Feign;
+import feign.Logger;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -37,17 +39,23 @@ public class HubspotRestBlogPostsClient extends AbstractHubspotRestClient implem
                 .options(connectionConfig)
                 .encoder(new GsonEncoder(snakeCaseGson()))
                 .decoder(new GsonDecoder(snakeCaseGson()))
+                .logger(new FeignLogger(BlogPostsApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogPostsApi.class, configuration.getApiUrl());
 
         blogsApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
                 .decoder(new GsonDecoder(snakeCaseGson()))
+                .logger(new FeignLogger(BlogsApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogsApi.class, configuration.getApiUrl());
 
         blogPostsRawApi = Feign.builder()
                 .requestInterceptor(getAuthenticationInterceptor())
                 .options(connectionConfig)
+                .logger(new FeignLogger(BlogPostsRawApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogPostsRawApi.class, configuration.getApiUrl());
 
     }

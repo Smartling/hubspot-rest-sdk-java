@@ -8,10 +8,12 @@ import com.smartling.connector.hubspot.sdk.blog.BlogTagDetail;
 import com.smartling.connector.hubspot.sdk.blog.BlogTagDetails;
 import com.smartling.connector.hubspot.sdk.blog.CloneBlogPostTagRequest;
 import com.smartling.connector.hubspot.sdk.blog.UpdateBlogPostTagRequest;
+import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import com.smartling.connector.hubspot.sdk.rest.util.InstantTypeAdapter;
 import com.smartling.connector.hubspot.sdk.v3.rest.api.BlogPostTagsApi;
 import feign.Feign;
+import feign.Logger;
 import feign.Request;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -41,6 +43,8 @@ public class HubspotRestBlogPostTagsClient extends AbstractHubspotRestClient imp
                 .decoder(new GsonDecoder(gson))
                 .encoder(new GsonEncoder(gson))
                 .client(new ApacheHttpClient())
+                .logger(new FeignLogger(BlogPostTagsApi.class))
+                .logLevel(Logger.Level.FULL)
                 .target(BlogPostTagsApi.class,   configuration.getApiUrl());
     }
 

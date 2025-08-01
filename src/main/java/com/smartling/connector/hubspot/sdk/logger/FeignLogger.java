@@ -81,7 +81,7 @@ public class FeignLogger extends Logger
                     int bodyLength = 0;
                     if (request.body() != null)
                     {
-                        bodyLength = request.length();
+                        bodyLength = request.body().length;
                         if (logLevel.ordinal() >= Level.FULL.ordinal())
                         {
                             String bodyText =

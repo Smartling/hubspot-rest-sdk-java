@@ -33,7 +33,6 @@ public class HubspotTokenProvider implements TokenProvider
                 .options(connectionConfig)
                 .decoder(new GsonDecoder())
                 .logger(new FeignLogger(AuthorizationApi.class))
-                .logger(new FeignLogger(AuthorizationApi.class))
                 .logLevel(Logger.Level.FULL)
                 .target(AuthorizationApi.class, configuration.getApiUrl());
     }

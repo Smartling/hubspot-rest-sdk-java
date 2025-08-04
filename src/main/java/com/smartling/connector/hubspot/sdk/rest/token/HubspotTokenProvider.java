@@ -2,12 +2,10 @@ package com.smartling.connector.hubspot.sdk.rest.token;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
-import com.smartling.connector.hubspot.sdk.logger.FeignLogger;
 import com.smartling.connector.hubspot.sdk.rest.Configuration;
 import com.smartling.connector.hubspot.sdk.rest.api.AuthorizationApi;
 import feign.Feign;
 import feign.FeignException;
-import feign.Logger;
 import feign.Request.Options;
 import feign.gson.GsonDecoder;
 
@@ -32,8 +30,6 @@ public class HubspotTokenProvider implements TokenProvider
         authorizationApi = Feign.builder()
                 .options(connectionConfig)
                 .decoder(new GsonDecoder())
-                .logger(new FeignLogger(AuthorizationApi.class))
-                .logLevel(Logger.Level.FULL)
                 .target(AuthorizationApi.class, configuration.getApiUrl());
     }
 

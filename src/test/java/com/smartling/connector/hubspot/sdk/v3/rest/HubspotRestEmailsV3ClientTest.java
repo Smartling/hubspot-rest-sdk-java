@@ -11,6 +11,7 @@ import com.smartling.connector.hubspot.sdk.v3.HubspotEmailsV3Client;
 import com.smartling.connector.hubspot.sdk.v3.email.CloneEmailRequest;
 import com.smartling.connector.hubspot.sdk.v3.email.EmailDetail;
 import com.smartling.connector.hubspot.sdk.v3.email.EmailState;
+import com.smartling.connector.hubspot.sdk.v3.email.ListWrapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,13 +71,13 @@ public class HubspotRestEmailsV3ClientTest
         givenThat(get(HttpMockUtils.path("/marketing/v3/emails")).willReturn(HttpMockUtils.aJsonResponse(emailsContent())));
 
         Map<String, Object> queryMap = new HashMap<>();
-        com.smartling.connector.hubspot.sdk.v3.email.ListWrapper<com.smartling.connector.hubspot.sdk.v3.email.EmailDetail> result =
-                emailClient.listEmails(15, "offset-token", "updated", queryMap);
+       ListWrapper<EmailDetail> result =
+                emailClient.listEmails(30, 15, "updated", queryMap);
 
         // Verify the API call
         verify(getRequestedFor(HttpMockUtils.urlStartingWith("/marketing/v3/emails"))
+                .withQueryParam("offset", equalTo("30"))
                 .withQueryParam("limit", equalTo("15"))
-                .withQueryParam("after", equalTo("offset-token"))
                 .withQueryParam("sort", equalTo("updated")));
 
         // Verify the returned results

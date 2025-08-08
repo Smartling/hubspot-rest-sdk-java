@@ -17,7 +17,7 @@ public interface HubspotEmailsV3Client extends HubspotClient
     /**
      * List emails with pagination and filtering options
      */
-    ListWrapper<EmailDetail> listEmails(int limit, String after, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
+    ListWrapper<EmailDetail> listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException;
 
     /**
      * Get email details by ID

@@ -12,8 +12,8 @@ import java.util.Map;
 
 public interface EmailsEntityApi
 {
-    @RequestLine("GET /marketing/v3/emails?limit={limit}&after={after}&sort={sortBy}&" + EmailDetail.INCLUDED_PROPERTIES)
-    ListWrapper<EmailDetail> list(@Param("limit") int limit, @Param("after") String after,
+    @RequestLine("GET /marketing/v3/emails?offset={offset}&limit={limit}&sort={sortBy}&" + EmailDetail.INCLUDED_PROPERTIES)
+    ListWrapper<EmailDetail> list(@Param("offset") int offset, @Param("limit") int limit,
                                   @Param("sortBy") String sortBy, @QueryMap Map<String, Object> queryMap);
 
     @RequestLine("GET /marketing/v3/emails/{emailId}?" + EmailDetail.INCLUDED_PROPERTIES)

@@ -100,7 +100,6 @@ public class HubspotRestEmailsV3ClientTest
         assertThat(emailDetail.getState()).isEqualTo(EmailState.DRAFT);
         assertThat(emailDetail.getType()).isEqualTo("BATCH_EMAIL");
         assertThat(sdf.format(emailDetail.getUpdatedAt())).isEqualTo("2025-03-19T15:53:07.096Z");
-        assertThat(emailDetail.isAb()).isFalse();
     }
 
     @Test

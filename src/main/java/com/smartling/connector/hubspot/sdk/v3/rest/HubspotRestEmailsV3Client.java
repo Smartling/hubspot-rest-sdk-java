@@ -54,10 +54,10 @@ public class HubspotRestEmailsV3Client extends AbstractHubspotRestClient impleme
     }
 
     @Override
-    public ListWrapper<EmailDetail> listEmails(int limit, String after, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
+    public ListWrapper<EmailDetail> listEmails(int offset, int limit, String orderBy, Map<String, Object> queryMap) throws HubspotApiException
     {
         Map<String, Object> safeQueryMap = queryMap != null ? queryMap : Collections.emptyMap();
-        return execute(() -> emailsEntityApi.list(limit, after, orderBy, safeQueryMap));
+        return execute(() -> emailsEntityApi.list(offset, limit, orderBy, safeQueryMap));
     }
 
     @Override

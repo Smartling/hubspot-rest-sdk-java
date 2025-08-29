@@ -9,6 +9,9 @@ public interface EmailsRawApi
     @RequestLine("GET /marketing/v3/emails/{emailId}")
     String getContent(@Param("emailId") String emailId);
 
+    @RequestLine("GET /marketing/v3/emails/{emailId}/draft")
+    String getDraftContent(@Param("emailId") String emailId);
+
     @RequestLine("PATCH /marketing/v3/emails/{emailId}")
     @Headers("Content-Type: application/json")
     String update(@Param("emailId") String emailId, String emailAsJson);

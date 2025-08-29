@@ -85,6 +85,12 @@ public class HubspotRestEmailsV3Client extends AbstractHubspotRestClient impleme
     }
 
     @Override
+    public String getDraftContent(@NonNull String emailId) throws HubspotApiException
+    {
+        return execute(() -> emailsRawApi.getDraftContent(emailId));
+    }
+
+    @Override
     public String updateContent(@NonNull String emailId, @NonNull String emailContent) throws HubspotApiException
     {
         return execute(() -> emailsRawApi.update(emailId, emailContent));

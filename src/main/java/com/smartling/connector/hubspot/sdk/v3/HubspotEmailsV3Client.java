@@ -40,6 +40,11 @@ public interface HubspotEmailsV3Client extends HubspotClient
     String getContent(@NonNull String emailId) throws HubspotApiException;
 
     /**
+     * Get raw content of an email's draft version
+     */
+    String getDraftContent(@NonNull String emailId) throws HubspotApiException;
+
+    /**
      * Update content of an email
      */
     String updateContent(@NonNull String emailId, @NonNull String emailContent) throws HubspotApiException;

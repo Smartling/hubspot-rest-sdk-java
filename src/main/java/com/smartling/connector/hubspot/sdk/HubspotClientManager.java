@@ -10,7 +10,6 @@ public interface HubspotClientManager
     HubspotPagesV3Client getPagesV3Client(PageType pageType);
     HubspotFormsClient getFormsClient();
     HubspotBlogPostsClient getBlogPostsClient();
-    HubspotEmailsClient getEmailsClient();
     HubspotEmailsV3Client getEmailsV3Client();
     HubspotBlogPostsEntityClient getBlogPostsEntityClient();
     HubspotBlogTagsClient getBlogTagsClient();

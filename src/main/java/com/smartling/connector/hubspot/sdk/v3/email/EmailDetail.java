@@ -9,7 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EmailDetail
 {
-    public static final String INCLUDED_PROPERTIES = "includedProperties=state&includedProperties=updatedAt&includedProperties=name";
+    public static final String INCLUDED_PROPERTIES = "includedProperties=state&includedProperties=updatedAt&includedProperties=name&includedProperties=clonedFrom";
 
     private String id;
 
@@ -20,4 +20,6 @@ public class EmailDetail
     private String type;
 
     private Date updatedAt;
+
+    private String clonedFrom;
 }

@@ -99,6 +99,7 @@ public class HubspotRestEmailsV3ClientTest
         assertThat(emailDetail.getId()).isEqualTo("187563852197");
         assertThat(emailDetail.getState()).isEqualTo(EmailState.DRAFT);
         assertThat(emailDetail.getType()).isEqualTo("BATCH_EMAIL");
+        assertThat(emailDetail.getClonedFrom()).isEqualTo("187563852100");
         assertThat(sdf.format(emailDetail.getUpdatedAt())).isEqualTo("2025-03-19T15:53:07.096Z");
     }
 
@@ -210,6 +211,7 @@ public class HubspotRestEmailsV3ClientTest
                 "\"isPublished\": false," +
                 "\"state\": \"DRAFT\"," +
                 "\"type\": \"BATCH_EMAIL\"," +
+                "\"clonedFrom\": \"187563852100\"," +
                 "\"updatedAt\": \"2025-03-19T15:53:07.096Z\"" +
                 "}";
     }

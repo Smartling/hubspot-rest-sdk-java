@@ -2,6 +2,7 @@ package com.smartling.connector.hubspot.sdk.rest;
 
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotApiNotFoundException;
+import com.smartling.connector.hubspot.sdk.HubspotApiRateLimitException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.FeignException;
@@ -45,6 +46,14 @@ public class AbstractHubspotRestClientTest
     public void shouldThrowNotFoundException() throws Exception
     {
         when(supplier.get()).thenThrow(FeignException.NotFound.class);
+
+        abstractHubspotRestClient.execute(supplier);
+    }
+
+    @Test(expected = HubspotApiRateLimitException.class)
+    public void shouldThrowRateLimitException() throws Exception
+    {
+        when(supplier.get()).thenThrow(FeignException.TooManyRequests.class);
 
         abstractHubspotRestClient.execute(supplier);
     }

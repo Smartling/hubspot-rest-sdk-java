@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.smartling.connector.hubspot.sdk.HubspotApiException;
 import com.smartling.connector.hubspot.sdk.HubspotApiNotFoundException;
+import com.smartling.connector.hubspot.sdk.HubspotApiRateLimitException;
 import com.smartling.connector.hubspot.sdk.RefreshTokenData;
 import com.smartling.connector.hubspot.sdk.rest.token.TokenProvider;
 import feign.FeignException;
@@ -45,6 +46,10 @@ public abstract class AbstractHubspotRestClient
         {
             throw new HubspotApiNotFoundException("Hubspot asset not found", e);
         }
+        catch (FeignException.TooManyRequests e)
+        {
+            throw new HubspotApiRateLimitException("Hubspot API rate limit exceeded", e);
+        }
         catch (FeignException e)
         {
             throw new HubspotApiException("Call to Hubspot API failed!", e);
@@ -62,6 +67,10 @@ public abstract class AbstractHubspotRestClient
         catch (FeignException.NotFound e)
         {
             throw new HubspotApiNotFoundException("Hubspot asset not found", e);
+        }
+        catch (FeignException.TooManyRequests e)
+        {
+            throw new HubspotApiRateLimitException("Hubspot API rate limit exceeded", e);
         }
         catch (FeignException e)
         {
